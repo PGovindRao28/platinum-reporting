@@ -43,7 +43,9 @@
         .report-tab{padding:12px 20px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
         .report-tab:hover{color:#374151}
         .report-tab.active{color:#3b82f6;border-bottom-color:#3b82f6;font-weight:600}
-        .tab-scroll-btn{position:absolute;top:0;bottom:1px;right:0;width:32px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,#fff 40%);cursor:pointer;border:none;color:#6b7280;font-size:14px;z-index:2}
+        .tab-scroll-btn{position:absolute;top:0;bottom:1px;width:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#6b7280;font-size:14px;z-index:2}
+        .tab-scroll-btn.right{right:0;background:linear-gradient(90deg,transparent,#fff 40%)}
+        .tab-scroll-btn.left{left:0;background:linear-gradient(270deg,transparent,#fff 40%);display:none}
 
         /* ===== FILTER ROW ===== */
         .filter-row{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#fff;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
@@ -139,6 +141,15 @@
         .status-row .s-label{font-size:12px;color:#6b7280}
         .status-row .s-value{font-size:16px;font-weight:700;color:#1a1a2e}
         .status-row .s-pct{font-size:10px;color:#9ca3af;margin-left:2px}
+
+        /* ===== FLEET HOURS STRIP ===== */
+        .fleet-hours-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px 24px}
+        .fleet-hour-card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all .2s}
+        .fleet-hour-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.05)}
+        .fleet-hour-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+        .fleet-hour-value{font-size:22px;font-weight:800;color:#1a1a2e;line-height:1}
+        .fleet-hour-label{font-size:11px;color:#6b7280;margin-top:3px}
+        .fleet-hour-pct{font-size:10px;font-weight:600;margin-top:2px}
 
         /* ===== INSIGHT STRIP ===== */
         .insights-strip{display:flex;gap:12px;padding:16px 24px;overflow-x:auto;scrollbar-width:none}
@@ -400,7 +411,8 @@
             <div class="report-tab">Fleet Health</div>
             <div class="report-tab">Monthly Report</div>
         </div>
-        <button class="tab-scroll-btn" onclick="document.getElementById('reportTabs').scrollBy({left:200,behavior:'smooth'})"><i class="fas fa-chevron-right"></i></button>
+        <button class="tab-scroll-btn left" id="tabScrollLeft" onclick="document.getElementById('reportTabs').scrollBy({left:-200,behavior:'smooth'})"><i class="fas fa-chevron-left"></i></button>
+        <button class="tab-scroll-btn right" id="tabScrollRight" onclick="document.getElementById('reportTabs').scrollBy({left:200,behavior:'smooth'})"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <div class="filter-row">
@@ -453,12 +465,12 @@
             </div>
         </div>
         <div class="hero-gauge">
-            <svg class="gauge-svg" width="130" height="80" viewBox="0 0 130 80">
-                <path d="M15 70 A55 55 0 0 1 115 70" fill="none" stroke="#f3f4f6" stroke-width="12" stroke-linecap="round"/>
-                <path d="M15 70 A55 55 0 0 1 115 70" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="172.8" stroke-dashoffset="9.2" style="transition:stroke-dashoffset .8s"/>
+            <svg class="gauge-svg" width="140" height="100" viewBox="0 0 140 100">
+                <path d="M15 65 A55 55 0 0 1 125 65" fill="none" stroke="#f3f4f6" stroke-width="12" stroke-linecap="round"/>
+                <path d="M15 65 A55 55 0 0 1 125 65" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="172.8" stroke-dashoffset="9.2" style="transition:stroke-dashoffset .8s"/>
                 <defs><linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f59e0b"/><stop offset="50%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient></defs>
-                <text x="65" y="62" text-anchor="middle" font-size="28" font-weight="800" fill="#1a1a2e">94.7</text>
-                <text x="65" y="76" text-anchor="middle" font-size="10" fill="#9ca3af">%</text>
+                <text x="70" y="85" text-anchor="middle" font-size="28" font-weight="800" fill="#1a1a2e">94.7</text>
+                <text x="70" y="97" text-anchor="middle" font-size="10" fill="#9ca3af">%</text>
             </svg>
             <div class="gauge-label">Fleet Availability</div>
             <div class="gauge-target">Target: 95.0%</div>
@@ -469,6 +481,42 @@
             <div class="status-row"><div class="s-left"><div class="status-dot-lg blue"></div><span class="s-label">Idle</span></div><div><span class="s-value">12</span><span class="s-pct">2.5%</span></div></div>
             <div class="status-row"><div class="s-left"><div class="status-dot-lg orange"></div><span class="s-label">Warning</span></div><div><span class="s-value">14</span><span class="s-pct">2.9%</span></div></div>
             <div class="status-row"><div class="s-left"><div class="status-dot-lg red"></div><span class="s-label">Down</span></div><div><span class="s-value">12</span><span class="s-pct">2.5%</span></div></div>
+        </div>
+    </div>
+
+    <!-- ===== FLEET HOURS KPIs ===== -->
+    <div class="fleet-hours-strip ani d2">
+        <div class="fleet-hour-card">
+            <div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-play"></i></div>
+            <div>
+                <div class="fleet-hour-value" style="color:#10b981">331,387h</div>
+                <div class="fleet-hour-label">Running Hours</div>
+                <div class="fleet-hour-pct" style="color:#10b981">94.4% of total</div>
+            </div>
+        </div>
+        <div class="fleet-hour-card">
+            <div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-pause"></i></div>
+            <div>
+                <div class="fleet-hour-value" style="color:#3b82f6">5,256h</div>
+                <div class="fleet-hour-label">Ready Hours</div>
+                <div class="fleet-hour-pct" style="color:#3b82f6">1.5% of total</div>
+            </div>
+        </div>
+        <div class="fleet-hour-card">
+            <div class="fleet-hour-icon" style="background:#f0fdf4;color:#16a34a"><i class="fas fa-check-circle"></i></div>
+            <div>
+                <div class="fleet-hour-value" style="color:#16a34a">336,643h</div>
+                <div class="fleet-hour-label">Not Faulted</div>
+                <div class="fleet-hour-pct" style="color:#16a34a">Running + Ready</div>
+            </div>
+        </div>
+        <div class="fleet-hour-card">
+            <div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-exclamation-circle"></i></div>
+            <div>
+                <div class="fleet-hour-value" style="color:#ef4444">19,597h</div>
+                <div class="fleet-hour-label">Faulted Hours</div>
+                <div class="fleet-hour-pct" style="color:#ef4444">5.6% of total</div>
+            </div>
         </div>
     </div>
 
@@ -957,11 +1005,11 @@ function renderCustomerReport(){
             </div>
         </div>
         <div class="cv-gauge-card">
-            <svg width="110" height="70" viewBox="0 0 110 70">
-                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
-                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="${fc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c.avail/100*141.4}" stroke-dashoffset="0"/>
-                <text x="55" y="52" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${c.avail}</text>
-                <text x="55" y="66" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+            <svg width="120" height="90" viewBox="0 0 120 90">
+                <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+                <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${fc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c.avail/100*157}" stroke-dashoffset="0"/>
+                <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${c.avail}</text>
+                <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
             </svg>
             <div style="font-size:10px;color:#6b7280;font-weight:500;margin-top:4px">Customer Availability</div>
             <div style="font-size:9px;color:#9ca3af;margin-top:2px">Target: 95.0%</div>
@@ -1063,11 +1111,11 @@ function renderVruReport(){
             </div>
         </div>
         <div class="cv-gauge-card">
-            <svg width="110" height="70" viewBox="0 0 110 70">
-                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
-                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="${uc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${u.avail/100*141.4}" stroke-dashoffset="0"/>
-                <text x="55" y="52" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${u.avail}</text>
-                <text x="55" y="66" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+            <svg width="120" height="90" viewBox="0 0 120 90">
+                <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+                <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${uc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${u.avail/100*157}" stroke-dashoffset="0"/>
+                <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${u.avail}</text>
+                <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
             </svg>
             <div style="font-size:10px;color:#6b7280;font-weight:500;margin-top:4px">Unit Availability</div>
             <div style="font-size:9px;color:#9ca3af;margin-top:2px">Target: 95.0%</div>
@@ -1148,6 +1196,13 @@ function renderAttentionCards(){
         </div>`;
     }).join('');
 }
+
+// ===== TAB SCROLL BUTTONS =====
+(function(){
+    const tabs=document.getElementById('reportTabs'),bl=document.getElementById('tabScrollLeft'),br=document.getElementById('tabScrollRight');
+    function upd(){bl.style.display=tabs.scrollLeft>10?'flex':'none';br.style.display=tabs.scrollLeft+tabs.clientWidth<tabs.scrollWidth-10?'flex':'none'}
+    tabs.addEventListener('scroll',upd);window.addEventListener('resize',upd);setTimeout(upd,100);
+})();
 
 // ===== INIT =====
 renderMonthPresets();
