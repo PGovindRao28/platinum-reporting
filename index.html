@@ -782,7 +782,7 @@
     <div class="sla-callout danger ani d1">
         <i class="fas fa-exclamation-triangle"></i>
         <div>
-            <strong>9 customers currently below 95% SLA target</strong> — representing 235 VRU units (48% of total). <a onclick="navigateTo('stateSummaryView')" style="cursor:pointer;text-decoration:underline;color:#3b82f6;font-weight:600">North Dakota</a> is the weakest region at 88.3%.
+            <strong>9 customers currently below 95% SLA target</strong> — representing 205 VRU units (42% of total). <a onclick="navigateTo('stateSummaryView')" style="cursor:pointer;text-decoration:underline;color:#3b82f6;font-weight:600">North Dakota</a> is the weakest region at 88.8%.
             <div class="sla-cust-list">
                 <span style="color:#ef4444;font-weight:600">Critical:</span>
                 <a onclick="navigateTo('customerView',{customer:'Enerplus'})" style="cursor:pointer;text-decoration:underline;color:#3b82f6">Enerplus</a> (85.6%),
@@ -1023,7 +1023,7 @@ const CUSTOMERS=[
     {name:'Mewbourne Oil',state:'New Mexico',units:34,avail:95.8,down:1,trend:-0.2,color:'#8b5cf6'},
     {name:'Jagged Peak',state:'Texas',units:33,avail:95.4,down:1,trend:0.9,color:'#0ea5e9'},
     {name:'Pioneer Natural',state:'Texas',units:42,avail:95.1,down:2,trend:1.1,color:'#f59e0b'},
-    {name:'SM Energy',state:'Texas',units:19,avail:95.0,down:1,trend:0.6,color:'#059669'},
+    {name:'SM Energy',state:'Texas',units:19,avail:95.0,down:0,trend:0.6,color:'#059669'},
     {name:'Continental Resources',state:'Oklahoma',units:29,avail:94.7,down:2,trend:-0.4,color:'#06b6d4'},
     {name:'Cimarex Energy',state:'Texas',units:26,avail:94.2,down:2,trend:-0.6,color:'#14b8a6'},
     {name:'Concho Resources',state:'New Mexico',units:31,avail:93.9,down:2,trend:0.1,color:'#ec4899'},
@@ -1035,12 +1035,12 @@ const CUSTOMERS=[
     {name:'Enerplus',state:'North Dakota',units:11,avail:85.6,down:2,trend:-2.1,color:'#dc2626'},
 ];
 const STATES_DATA=[
-    {name:'Oklahoma',units:74,custs:3,avail:96.1,trend:0.2,down:3},
-    {name:'Texas',units:229,custs:7,avail:95.8,trend:0.6,down:9},
+    {name:'Oklahoma',units:74,custs:3,avail:95.8,trend:0.2,down:3},
+    {name:'Texas',units:229,custs:7,avail:95.8,trend:0.6,down:7},
     {name:'New Mexico',units:65,custs:2,avail:94.8,trend:-0.1,down:3},
     {name:'Wyoming',units:14,custs:1,avail:93.6,trend:0.4,down:1},
     {name:'Colorado',units:54,custs:2,avail:91.5,trend:-0.5,down:5},
-    {name:'North Dakota',units:51,custs:3,avail:88.3,trend:-1.4,down:7},
+    {name:'North Dakota',units:51,custs:3,avail:88.8,trend:-1.4,down:7},
 ];
 
 // ===== STATE CARDS =====
@@ -1905,8 +1905,8 @@ function ssDrillUp(){
 function renderFleetHealthView(){ // VRU Health tab
     destroyTabCharts();
     const cont=document.getElementById('fleetHealthContent');
-    const totalUnits=487;const running=449;const idle=12;const warning=14;const down=12;
-    const healthScore=Math.round((running/totalUnits*100+STATES_DATA.reduce((s,st)=>s+st.avail,0)/STATES_DATA.length)/2*10)/10;
+    const totalUnits=487;const running=387;const idle=24;const warning=50;const down=26;
+    const healthScore=Math.round(((running+idle)/totalUnits*100+STATES_DATA.reduce((s,st)=>s+st.avail,0)/STATES_DATA.length)/2*10)/10;
     let h=`<div style="padding:20px 24px"><div class="cv-section-title"><i class="fas fa-heartbeat"></i> VRU Health <span>Real-time Overview</span></div>`;
     h+=`<div style="display:flex;gap:16px;margin-bottom:20px;align-items:stretch">`;
     h+=`<div class="card" style="flex:1;padding:24px;text-align:center"><div style="font-size:48px;font-weight:900;color:${healthScore>=90?'#10b981':healthScore>=80?'#f59e0b':'#ef4444'}">${healthScore}</div><div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-top:4px">VRU Health Score</div><div style="height:8px;background:#f3f4f6;border-radius:4px;margin-top:12px;overflow:hidden"><div style="width:${healthScore}%;height:100%;background:${healthScore>=90?'#10b981':healthScore>=80?'#f59e0b':'#ef4444'};border-radius:4px"></div></div></div>`;
@@ -1947,7 +1947,7 @@ function renderFleetHealthView(){ // VRU Health tab
 function renderMonthlyView(){
     destroyTabCharts();
     const cont=document.getElementById('monthlyContent');
-    const months=[{name:'January',avail:93.2,run:310240,fault:22800,events:156,down:18},{name:'February',avail:93.8,run:312450,fault:21100,events:142,down:16},{name:'March',avail:94.1,run:315800,fault:20400,events:138,down:15},{name:'April (MTD)',avail:94.7,run:331387,fault:19597,events:143,down:12}];
+    const months=[{name:'January',avail:92.5,run:310240,fault:26800,events:162,down:28},{name:'February',avail:93.0,run:316450,fault:24100,events:148,down:25},{name:'March',avail:93.4,run:321800,fault:21400,events:138,down:22},{name:'April (MTD)',avail:94.7,run:331387,fault:19597,events:143,down:26}];
     let h=`<div style="padding:20px 24px"><div class="cv-section-title"><i class="fas fa-calendar-alt"></i> Monthly Report <span>2026 Year-to-Date</span></div>`;
     h+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">`;
     months.forEach(m=>{
@@ -2037,8 +2037,8 @@ function renderOvTab0(){
         </tr></thead><tbody>`;
         sorted.forEach((c,i)=>{
             const fc=c.avail>=95?'#10b981':c.avail>=92?'#3b82f6':c.avail>=88?'#f59e0b':'#ef4444';
-            const running=c.units-c.down-Math.round(c.units*0.05);
-            const warn=c.units-running-c.down;
+            const warn=Math.round(c.units*0.10);
+            const running=c.units-c.down-warn;
             const tDir=c.trend>=0?'up':'down';const tColor=c.trend>=0?'#10b981':'#ef4444';
             h+=`<tr style="cursor:pointer" onclick="navigateTo('customerView',{customer:'${c.name.replace(/'/g,"\\'")}'})" title="View ${c.name} →">
                 <td style="color:#9ca3af;font-size:10px">${i+1}</td>
@@ -2071,7 +2071,7 @@ function renderOvTab0(){
             for(let i=1;i<=c.units;i++){
                 let color;
                 if(i<=c.down) color='#ef4444';
-                else if(i<=c.down+Math.round(c.units*0.08)) color='#f59e0b';
+                else if(i<=c.down+Math.round(c.units*0.10)) color='#f59e0b';
                 else color='#10b981';
                 const uid=c.name.split(' ')[0]+'-VRU-'+String(i).padStart(3,'0');
                 html+=`<span class="ov-comp-tile" style="background:${color}" title="${uid} · ${c.name} · ${c.state}"></span>`;
@@ -2093,8 +2093,8 @@ function renderOvTab1(){
     const bCtx=document.getElementById('ovStatusByStateChart');
     if(bCtx){
         ovCharts.statusByState=new Chart(bCtx.getContext('2d'),{type:'bar',data:{labels:STATES_DATA.map(s=>s.name),datasets:[
-            {label:'Running',data:STATES_DATA.map(s=>s.units-s.down-Math.round(s.units*0.06)),backgroundColor:'#10b981',borderRadius:2,barPercentage:.7},
-            {label:'Warning',data:STATES_DATA.map(s=>Math.round(s.units*0.06)),backgroundColor:'#f59e0b',borderRadius:2,barPercentage:.7},
+            {label:'Running',data:STATES_DATA.map(s=>s.units-s.down-Math.round(s.units*0.10)),backgroundColor:'#10b981',borderRadius:2,barPercentage:.7},
+            {label:'Warning',data:STATES_DATA.map(s=>Math.round(s.units*0.10)),backgroundColor:'#f59e0b',borderRadius:2,barPercentage:.7},
             {label:'Down',data:STATES_DATA.map(s=>s.down),backgroundColor:'#ef4444',borderRadius:2,barPercentage:.7}
         ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{boxWidth:8,font:{size:9},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:9}},stacked:true},y:{stacked:true,grid:{color:'#f3f4f6'},ticks:{font:{size:8}}}}}});
     }
