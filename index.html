@@ -785,7 +785,11 @@
 <div class="tooltip" id="tooltip"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script>
+Chart.register(ChartDataLabels);
+Chart.defaults.plugins.datalabels={display:false};
+const DOUGHNUT_DATALABEL_OPTS={display:true,color:'#fff',font:{weight:'bold',size:11},formatter:(val,ctx)=>{const total=ctx.dataset.data.reduce((a,b)=>a+b,0);const pct=(val/total*100).toFixed(1);return pct>4?pct+'%':''},anchor:'center',align:'center',textShadowColor:'rgba(0,0,0,.4)',textShadowBlur:3};
 const CUSTOMERS=[
     {name:'Diamondback Energy',state:'Texas',units:47,avail:97.2,down:1,trend:0.8,color:'#3b82f6'},
     {name:'Sandridge Energy',state:'Oklahoma',units:9,avail:97.3,down:0,trend:0.3,color:'#0891b2'},
@@ -953,7 +957,7 @@ function ovCauseDrillRender(labels,data,colors,title){
     const hint=document.getElementById('ovCauseDrillHint');
     backBtn.style.display=window._ovCauseDrillStack.length>0?'inline-flex':'none';
     hint.innerHTML=window._ovCauseDrillStack.length<3?'<i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down':'<i class="fas fa-arrow-left" style="margin-right:3px"></i>Click Back to go up';
-    ovCauseChart=new Chart(document.getElementById('causeChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8}},onClick:(e,els)=>{if(!els.length) return;ovCauseDrillDown(els[0].index)}}});
+    ovCauseChart=new Chart(document.getElementById('causeChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8},datalabels:DOUGHNUT_DATALABEL_OPTS},onClick:(e,els)=>{if(!els.length) return;ovCauseDrillDown(els[0].index)}}});
 }
 function ovCauseDrillDown(idx){
     const depth=window._ovCauseDrillStack.length;
@@ -1207,7 +1211,7 @@ function custDrillRender(labels,data,colors,title){
     const hint=document.getElementById('custDrillHint');
     backBtn.style.display=window._custDrillStack.length>0?'inline-flex':'none';
     hint.innerHTML=window._custDrillStack.length===0?'<i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to see affected units':'<i class="fas fa-arrow-left" style="margin-right:3px"></i>Click Back to return';
-    custChartInstances.cause=new Chart(document.getElementById('custCauseChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6}},onClick:(e,els)=>{if(!els.length||window._custDrillStack.length>=1) return;const idx=els[0].index;custDrillDown(idx)}}});
+    custChartInstances.cause=new Chart(document.getElementById('custCauseChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6},datalabels:DOUGHNUT_DATALABEL_OPTS},onClick:(e,els)=>{if(!els.length||window._custDrillStack.length>=1) return;const idx=els[0].index;custDrillDown(idx)}}});
 }
 function custDrillDown(idx){
     const chart=custChartInstances.cause;
@@ -1325,7 +1329,7 @@ function renderVruReport(){
     }
     const hCtx=document.getElementById('vruHoursChart');
     if(hCtx){
-        vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready/Idle','Faulted/Down'],datasets:[{data:[u.runH,u.readyH,u.faultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8,callbacks:{label:c=>`${c.label}: ${c.parsed}h`}}}}});
+        vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready/Idle','Faulted/Down'],datasets:[{data:[u.runH,u.readyH,u.faultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8,callbacks:{label:c=>`${c.label}: ${c.parsed}h`}},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
     }
 }
 
@@ -1409,7 +1413,7 @@ function dtDrillRender(labels,data,colors,title){
     const hint=document.getElementById('dtDrillHint');
     backBtn.style.display=window._dtDrillStack.length>0?'inline-flex':'none';
     hint.innerHTML=window._dtDrillStack.length<3?'<i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down':'<i class="fas fa-arrow-left" style="margin-right:3px"></i>Click Back to go up';
-    tabChartInstances.dtCause=new Chart(document.getElementById('dtCauseChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6}},onClick:(e,els)=>{if(!els.length) return;const idx=els[0].index;dtDrillDown(idx)}}});
+    tabChartInstances.dtCause=new Chart(document.getElementById('dtCauseChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6},datalabels:DOUGHNUT_DATALABEL_OPTS},onClick:(e,els)=>{if(!els.length) return;const idx=els[0].index;dtDrillDown(idx)}}});
 }
 function dtDrillDown(idx){
     const depth=window._dtDrillStack.length;
@@ -1488,7 +1492,7 @@ function renderAlarmView(){
     const days=30,labels=[];const today=new Date(2026,3,28);const crit=[],warn=[],info=[];
     for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));crit.push(Math.round(critCount/30+(Math.random()-.5)*4));warn.push(Math.round(warnCount/30+(Math.random()-.5)*5));info.push(Math.round(infoCount/30+(Math.random()-.5)*4))}
     tabChartInstances.alarmTrend=new Chart(document.getElementById('alarmTrendChart').getContext('2d'),{type:'line',data:{labels,datasets:[{label:'Critical',data:crit,borderColor:'#ef4444',backgroundColor:'#ef444418',borderWidth:2,fill:true,tension:.3,pointRadius:0},{label:'Warning',data:warn,borderColor:'#f59e0b',backgroundColor:'#f59e0b18',borderWidth:2,fill:true,tension:.3,pointRadius:0},{label:'Info',data:info,borderColor:'#3b82f6',backgroundColor:'#3b82f618',borderWidth:2,fill:true,tension:.3,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxTicksLimit:10}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
-    tabChartInstances.alarmSev=new Chart(document.getElementById('alarmSevChart').getContext('2d'),{type:'doughnut',data:{labels:['Critical','Warning','Info'],datasets:[{data:[critCount,warnCount,infoCount],backgroundColor:['#ef4444','#f59e0b','#3b82f6'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}}}});
+    tabChartInstances.alarmSev=new Chart(document.getElementById('alarmSevChart').getContext('2d'),{type:'doughnut',data:{labels:['Critical','Warning','Info'],datasets:[{data:[critCount,warnCount,infoCount],backgroundColor:['#ef4444','#f59e0b','#3b82f6'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
 }
 
 // ===== RUNTIME HOURS VIEW =====
@@ -1518,7 +1522,7 @@ function renderRuntimeView(){
     const days=30,labels=[],runD=[],readyD=[],faultD=[];const today=new Date(2026,3,28);
     for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));runD.push(Math.round(totalRunH/30+(Math.random()-.5)*800));readyD.push(Math.round(totalReadyH/30+(Math.random()-.5)*80));faultD.push(Math.round(totalFaultH/30+(Math.random()-.5)*200))}
     tabChartInstances.rtDaily=new Chart(document.getElementById('rtDailyChart').getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'Running',data:runD,backgroundColor:'#10b981',borderRadius:3,barPercentage:.7},{label:'Ready',data:readyD,backgroundColor:'#3b82f6',borderRadius:3,barPercentage:.7},{label:'Faulted',data:faultD,backgroundColor:'#ef4444',borderRadius:3,barPercentage:.7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9},maxTicksLimit:10}},y:{stacked:true,grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
-    tabChartInstances.rtPie=new Chart(document.getElementById('rtPieChart').getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready','Faulted'],datasets:[{data:[totalRunH,totalReadyH,totalFaultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}}}});
+    tabChartInstances.rtPie=new Chart(document.getElementById('rtPieChart').getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready','Faulted'],datasets:[{data:[totalRunH,totalReadyH,totalFaultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
 }
 
 // ===== MAINTENANCE LOG VIEW =====
@@ -1604,7 +1608,7 @@ function renderStateSummaryView(){
     cont.innerHTML=h;
     const stColors=STATES_DATA.map(s=>s.avail>=95?'#10b981':s.avail>=92?'#3b82f6':s.avail>=88?'#f59e0b':'#ef4444');
     tabChartInstances.ssBar=new Chart(document.getElementById('ssBarChart').getContext('2d'),{type:'bar',data:{labels:STATES_DATA.map(s=>s.name),datasets:[{data:STATES_DATA.map(s=>s.avail),backgroundColor:stColors,borderRadius:6,barPercentage:.6},{type:'line',label:'Target',data:STATES_DATA.map(()=>95),borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{min:80,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'%'}}}}});
-    tabChartInstances.ssUnit=new Chart(document.getElementById('ssUnitChart').getContext('2d'),{type:'doughnut',data:{labels:STATES_DATA.map(s=>s.name),datasets:[{data:STATES_DATA.map(s=>s.units),backgroundColor:['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}}}});
+    tabChartInstances.ssUnit=new Chart(document.getElementById('ssUnitChart').getContext('2d'),{type:'doughnut',data:{labels:STATES_DATA.map(s=>s.name),datasets:[{data:STATES_DATA.map(s=>s.units),backgroundColor:['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
 }
 
 // ===== FLEET HEALTH VIEW =====
@@ -1646,7 +1650,7 @@ function renderFleetHealthView(){
     const days=30,labels=[],scores=[];const today=new Date(2026,3,28);
     for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));scores.push(Math.round((healthScore+(Math.sin(i*.3)*2)+(Math.random()-.5)*3)*10)/10)}
     tabChartInstances.fhTrend=new Chart(document.getElementById('fhTrendChart').getContext('2d'),{type:'line',data:{labels,datasets:[{label:'Health Score',data:scores,borderColor:'#10b981',backgroundColor:'#10b98118',borderWidth:2.5,fill:true,tension:.35,pointRadius:0,pointHoverRadius:5},{label:'Target',data:scores.map(()=>90),borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxTicksLimit:10}},y:{min:80,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
-    tabChartInstances.fhStatus=new Chart(document.getElementById('fhStatusChart').getContext('2d'),{type:'doughnut',data:{labels:['Running','Idle','Warning','Down'],datasets:[{data:[running,idle,warning,down],backgroundColor:['#10b981','#3b82f6','#f59e0b','#ef4444'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}}}});
+    tabChartInstances.fhStatus=new Chart(document.getElementById('fhStatusChart').getContext('2d'),{type:'doughnut',data:{labels:['Running','Idle','Warning','Down'],datasets:[{data:[running,idle,warning,down],backgroundColor:['#10b981','#3b82f6','#f59e0b','#ef4444'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
 }
 
 // ===== MONTHLY REPORT VIEW =====
