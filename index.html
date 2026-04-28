@@ -401,13 +401,13 @@
     <div class="report-tabs-wrap" style="position:relative;">
         <div class="report-tabs" id="reportTabs">
             <div class="report-tab active">Availability</div>
+            <div class="report-tab">State Summary</div>
             <div class="report-tab">Customer Summary</div>
             <div class="report-tab">Unit Performance</div>
             <div class="report-tab">Downtime Analysis</div>
             <div class="report-tab">Alarm Summary</div>
             <div class="report-tab">Runtime Hours</div>
             <div class="report-tab">Maintenance Log</div>
-            <div class="report-tab">State Summary</div>
             <div class="report-tab">Fleet Health</div>
             <div class="report-tab">Monthly Report</div>
         </div>
@@ -1121,7 +1121,7 @@ function renderCustomerReport(){
     // Charts row
     h+=`<div class="charts-row ani d3">
         <div class="card"><div class="card-header"><h3>${c.name} — Availability Trend</h3></div><div class="card-body"><div class="chart-container"><canvas id="custTrendChart" height="200"></canvas></div></div></div>
-        <div class="card"><div class="card-header"><h3>Downtime Breakdown</h3></div><div class="card-body"><div class="chart-container"><canvas id="custCauseChart" height="200"></canvas></div></div></div>
+        <div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="custDrillTitle">Downtime Breakdown</h3><button id="custDrillBack" onclick="custDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="position:relative"><div id="custDrillHint" style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;color:#9ca3af"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to see affected units</div><div class="chart-container"><canvas id="custCauseChart" height="200"></canvas></div></div></div>
     </div>`;
 
     // Exportable table
@@ -1150,8 +1150,40 @@ function renderCustomerReport(){
     }
     const cCtx=document.getElementById('custCauseChart');
     if(cCtx){
-        custChartInstances.cause=new Chart(cCtx.getContext('2d'),{type:'doughnut',data:{labels:['Mechanical','Electrical','Comm Loss','Scheduled','Operator','Environmental'],datasets:[{data:[Math.floor(Math.random()*20)+5,Math.floor(Math.random()*15)+3,Math.floor(Math.random()*10)+2,Math.floor(Math.random()*12)+4,Math.floor(Math.random()*8)+1,Math.floor(Math.random()*5)+1],backgroundColor:['#ef4444','#f59e0b','#8b5cf6','#3b82f6','#06b6d4','#6b7280'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}}}}});
+        const custCauseLabels=['Mechanical','Electrical','Comm Loss','Scheduled','Operator','Environmental'];
+        const custCauseData=[Math.floor(Math.random()*20)+5,Math.floor(Math.random()*15)+3,Math.floor(Math.random()*10)+2,Math.floor(Math.random()*12)+4,Math.floor(Math.random()*8)+1,Math.floor(Math.random()*5)+1];
+        const custCauseColors=['#ef4444','#f59e0b','#8b5cf6','#3b82f6','#06b6d4','#6b7280'];
+        window._custDrillStack=[];
+        window._custDrillCustomer=c.name;
+        custDrillRender(custCauseLabels,custCauseData,custCauseColors,'Downtime Breakdown');
     }
+}
+
+// ===== CUSTOMER SUMMARY DRILL-DOWN =====
+function custDrillRender(labels,data,colors,title){
+    if(custChartInstances.cause) custChartInstances.cause.destroy();
+    document.getElementById('custDrillTitle').textContent=title;
+    const backBtn=document.getElementById('custDrillBack');
+    const hint=document.getElementById('custDrillHint');
+    backBtn.style.display=window._custDrillStack.length>0?'inline-flex':'none';
+    hint.innerHTML=window._custDrillStack.length===0?'<i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to see affected units':'<i class="fas fa-arrow-left" style="margin-right:3px"></i>Click Back to return';
+    custChartInstances.cause=new Chart(document.getElementById('custCauseChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6}},onClick:(e,els)=>{if(!els.length||window._custDrillStack.length>=1) return;const idx=els[0].index;custDrillDown(idx)}}});
+}
+function custDrillDown(idx){
+    const chart=custChartInstances.cause;
+    const clickedCause=chart.data.labels[idx];
+    window._custDrillStack.push({labels:chart.data.labels.slice(),data:chart.data.datasets[0].data.slice(),colors:chart.data.datasets[0].backgroundColor.slice(),title:'Downtime Breakdown'});
+    const units=VRU_UNITS[window._custDrillCustomer]||[];
+    const affected=units.filter(u=>u.faultH>0).slice(0,15);
+    const uLabels=affected.map(u=>u.id);
+    const uData=affected.map(u=>Math.round(u.faultH*(0.3+Math.random()*0.7)));
+    const uColors=affected.map(u=>u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444');
+    custDrillRender(uLabels,uData,uColors,clickedCause+' — Affected Units');
+}
+function custDrillUp(){
+    if(!window._custDrillStack.length) return;
+    const prev=window._custDrillStack.pop();
+    custDrillRender(prev.labels,prev.data,prev.colors,prev.title);
 }
 
 // ===== VRU REPORT =====
@@ -1302,7 +1334,7 @@ function renderDowntimeView(){
     h+=`</div>`;
     h+=`<div class="charts-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">`;
     h+=`<div class="card"><div class="card-header"><h3>Downtime Trend</h3></div><div class="card-body" style="height:280px"><canvas id="dtTrendChart"></canvas></div></div>`;
-    h+=`<div class="card"><div class="card-header"><h3>Downtime by Cause</h3></div><div class="card-body" style="height:280px"><canvas id="dtCauseChart"></canvas></div></div>`;
+    h+=`<div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="dtDrillTitle">Downtime by Cause</h3><button id="dtDrillBack" onclick="dtDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="height:280px;position:relative"><div id="dtDrillHint" style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#9ca3af"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><canvas id="dtCauseChart"></canvas></div></div>`;
     h+=`</div>`;
     h+=`<div class="card" style="margin-bottom:20px"><div class="card-header"><h3>Top Causes Breakdown</h3></div><div class="card-body" style="padding:16px">`;
     causes.forEach(c=>{
@@ -1324,7 +1356,54 @@ function renderDowntimeView(){
     const days=30,labels=[],dData=[];const today=new Date(2026,3,28);
     for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));dData.push(Math.round(totalDown/30+(Math.random()-.5)*totalDown/15))}
     tabChartInstances.dtTrend=new Chart(document.getElementById('dtTrendChart').getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'Downtime Hours',data:dData,backgroundColor:'#ef444433',borderColor:'#ef4444',borderWidth:1.5,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxTicksLimit:10}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
-    tabChartInstances.dtCause=new Chart(document.getElementById('dtCauseChart').getContext('2d'),{type:'doughnut',data:{labels:causes.map(c=>c.name),datasets:[{data:causes.map(c=>c.pct),backgroundColor:causes.map(c=>c.color),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}}}});
+    window._dtCauses=causes;
+    window._dtDrillStack=[];
+    dtDrillRender(causes.map(c=>c.name),causes.map(c=>c.pct),causes.map(c=>c.color),'Downtime by Cause');
+}
+const DT_STATE_COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4'];
+const DT_CUST_COLORS=['#3b82f6','#0891b2','#7c3aed','#10b981','#ef4444','#8b5cf6','#0ea5e9','#f59e0b','#059669','#06b6d4','#14b8a6','#ec4899','#f97316','#84cc16','#64748b','#e11d48','#a855f7','#dc2626'];
+function dtDrillRender(labels,data,colors,title){
+    if(tabChartInstances.dtCause) tabChartInstances.dtCause.destroy();
+    document.getElementById('dtDrillTitle').textContent=title;
+    const backBtn=document.getElementById('dtDrillBack');
+    const hint=document.getElementById('dtDrillHint');
+    backBtn.style.display=window._dtDrillStack.length>0?'inline-flex':'none';
+    hint.innerHTML=window._dtDrillStack.length<3?'<i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down':'<i class="fas fa-arrow-left" style="margin-right:3px"></i>Click Back to go up';
+    tabChartInstances.dtCause=new Chart(document.getElementById('dtCauseChart').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6}},onClick:(e,els)=>{if(!els.length) return;const idx=els[0].index;dtDrillDown(idx)}}});
+}
+function dtDrillDown(idx){
+    const depth=window._dtDrillStack.length;
+    const chart=tabChartInstances.dtCause;
+    const clickedLabel=chart.data.labels[idx];
+    if(depth===0){
+        window._dtDrillStack.push({labels:chart.data.labels.slice(),data:chart.data.datasets[0].data.slice(),colors:chart.data.datasets[0].backgroundColor.slice(),title:'Downtime by Cause',context:{cause:clickedLabel}});
+        const stLabels=STATES_DATA.map(s=>s.name);
+        const stData=STATES_DATA.map(s=>Math.round((100-s.avail)*s.units/10*(0.5+Math.random())));
+        dtDrillRender(stLabels,stData,DT_STATE_COLORS,clickedLabel+' — by State');
+    } else if(depth===1){
+        const cause=window._dtDrillStack[0].context.cause;
+        window._dtDrillStack.push({labels:chart.data.labels.slice(),data:chart.data.datasets[0].data.slice(),colors:chart.data.datasets[0].backgroundColor.slice(),title:chart.data.labels[idx]+' — by State',context:{cause,state:clickedLabel}});
+        const custs=CUSTOMERS.filter(c=>c.state===clickedLabel);
+        const cLabels=custs.map(c=>c.name);
+        const cData=custs.map(c=>Math.round((100-c.avail)*c.units/10*(0.5+Math.random())));
+        const cColors=custs.map((_,i)=>DT_CUST_COLORS[i%DT_CUST_COLORS.length]);
+        dtDrillRender(cLabels,cData,cColors,cause+' — '+clickedLabel+' Customers');
+    } else if(depth===2){
+        const cause=window._dtDrillStack[0].context.cause;
+        const state=window._dtDrillStack[1].context.state;
+        window._dtDrillStack.push({labels:chart.data.labels.slice(),data:chart.data.datasets[0].data.slice(),colors:chart.data.datasets[0].backgroundColor.slice(),title:cause+' — '+clickedLabel,context:{cause,state,customer:clickedLabel}});
+        const units=VRU_UNITS[clickedLabel]||[];
+        const faulted=units.filter(u=>u.faultH>0).slice(0,12);
+        const uLabels=faulted.map(u=>u.id);
+        const uData=faulted.map(u=>u.faultH);
+        const uColors=faulted.map(u=>u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444');
+        dtDrillRender(uLabels,uData,uColors,cause+' — '+clickedLabel+' Units');
+    }
+}
+function dtDrillUp(){
+    if(!window._dtDrillStack.length) return;
+    const prev=window._dtDrillStack.pop();
+    dtDrillRender(prev.labels,prev.data,prev.colors,prev.title);
 }
 
 // ===== ALARM SUMMARY VIEW =====
