@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platinum Compressor Fleet — Availability Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{font-size:14px}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f2f5;color:#1a1a2e;display:flex;min-height:100vh;overflow-x:hidden}
+
+        /* ===== SIDEBAR ===== */
+        .sidebar{width:56px;background:#1a1a2e;display:flex;flex-direction:column;align-items:center;padding:10px 0;position:fixed;top:0;left:0;bottom:0;z-index:100}
+        .sidebar-logo{width:32px;height:32px;background:#3b82f6;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;margin-bottom:20px}
+        .sidebar-nav{display:flex;flex-direction:column;gap:2px;width:100%}
+        .sidebar-item{display:flex;flex-direction:column;align-items:center;padding:9px 0;color:#8892a4;text-decoration:none;font-size:8.5px;cursor:pointer;transition:all .15s;position:relative}
+        .sidebar-item i{font-size:17px;margin-bottom:3px}
+        .sidebar-item:hover,.sidebar-item.active{color:#fff}
+        .sidebar-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#3b82f6;border-radius:0 3px 3px 0}
+        .sidebar-badge{position:absolute;top:4px;right:8px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid #1a1a2e}
+
+        /* ===== MAIN ===== */
+        .main{margin-left:56px;flex:1;min-width:0}
+
+        /* ===== TOPBAR ===== */
+        .topbar{background:#fff;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:50}
+        .breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:#6b7280}
+        .breadcrumb a{color:#6b7280;text-decoration:none}.breadcrumb a:hover{color:#3b82f6}
+        .breadcrumb .sep{color:#d1d5db}.breadcrumb .current{color:#1a1a2e;font-weight:600}
+        .topbar-right{display:flex;align-items:center;gap:14px}
+        .topbar-search{display:flex;align-items:center;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:0 10px;height:32px;width:220px}
+        .topbar-search:focus-within{border-color:#3b82f6;background:#fff}
+        .topbar-search i{color:#9ca3af;font-size:12px;margin-right:6px}
+        .topbar-search input{border:none;background:none;outline:none;font-size:12px;flex:1;color:#1a1a2e}
+        .user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
+
+        /* ===== REPORT TABS ===== */
+        .report-tabs-wrap{border-bottom:1px solid #e5e7eb;background:#fff}
+        .report-tabs{display:flex;overflow-x:auto;padding:0 24px;scrollbar-width:none}
+        .report-tabs::-webkit-scrollbar{display:none}
+        .report-tab{padding:12px 20px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
+        .report-tab:hover{color:#374151}
+        .report-tab.active{color:#3b82f6;border-bottom-color:#3b82f6;font-weight:600}
+        .tab-scroll-btn{position:absolute;top:0;bottom:1px;right:0;width:32px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,#fff 40%);cursor:pointer;border:none;color:#6b7280;font-size:14px;z-index:2}
+
+        /* ===== FILTER ROW ===== */
+        .filter-row{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#fff;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
+        .filter-row-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+        .multiselect{position:relative;min-width:160px}
+        .multiselect-trigger{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #d1d5db;border-radius:4px;padding:7px 10px;font-size:13px;color:#374151;cursor:pointer;min-width:140px;gap:8px;user-select:none}
+        .caret{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #6b7280;flex-shrink:0}
+        .multiselect.open .multiselect-trigger{border-color:#3b82f6}
+        .multiselect-dropdown{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #d1d5db;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:60;min-width:220px;margin-top:2px;max-height:320px;overflow:hidden;flex-direction:column}
+        .multiselect.open .multiselect-dropdown{display:flex}
+        .multiselect-search-row{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid #e5e7eb}
+        .multiselect-search-row input[type="checkbox"]{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer;flex-shrink:0}
+        .multiselect-search-row input[type="text"]{flex:1;border:1px solid #d1d5db;border-radius:3px;padding:4px 8px;font-size:12px;outline:none}
+        .multiselect-search-row input[type="text"]:focus{border-color:#3b82f6}
+        .ms-icons{display:flex;align-items:center;gap:4px}
+        .ms-icons button{background:none;border:none;color:#6b7280;cursor:pointer;font-size:13px;padding:2px}
+        .ms-icons button:hover{color:#1a1a2e}
+        .multiselect-list{overflow-y:auto;max-height:240px;padding:4px 0}
+        .multiselect-list::-webkit-scrollbar{width:6px}.multiselect-list::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+        .multiselect-option{display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;font-size:13px;color:#374151;transition:background .1s}
+        .multiselect-option:hover{background:#f3f4f6}
+        .multiselect-option input[type="checkbox"]{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer}
+
+        .datepicker-wrap{position:relative}
+        .datepicker-trigger{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d1d5db;border-radius:4px;padding:7px 10px;font-size:13px;color:#374151;cursor:pointer;user-select:none}
+        .cal-icon{width:28px;height:28px;background:#3b82f6;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
+        .datepicker-popup{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #d1d5db;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.12);z-index:60;margin-top:2px;padding:16px}
+        .datepicker-wrap.open .datepicker-popup{display:flex;gap:24px}
+        .calendar-section{min-width:260px}
+        .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .cal-header button{background:none;border:none;cursor:pointer;color:#6b7280;font-size:14px;padding:4px}
+        .cal-header button:hover{color:#1a1a2e}
+        .cal-header .cal-title{font-size:14px;font-weight:600;color:#1a1a2e}
+        .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0}
+        .cal-dow{text-align:center;font-size:11px;font-weight:600;color:#6b7280;padding:4px 0 8px}
+        .cal-day{text-align:center;padding:7px 4px;font-size:12px;cursor:pointer;border-radius:4px;color:#374151;transition:all .1s}
+        .cal-day:hover{background:#eff6ff}
+        .cal-day.other{color:#d1d5db}.cal-day.today{color:#3b82f6;font-weight:700}
+        .cal-day.in-range{background:#dbeafe;color:#1e40af}
+        .cal-day.range-start,.cal-day.range-end{background:#3b82f6;color:#fff;font-weight:600;border-radius:50%}
+        .presets-section{display:flex;flex-direction:column;gap:4px;min-width:120px;padding-top:4px}
+        .preset-btn{background:none;border:none;text-align:left;padding:8px 12px;font-size:13px;color:#374151;cursor:pointer;border-radius:4px;transition:all .1s}
+        .preset-btn:hover{background:#f3f4f6}.preset-btn.active{color:#3b82f6;font-weight:600}
+
+        .month-presets-col{display:flex;flex-direction:column;min-width:130px;padding-top:4px;border-left:1px solid #e5e7eb;padding-left:12px;max-height:230px}
+        .month-presets-label{font-size:9.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;padding:0 12px 6px;flex-shrink:0}
+        .month-presets-list{display:flex;flex-direction:column;gap:0;overflow-y:auto;flex:1;scrollbar-width:thin}
+        .month-presets-list::-webkit-scrollbar{width:4px}
+        .month-presets-list::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+        .month-preset-btn{background:none;border:none;text-align:left;padding:6px 12px;font-size:12px;color:#374151;cursor:pointer;border-radius:4px;transition:all .1s;display:flex;align-items:center;justify-content:space-between;gap:6px;white-space:nowrap}
+        .month-preset-btn:hover{background:#f3f4f6}
+        .month-preset-btn.active{color:#3b82f6;font-weight:600}
+        .month-preset-btn .mtd-badge{font-size:8.5px;font-weight:600;color:#f59e0b;background:#fffbeb;padding:1px 5px;border-radius:8px}
+
+        .btn-run-report{padding:7px 18px;font-size:13px;font-weight:500;color:#3b82f6;background:#fff;border:1px solid #3b82f6;border-radius:4px;cursor:pointer;transition:all .15s}
+        .btn-run-report:hover{background:#eff6ff}
+        .btn-export-wrap{position:relative}
+        .btn-export{display:flex;align-items:center;gap:6px;padding:7px 14px;font-size:13px;font-weight:500;color:#374151;background:#fff;border:1px solid #d1d5db;border-radius:4px;cursor:pointer}
+        .btn-export:hover{background:#f9fafb}
+        .export-dropdown{display:none;position:absolute;top:100%;right:0;background:#fff;border:1px solid #d1d5db;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:60;margin-top:2px;min-width:140px}
+        .btn-export-wrap.open .export-dropdown{display:block}
+        .export-option{padding:8px 14px;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:8px}
+        .export-option:hover{background:#f3f4f6}
+
+        /* ===== HERO SECTION ===== */
+        .hero{padding:24px 24px 0;display:flex;gap:16px;align-items:stretch}
+        .hero-main{flex:1;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border-radius:14px;padding:28px 32px;color:#fff;position:relative;overflow:hidden;min-height:200px;display:flex;flex-direction:column;justify-content:center}
+        .hero-main::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.2) 0%,transparent 70%);border-radius:50%}
+        .hero-main::before{content:'';position:absolute;right:40px;bottom:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(16,185,129,.15) 0%,transparent 70%);border-radius:50%}
+        .hero-greeting{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:400}
+        .hero-title{font-size:24px;font-weight:800;line-height:1.2;margin-bottom:6px}
+        .hero-title .accent{color:#60a5fa}
+        .hero-summary{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;max-width:480px;margin-bottom:16px}
+        .hero-summary strong{color:#fff}
+        .hero-badges{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
+        .hero-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;backdrop-filter:blur(8px)}
+        .hero-badge.green{background:rgba(16,185,129,.2);color:#6ee7b7}
+        .hero-badge.red{background:rgba(239,68,68,.2);color:#fca5a5}
+        .hero-badge.blue{background:rgba(59,130,246,.2);color:#93c5fd}
+        .hero-badge.orange{background:rgba(245,158,11,.2);color:#fcd34d}
+
+        .hero-gauge{width:200px;flex-shrink:0;background:#fff;border-radius:14px;border:1px solid #e5e7eb;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+        .gauge-svg{margin-bottom:6px}
+        .gauge-label{font-size:10px;font-weight:500;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
+        .gauge-target{font-size:10px;color:#9ca3af;margin-top:4px}
+
+        .hero-status{width:200px;flex-shrink:0;background:#fff;border-radius:14px;border:1px solid #e5e7eb;display:flex;flex-direction:column;justify-content:center;padding:18px 20px;gap:10px}
+        .status-row{display:flex;align-items:center;justify-content:space-between}
+        .status-row .s-left{display:flex;align-items:center;gap:8px}
+        .status-dot-lg{width:10px;height:10px;border-radius:50%}
+        .status-dot-lg.green{background:#10b981}.status-dot-lg.blue{background:#3b82f6}
+        .status-dot-lg.orange{background:#f59e0b}.status-dot-lg.red{background:#ef4444}
+        .status-row .s-label{font-size:12px;color:#6b7280}
+        .status-row .s-value{font-size:16px;font-weight:700;color:#1a1a2e}
+        .status-row .s-pct{font-size:10px;color:#9ca3af;margin-left:2px}
+
+        /* ===== INSIGHT STRIP ===== */
+        .insights-strip{display:flex;gap:12px;padding:16px 24px;overflow-x:auto;scrollbar-width:none}
+        .insights-strip::-webkit-scrollbar{display:none}
+        .insight-card{flex-shrink:0;width:280px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;display:flex;gap:12px;cursor:pointer;transition:all .2s}
+        .insight-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .insight-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+        .insight-icon.red{background:#fef2f2;color:#dc2626}
+        .insight-icon.orange{background:#fffbeb;color:#d97706}
+        .insight-icon.green{background:#ecfdf5;color:#059669}
+        .insight-icon.blue{background:#eff6ff;color:#2563eb}
+        .insight-icon.purple{background:#f5f3ff;color:#7c3aed}
+        .insight-body h4{font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:3px;line-height:1.3}
+        .insight-body p{font-size:11px;color:#6b7280;line-height:1.4}
+        .insight-body .insight-tag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:600}
+        .insight-tag.critical{background:#fef2f2;color:#dc2626}
+        .insight-tag.warning{background:#fffbeb;color:#d97706}
+        .insight-tag.positive{background:#ecfdf5;color:#059669}
+        .insight-tag.info{background:#eff6ff;color:#2563eb}
+
+        /* ===== SECTION HEADER ===== */
+        .section-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 10px}
+        .section-header h2{font-size:15px;font-weight:700;color:#1a1a2e}
+        .section-header h2 span{color:#9ca3af;font-weight:400;font-size:12px;margin-left:6px}
+        .section-actions{display:flex;gap:6px;align-items:center}
+        .pill-toggle{display:flex;background:#f3f4f6;border-radius:6px;overflow:hidden;border:1px solid #e5e7eb}
+        .pill-btn{padding:5px 12px;font-size:11px;font-weight:500;color:#6b7280;cursor:pointer;border:none;background:none;transition:all .15s}
+        .pill-btn.active{background:#fff;color:#1a1a2e;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+        /* ===== STATE CARDS (replacing bar chart) ===== */
+        .state-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:0 24px 16px}
+        .state-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+        .state-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .state-card.attention{border-left:3px solid #f59e0b}
+        .state-card.critical-attention{border-left:3px solid #ef4444}
+        .state-name{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+        .state-meta{font-size:10px;color:#9ca3af;margin-bottom:12px}
+        .state-gauge-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px}
+        .state-pct{font-size:28px;font-weight:800;line-height:1}
+        .state-pct.excellent{color:#10b981}.state-pct.good{color:#3b82f6}.state-pct.warning{color:#f59e0b}.state-pct.critical{color:#ef4444}
+        .state-trend{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:600}
+        .state-trend.up{color:#059669}.state-trend.down{color:#dc2626}
+        .state-bar{width:100%;height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden;margin-bottom:8px}
+        .state-bar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+        .state-bottom{display:flex;justify-content:space-between;align-items:center}
+        .state-stat{font-size:10px;color:#6b7280}
+        .state-stat strong{color:#1a1a2e}
+        .state-sparkline{width:60px;height:20px}
+
+        /* ===== CUSTOMER CARDS (replacing table) ===== */
+        .customer-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding:0 24px 16px}
+        .cust-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;transition:all .2s;cursor:pointer;position:relative}
+        .cust-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .cust-card.flagged::before{content:'';position:absolute;top:0;right:16px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #ef4444}
+        .cust-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+        .cust-avatar{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+        .cust-info h4{font-size:13px;font-weight:600;color:#1a1a2e;line-height:1.2}
+        .cust-info .c-meta{font-size:10.5px;color:#9ca3af}
+        .cust-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+        .cust-metric{display:flex;flex-direction:column}
+        .cust-metric .cm-label{font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:1px}
+        .cust-metric .cm-value{font-size:16px;font-weight:700;line-height:1.2}
+        .cust-metric .cm-value.excellent{color:#10b981}.cust-metric .cm-value.good{color:#3b82f6}
+        .cust-metric .cm-value.warning{color:#f59e0b}.cust-metric .cm-value.critical{color:#ef4444}
+        .cust-timeline{width:100%;height:8px;border-radius:4px;overflow:hidden;display:flex;gap:1px;margin-bottom:8px}
+        .cust-timeline .seg{height:100%;border-radius:2px}
+        .cust-timeline .seg.run{background:#10b981}.cust-timeline .seg.wrn{background:#f59e0b}.cust-timeline .seg.dwn{background:#ef4444}
+        .cust-bottom{display:flex;align-items:center;justify-content:space-between}
+        .cust-insight{font-size:10px;color:#6b7280;font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .cust-trend{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600}
+        .cust-trend.up{background:#ecfdf5;color:#059669}.cust-trend.down{background:#fef2f2;color:#dc2626}
+
+        /* ===== CHARTS ROW ===== */
+        .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 24px 14px}
+        .charts-row.full{grid-template-columns:1fr}
+        .card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;overflow:hidden}
+        .card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f3f4f6}
+        .card-header h3{font-size:13px;font-weight:600;color:#1a1a2e}
+        .card-subtitle{font-size:10.5px;color:#9ca3af;font-weight:400;margin-left:6px}
+        .card-body{padding:18px}
+        .chart-container{width:100%;position:relative}
+        .chart-container canvas{width:100%!important}
+        .card-select{padding:5px 24px 5px 8px;font-size:11px;font-weight:500;color:#374151;background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5L5 6.5L8 3.5' fill='none' stroke='%236b7280' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
+
+        /* ===== HEATMAP ===== */
+        .heatmap-container{padding:4px 0}
+        .heatmap-row{display:flex;align-items:center;gap:2px;margin-bottom:2px}
+        .heatmap-label{width:110px;font-size:10.5px;font-weight:500;color:#374151;text-align:right;padding-right:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+        .heatmap-cells{display:flex;gap:2px;flex:1}
+        .heatmap-cell{flex:1;aspect-ratio:1;min-width:12px;max-width:22px;border-radius:2px;cursor:pointer;transition:all .1s}
+        .heatmap-cell:hover{transform:scale(1.3);z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+        .heatmap-cell.g5{background:#059669}.heatmap-cell.g4{background:#34d399}.heatmap-cell.g3{background:#6ee7b7}
+        .heatmap-cell.g2{background:#fbbf24}.heatmap-cell.g1{background:#f97316}.heatmap-cell.g0{background:#ef4444}
+        .heatmap-day-labels{display:flex;gap:2px;margin-left:118px;margin-bottom:4px}
+        .heatmap-day-label{flex:1;text-align:center;font-size:8.5px;color:#9ca3af;min-width:12px;max-width:22px}
+        .heatmap-legend{display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:10px;font-size:9.5px;color:#9ca3af}
+        .heatmap-legend-cell{width:12px;height:12px;border-radius:2px}
+
+        /* ===== VIEW TABLE TOGGLE ===== */
+        .table-toggle-area{padding:12px 24px 24px;text-align:center}
+        .btn-view-table{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;font-size:13px;font-weight:500;color:#3b82f6;background:#fff;border:1px solid #3b82f6;border-radius:8px;cursor:pointer;transition:all .15s}
+        .btn-view-table:hover{background:#eff6ff}
+
+        /* ===== HIDDEN TABLE ===== */
+        .table-panel{display:none;margin:0 24px 24px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+        .table-panel.visible{display:block}
+        .data-table{width:100%;border-collapse:collapse}
+        .data-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;background:#f9fafb;border-bottom:1px solid #e5e7eb;white-space:nowrap;cursor:pointer}
+        .data-table thead th:hover{color:#374151}
+        .data-table tbody tr{border-bottom:1px solid #f3f4f6;transition:background .1s}
+        .data-table tbody tr:hover{background:#f9fafb}
+        .data-table tbody td{padding:10px 14px;font-size:13px}
+        .scroll-y{overflow-y:auto;max-height:400px}
+        .scroll-y::-webkit-scrollbar{width:4px}.scroll-y::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+
+        /* ===== TOOLTIP ===== */
+        .tooltip{position:fixed;background:#1a1a2e;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px;pointer-events:none;z-index:200;display:none;max-width:200px;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+        .tooltip.visible{display:block}
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1400px){.state-cards{grid-template-columns:repeat(3,1fr)}.customer-cards{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:1100px){.charts-row{grid-template-columns:1fr}.hero{flex-direction:column}.hero-gauge,.hero-status{width:100%}}
+        @media(max-width:768px){.state-cards{grid-template-columns:repeat(2,1fr)}.customer-cards{grid-template-columns:1fr}.filter-row{flex-direction:column;align-items:flex-start}.filter-row-right{margin-left:0}}
+
+        /* ===== ANIMATION ===== */
+        @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+        .ani{animation:fadeUp .35s ease-out both}
+        .d1{animation-delay:.04s}.d2{animation-delay:.08s}.d3{animation-delay:.12s}.d4{animation-delay:.16s}.d5{animation-delay:.20s}.d6{animation-delay:.24s}
+        .pulse{animation:pulse 2s ease-in-out infinite}
+
+        /* ===== ATTENTION CARDS ===== */
+        .attention-cards{display:flex;gap:12px;padding:0 24px 16px;overflow-x:auto;scrollbar-width:none}
+        .attention-cards::-webkit-scrollbar{display:none}
+        .attn-card{flex-shrink:0;width:220px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px;position:relative;overflow:hidden;transition:all .2s;cursor:pointer}
+        .attn-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .attn-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+        .attn-card.sev-critical::before{background:#ef4444}
+        .attn-card.sev-warning::before{background:#f59e0b}
+        .attn-rank{position:absolute;top:10px;right:12px;font-size:24px;font-weight:800;color:#f3f4f6}
+        .attn-unit{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+        .attn-customer{font-size:10.5px;color:#9ca3af;margin-bottom:10px}
+        .attn-avail{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+        .attn-avail.critical{color:#ef4444}.attn-avail.warning{color:#f59e0b}
+        .attn-detail{font-size:10px;color:#6b7280;line-height:1.5}
+        .attn-detail strong{color:#1a1a2e}
+        .attn-bar{width:100%;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden;margin:8px 0 6px}
+        .attn-bar-fill{height:100%;border-radius:2px}
+
+        /* ===== ACTION CARDS ===== */
+        .action-cards{display:flex;flex-direction:column;gap:10px;padding:0 24px 20px}
+        .action-card{display:flex;gap:14px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px 18px;transition:all .2s}
+        .action-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+        .action-priority{writing-mode:vertical-rl;text-orientation:mixed;font-size:9px;font-weight:800;letter-spacing:1px;padding:4px 2px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .action-card.priority-high .action-priority{background:#fef2f2;color:#dc2626}
+        .action-card.priority-medium .action-priority{background:#fffbeb;color:#d97706}
+        .action-card.priority-low .action-priority{background:#eff6ff;color:#2563eb}
+        .action-body h4{font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:4px}
+        .action-body p{font-size:11.5px;color:#6b7280;line-height:1.5;margin-bottom:8px}
+        .action-meta{display:flex;gap:14px;font-size:10px;color:#9ca3af}
+        .action-meta span{display:flex;align-items:center;gap:4px}
+        .action-meta i{font-size:10px}
+
+        /* ===== COMPARISON ROW ===== */
+        .comparison-row{display:flex;gap:12px;padding:0 24px 20px;overflow-x:auto;scrollbar-width:none}
+        .comparison-row::-webkit-scrollbar{display:none}
+        .comp-card{flex:1;min-width:160px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;text-align:center;transition:all .2s}
+        .comp-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+        .comp-label{font-size:10px;font-weight:500;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+        .comp-values{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
+        .comp-current{font-size:22px;font-weight:800;color:#1a1a2e}
+        .comp-arrow{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px}
+        .comp-arrow.up{background:#ecfdf5;color:#059669}
+        .comp-arrow.down{background:#fef2f2;color:#dc2626}
+        .comp-previous{font-size:14px;font-weight:500;color:#9ca3af;text-decoration:line-through}
+        .comp-delta{font-size:11px;font-weight:600}
+        .comp-delta.up{color:#059669}
+        .comp-delta.down{color:#dc2626}
+
+        /* ===== CUSTOMER/VRU REPORT VIEWS ===== */
+        .cv-banner{padding:24px;display:flex;gap:16px;align-items:stretch}
+        .cv-banner-main{flex:1;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border-radius:14px;padding:24px 28px;color:#fff;position:relative;overflow:hidden}
+        .cv-banner-main::after{content:'';position:absolute;right:-20px;top:-20px;width:150px;height:150px;background:radial-gradient(circle,rgba(59,130,246,.2) 0%,transparent 70%);border-radius:50%}
+        .cv-name{font-size:22px;font-weight:800;margin-bottom:4px}
+        .cv-meta{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:14px}
+        .cv-kpis{display:flex;gap:16px;flex-wrap:wrap}
+        .cv-kpi{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;min-width:120px;backdrop-filter:blur(8px)}
+        .cv-kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5);margin-bottom:4px}
+        .cv-kpi-value{font-size:22px;font-weight:800;line-height:1}
+        .cv-kpi-sub{font-size:10px;margin-top:4px}
+        .cv-kpi-sub.up{color:#6ee7b7}.cv-kpi-sub.down{color:#fca5a5}
+        .cv-gauge-card{width:180px;flex-shrink:0;background:#fff;border-radius:14px;border:1px solid #e5e7eb;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center}
+        .cv-unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;padding:0 24px 16px}
+        .cv-unit-row{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all .2s;cursor:pointer}
+        .cv-unit-row:hover{box-shadow:0 4px 12px rgba(0,0,0,.06);transform:translateY(-1px)}
+        .cv-unit-id{font-size:14px;font-weight:700;color:#3b82f6;min-width:70px}
+        .cv-unit-bar{flex:1;height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden}
+        .cv-unit-bar-fill{height:100%;border-radius:3px}
+        .cv-unit-pct{font-size:15px;font-weight:700;min-width:55px;text-align:right}
+        .cv-unit-status{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;min-width:70px;justify-content:center}
+        .cv-unit-hours{font-size:11px;color:#6b7280;min-width:50px;text-align:right}
+        .cv-table-section{margin:0 24px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+        .cv-table-section .data-table tbody td{font-size:12px;padding:8px 14px}
+        .cv-section-title{font-size:15px;font-weight:700;color:#1a1a2e;padding:16px 24px 10px;display:flex;align-items:center;gap:8px}
+        .cv-section-title i{font-size:13px;color:#3b82f6}
+        .cv-section-title span{color:#9ca3af;font-weight:400;font-size:12px;margin-left:4px}
+
+        .vru-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:0 24px 16px}
+        .vru-detail-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;text-align:center}
+        .vru-detail-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;margin-bottom:6px}
+        .vru-detail-value{font-size:24px;font-weight:800;line-height:1;color:#1a1a2e}
+        .vru-detail-sub{font-size:10px;color:#6b7280;margin-top:4px}
+        .vru-events-list{padding:0 24px 16px;display:flex;flex-direction:column;gap:8px}
+        .vru-event{display:flex;align-items:center;gap:12px;background:#fff;border-radius:8px;border:1px solid #e5e7eb;padding:12px 16px}
+        .vru-event-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+        .vru-event-time{font-size:11px;color:#9ca3af;min-width:100px}
+        .vru-event-desc{font-size:12px;color:#374151;flex:1}
+        .vru-event-dur{font-size:11px;font-weight:600;color:#6b7280}
+
+        @media print{.sidebar,.topbar,.filter-row,.report-tabs-wrap,.insights-strip,.table-toggle-area{display:none!important}.main{margin-left:0}}
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div class="sidebar-logo">S</div>
+    <div class="sidebar-nav">
+        <a class="sidebar-item" title="Overview"><i class="fas fa-th-large"></i>Overview</a>
+        <a class="sidebar-item" title="Custom"><i class="fas fa-chart-line"></i>Custo...</a>
+        <a class="sidebar-item" title="Customers"><i class="fas fa-building"></i>Custo...</a>
+        <a class="sidebar-item" title="VRU Compressors"><i class="fas fa-cogs"></i>VRU C...</a>
+        <a class="sidebar-item" title="VRUs"><i class="fas fa-microchip"></i>VRUs</a>
+        <a class="sidebar-item" title="Network"><i class="fas fa-project-diagram"></i>Network</a>
+        <a class="sidebar-item" title="Alarms"><i class="fas fa-exclamation-triangle"></i>Alarms<span class="sidebar-badge"></span></a>
+        <a class="sidebar-item active" title="Reports"><i class="fas fa-chart-bar"></i>Reports</a>
+        <a class="sidebar-item" title="More"><i class="fas fa-ellipsis-h"></i>More A...</a>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="topbar">
+        <div class="breadcrumb"><a href="#"><i class="fas fa-home"></i></a><span class="sep">&gt;</span><span class="current">Reports</span></div>
+        <div class="topbar-right">
+            <div class="topbar-search"><i class="fas fa-search"></i><input type="text" placeholder="Search by asset, tag, or facility"></div>
+            <div class="user-avatar" title="P Govind Rao">PG</div>
+        </div>
+    </div>
+
+    <div class="report-tabs-wrap" style="position:relative;">
+        <div class="report-tabs" id="reportTabs">
+            <div class="report-tab active">Availability</div>
+            <div class="report-tab">Downtime Analysis</div>
+            <div class="report-tab">Unit Performance</div>
+            <div class="report-tab">Alarm Summary</div>
+            <div class="report-tab">Runtime Hours</div>
+            <div class="report-tab">Maintenance Log</div>
+            <div class="report-tab">Customer Summary</div>
+            <div class="report-tab">State Summary</div>
+            <div class="report-tab">Fleet Health</div>
+            <div class="report-tab">Monthly Report</div>
+        </div>
+        <button class="tab-scroll-btn" onclick="document.getElementById('reportTabs').scrollBy({left:200,behavior:'smooth'})"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="filter-row">
+        <div class="datepicker-wrap" id="datepicker">
+            <div class="datepicker-trigger" onclick="toggleDatepicker()"><span id="dateRangeLabel">03/29/2026 - 04/28/2026</span><div class="cal-icon"><i class="fas fa-calendar-alt"></i></div></div>
+            <div class="datepicker-popup">
+                <div class="calendar-section"><div class="cal-header"><button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button><span class="cal-title" id="calTitle">April 2026</span><button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button></div><div class="cal-grid" id="calGrid"></div></div>
+                <div class="presets-section">
+                    <button class="preset-btn" onclick="setPreset('custom')">Custom</button>
+                    <button class="preset-btn" onclick="setPreset('7d')">Last 7 days</button>
+                    <button class="preset-btn active" onclick="setPreset('30d')">Last 30 days</button>
+                    <button class="preset-btn" onclick="setPreset('60d')">Last 60 days</button>
+                    <button class="preset-btn" onclick="setPreset('1y')">Last 1 year</button>
+                </div>
+                <div class="month-presets-col">
+                    <div class="month-presets-label">By Month</div>
+                    <div class="month-presets-list" id="monthPresetsList"></div>
+                </div>
+            </div>
+        </div>
+        <div class="filter-row-right">
+            <button class="btn-run-report" onclick="location.reload()">Run Report</button>
+            <div class="btn-export-wrap" id="exportWrap">
+                <button class="btn-export" onclick="toggleExport()">Export <span class="caret"></span></button>
+                <div class="export-dropdown">
+                    <div class="export-option"><i class="fas fa-file-csv"></i> CSV</div>
+                    <div class="export-option"><i class="fas fa-file-pdf"></i> PDF</div>
+                    <div class="export-option"><i class="fas fa-file-excel"></i> Excel</div>
+                    <div class="export-option" onclick="window.print()"><i class="fas fa-print"></i> Print</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OVERVIEW VIEW ===== -->
+    <div id="overviewView">
+    <!-- ===== HERO ===== -->
+    <div class="hero ani d1">
+        <div class="hero-main">
+            <div class="hero-greeting">Fleet Availability Report · Last 30 Days</div>
+            <div class="hero-title">Your fleet is at <span class="accent">94.7%</span> availability</div>
+            <div class="hero-summary">
+                <strong>473 of 487 units</strong> ran within target this period. Availability is up <strong>1.3%</strong> from last month, but <strong>North Dakota</strong> is dragging the fleet down at 88.3%. You're <strong>0.3% away</strong> from hitting the 95% SLA target.
+            </div>
+            <div class="hero-badges">
+                <div class="hero-badge green"><i class="fas fa-arrow-up"></i> +1.3% vs last month</div>
+                <div class="hero-badge red"><span class="pulse" style="display:inline-block;width:6px;height:6px;background:#fca5a5;border-radius:50;margin-right:2px"></span> 26 units down now</div>
+                <div class="hero-badge orange"><i class="fas fa-crosshairs"></i> 0.3% to SLA target</div>
+                <div class="hero-badge blue"><i class="fas fa-clock"></i> 143 downtime events</div>
+            </div>
+        </div>
+        <div class="hero-gauge">
+            <svg class="gauge-svg" width="130" height="80" viewBox="0 0 130 80">
+                <path d="M15 70 A55 55 0 0 1 115 70" fill="none" stroke="#f3f4f6" stroke-width="12" stroke-linecap="round"/>
+                <path d="M15 70 A55 55 0 0 1 115 70" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="172.8" stroke-dashoffset="9.2" style="transition:stroke-dashoffset .8s"/>
+                <defs><linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f59e0b"/><stop offset="50%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient></defs>
+                <text x="65" y="62" text-anchor="middle" font-size="28" font-weight="800" fill="#1a1a2e">94.7</text>
+                <text x="65" y="76" text-anchor="middle" font-size="10" fill="#9ca3af">%</text>
+            </svg>
+            <div class="gauge-label">Fleet Availability</div>
+            <div class="gauge-target">Target: 95.0%</div>
+        </div>
+        <div class="hero-status">
+            <div style="font-size:10px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Live Status</div>
+            <div class="status-row"><div class="s-left"><div class="status-dot-lg green"></div><span class="s-label">Running</span></div><div><span class="s-value">449</span><span class="s-pct">92.2%</span></div></div>
+            <div class="status-row"><div class="s-left"><div class="status-dot-lg blue"></div><span class="s-label">Idle</span></div><div><span class="s-value">12</span><span class="s-pct">2.5%</span></div></div>
+            <div class="status-row"><div class="s-left"><div class="status-dot-lg orange"></div><span class="s-label">Warning</span></div><div><span class="s-value">14</span><span class="s-pct">2.9%</span></div></div>
+            <div class="status-row"><div class="s-left"><div class="status-dot-lg red"></div><span class="s-label">Down</span></div><div><span class="s-value">12</span><span class="s-pct">2.5%</span></div></div>
+        </div>
+    </div>
+
+    <!-- ===== INSIGHT STRIP ===== -->
+    <div class="insights-strip ani d2">
+        <div class="insight-card">
+            <div class="insight-icon red"><i class="fas fa-arrow-trend-down"></i></div>
+            <div class="insight-body">
+                <h4>North Dakota dropped 3.2% this month</h4>
+                <p>Enerplus accounts for 60% of the decline. 2 units offline for 5+ days.</p>
+                <span class="insight-tag critical">Needs Attention</span>
+            </div>
+        </div>
+        <div class="insight-card">
+            <div class="insight-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="insight-body">
+                <h4>Extraction Oil has 3 units down simultaneously</h4>
+                <p>Colorado customer averaging only 90.8% — worst in the state.</p>
+                <span class="insight-tag warning">Below SLA</span>
+            </div>
+        </div>
+        <div class="insight-card">
+            <div class="insight-icon green"><i class="fas fa-trophy"></i></div>
+            <div class="insight-body">
+                <h4>Callon Petroleum hit 100% uptime this week</h4>
+                <p>24 units, zero downtime events. Best performer in Texas.</p>
+                <span class="insight-tag positive">Top Performer</span>
+            </div>
+        </div>
+        <div class="insight-card">
+            <div class="insight-icon blue"><i class="fas fa-chart-line"></i></div>
+            <div class="insight-body">
+                <h4>Fleet trending toward 95% SLA target</h4>
+                <p>If current trajectory holds, you'll cross 95% by May 12.</p>
+                <span class="insight-tag info">On Track</span>
+            </div>
+        </div>
+        <div class="insight-card">
+            <div class="insight-icon purple"><i class="fas fa-repeat"></i></div>
+            <div class="insight-body">
+                <h4>PVR2847 has restarted 7 times in 30 days</h4>
+                <p>Whiting Petroleum unit — possible intermittent hardware fault.</p>
+                <span class="insight-tag warning">Recurring Issue</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STATES SECTION ===== -->
+    <div class="section-header ani d3">
+        <h2>By State <span>6 states · ranked by availability</span></h2>
+        <div class="section-actions">
+            <div class="pill-toggle"><button class="pill-btn active">Cards</button><button class="pill-btn">Map</button></div>
+        </div>
+    </div>
+    <div class="state-cards ani d3" id="stateCards"></div>
+
+    <!-- ===== CUSTOMERS SECTION ===== -->
+    <div class="section-header ani d4">
+        <h2>By Customer <span>18 customers · sorted by risk</span></h2>
+        <div class="section-actions">
+            <div class="pill-toggle">
+                <button class="pill-btn active" onclick="sortCustomers('risk')">Risk</button>
+                <button class="pill-btn" onclick="sortCustomers('alpha')">A-Z</button>
+                <button class="pill-btn" onclick="sortCustomers('units')">Size</button>
+            </div>
+        </div>
+    </div>
+    <div class="customer-cards" id="customerCards"></div>
+
+    <!-- ===== ATTENTION SECTION ===== -->
+    <div class="section-header ani d4" style="margin-top:4px;">
+        <h2><i class="fas fa-exclamation-circle" style="color:#ef4444;margin-right:6px;font-size:14px"></i>Needs Your Attention <span>5 worst-performing units</span></h2>
+    </div>
+    <div class="attention-cards ani d4" id="attentionCards"></div>
+
+    <!-- ===== ACTIONS RECOMMENDED ===== -->
+    <div class="section-header ani d5">
+        <h2><i class="fas fa-lightbulb" style="color:#f59e0b;margin-right:6px;font-size:14px"></i>Recommended Actions</h2>
+    </div>
+    <div class="action-cards ani d5">
+        <div class="action-card priority-high">
+            <div class="action-priority">HIGH</div>
+            <div class="action-body">
+                <h4>Dispatch field tech to Enerplus — PVR2614</h4>
+                <p>Unit has been down 5 consecutive days with no auto-recovery. Likely mechanical failure requiring on-site intervention.</p>
+                <div class="action-meta"><span><i class="fas fa-map-marker-alt"></i> North Dakota</span><span><i class="fas fa-clock"></i> Down since Apr 23</span><span><i class="fas fa-dollar-sign"></i> ~$4,200/day revenue impact</span></div>
+            </div>
+        </div>
+        <div class="action-card priority-high">
+            <div class="action-priority">HIGH</div>
+            <div class="action-body">
+                <h4>Investigate PVR2847 restart loop — Whiting Petroleum</h4>
+                <p>7 restart cycles in 30 days suggests intermittent electrical or sensor fault. Schedule diagnostic before permanent failure.</p>
+                <div class="action-meta"><span><i class="fas fa-map-marker-alt"></i> North Dakota</span><span><i class="fas fa-repeat"></i> 7 restarts in 30d</span></div>
+            </div>
+        </div>
+        <div class="action-card priority-medium">
+            <div class="action-priority">MEDIUM</div>
+            <div class="action-body">
+                <h4>Review Extraction Oil Colorado fleet — 3 simultaneous failures</h4>
+                <p>All 3 failures occurred within a 4-hour window on Apr 15. Possible shared power supply or environmental cause worth investigating.</p>
+                <div class="action-meta"><span><i class="fas fa-map-marker-alt"></i> Colorado</span><span><i class="fas fa-bolt"></i> Correlated failures</span></div>
+            </div>
+        </div>
+        <div class="action-card priority-low">
+            <div class="action-priority">LOW</div>
+            <div class="action-body">
+                <h4>Schedule preventive maintenance for aging Colorado units</h4>
+                <p>Colorado's 91.5% availability is trending down for the 3rd consecutive month. Consider rotating PM schedule to address before summer peak.</p>
+                <div class="action-meta"><span><i class="fas fa-tools"></i> Preventive</span><span><i class="fas fa-calendar"></i> Before June</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MONTH COMPARISON ===== -->
+    <div class="section-header ani d5">
+        <h2>Month-over-Month <span>April vs March 2026</span></h2>
+    </div>
+    <div class="comparison-row ani d5">
+        <div class="comp-card">
+            <div class="comp-label">Fleet Availability</div>
+            <div class="comp-values">
+                <div class="comp-current">94.7%</div>
+                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
+                <div class="comp-previous">93.4%</div>
+            </div>
+            <div class="comp-delta up">+1.3%</div>
+        </div>
+        <div class="comp-card">
+            <div class="comp-label">Units Down (avg)</div>
+            <div class="comp-values">
+                <div class="comp-current">26</div>
+                <div class="comp-arrow down"><i class="fas fa-arrow-right"></i></div>
+                <div class="comp-previous">22</div>
+            </div>
+            <div class="comp-delta down">+4 more</div>
+        </div>
+        <div class="comp-card">
+            <div class="comp-label">Downtime Events</div>
+            <div class="comp-values">
+                <div class="comp-current">143</div>
+                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
+                <div class="comp-previous">155</div>
+            </div>
+            <div class="comp-delta up">-12 fewer</div>
+        </div>
+        <div class="comp-card">
+            <div class="comp-label">Avg Recovery Time</div>
+            <div class="comp-values">
+                <div class="comp-current">4.2h</div>
+                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
+                <div class="comp-previous">5.1h</div>
+            </div>
+            <div class="comp-delta up">-0.9h faster</div>
+        </div>
+        <div class="comp-card">
+            <div class="comp-label">SLA Compliance</div>
+            <div class="comp-values">
+                <div class="comp-current">78%</div>
+                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
+                <div class="comp-previous">71%</div>
+            </div>
+            <div class="comp-delta up">+7% customers</div>
+        </div>
+    </div>
+
+    <!-- ===== CHARTS ===== -->
+    <div class="charts-row ani d5">
+        <div class="card">
+            <div class="card-header"><h3>Availability Trend <span class="card-subtitle">last 30 days</span></h3></div>
+            <div class="card-body"><div class="chart-container"><canvas id="trendChart" height="200"></canvas></div></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>Downtime by Cause <span class="card-subtitle">this period</span></h3></div>
+            <div class="card-body"><div class="chart-container"><canvas id="causeChart" height="200"></canvas></div></div>
+        </div>
+    </div>
+
+    <!-- ===== HEATMAP ===== -->
+    <div class="charts-row full ani d5">
+        <div class="card">
+            <div class="card-header"><h3>Daily Availability Heatmap <span class="card-subtitle">by customer · 30 days</span></h3>
+                <select class="card-select" id="heatmapGroup"><option value="customer">By Customer</option><option value="state">By State</option></select>
+            </div>
+            <div class="card-body"><div class="heatmap-container" id="heatmapContainer"></div></div>
+        </div>
+    </div>
+
+    <!-- ===== VIEW RAW DATA BUTTON ===== -->
+    <div class="table-toggle-area">
+        <button class="btn-view-table" onclick="toggleTable()"><i class="fas fa-table"></i> View Raw Data Table</button>
+    </div>
+    <div class="table-panel" id="tablePanel">
+        <div class="card-header"><h3>Full Fleet Data</h3></div>
+        <div class="scroll-y">
+            <table class="data-table">
+                <thead><tr><th>Unit</th><th>Customer</th><th>State</th><th>Availability</th><th>Hours Down</th><th>Events</th><th>Status</th></tr></thead>
+                <tbody id="rawTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="height:30px"></div>
+    </div><!-- /overviewView -->
+
+    <!-- ===== CUSTOMER REPORT VIEW ===== -->
+    <div id="customerView" style="display:none">
+        <div style="padding:20px 24px 0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                <label style="font-size:13px;font-weight:600;color:#1a1a2e">Select Customer</label>
+                <select id="custReportSelect" onchange="renderCustomerReport()" class="card-select" style="min-width:220px;padding:8px 32px 8px 10px;font-size:13px"></select>
+            </div>
+        </div>
+        <div id="custReportContent"></div>
+        <div style="height:30px"></div>
+    </div>
+
+    <!-- ===== VRU REPORT VIEW ===== -->
+    <div id="vruView" style="display:none">
+        <div style="padding:20px 24px 0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+                <label style="font-size:13px;font-weight:600;color:#1a1a2e">Select Customer</label>
+                <select id="vruCustSelect" onchange="populateVruUnits();renderVruReport()" class="card-select" style="min-width:200px;padding:8px 32px 8px 10px;font-size:13px"></select>
+                <label style="font-size:13px;font-weight:600;color:#1a1a2e;margin-left:8px">Select VRU</label>
+                <select id="vruUnitSelect" onchange="renderVruReport()" class="card-select" style="min-width:180px;padding:8px 32px 8px 10px;font-size:13px"></select>
+            </div>
+        </div>
+        <div id="vruReportContent"></div>
+        <div style="height:30px"></div>
+    </div>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const CUSTOMERS=[
+    {name:'Diamondback Energy',state:'Texas',units:47,avail:97.2,down:1,trend:0.8,color:'#3b82f6'},
+    {name:'Sandridge Energy',state:'Oklahoma',units:9,avail:97.3,down:0,trend:0.3,color:'#0891b2'},
+    {name:'Callon Petroleum',state:'Texas',units:24,avail:96.8,down:0,trend:1.4,color:'#7c3aed'},
+    {name:'XTO Energy',state:'Texas',units:38,avail:96.5,down:1,trend:0.3,color:'#10b981'},
+    {name:'Devon Energy',state:'Oklahoma',units:36,avail:96.3,down:1,trend:0.5,color:'#ef4444'},
+    {name:'Mewbourne Oil',state:'New Mexico',units:34,avail:95.8,down:1,trend:-0.2,color:'#8b5cf6'},
+    {name:'Jagged Peak',state:'Texas',units:33,avail:95.4,down:1,trend:0.9,color:'#0ea5e9'},
+    {name:'Pioneer Natural',state:'Texas',units:42,avail:95.1,down:2,trend:1.1,color:'#f59e0b'},
+    {name:'SM Energy',state:'Texas',units:19,avail:95.0,down:1,trend:0.6,color:'#059669'},
+    {name:'Continental Resources',state:'Oklahoma',units:29,avail:94.7,down:2,trend:-0.4,color:'#06b6d4'},
+    {name:'Cimarex Energy',state:'Texas',units:26,avail:94.2,down:2,trend:-0.6,color:'#14b8a6'},
+    {name:'Concho Resources',state:'New Mexico',units:31,avail:93.9,down:2,trend:0.1,color:'#ec4899'},
+    {name:'Laramie Resources',state:'Wyoming',units:14,avail:93.6,down:1,trend:0.4,color:'#f97316'},
+    {name:'Centennial Dev',state:'Colorado',units:28,avail:92.1,down:2,trend:-0.3,color:'#84cc16'},
+    {name:'Oasis Petroleum',state:'North Dakota',units:18,avail:91.2,down:2,trend:0.2,color:'#64748b'},
+    {name:'Extraction Oil',state:'Colorado',units:26,avail:90.8,down:3,trend:-0.8,color:'#e11d48'},
+    {name:'Whiting Petroleum',state:'North Dakota',units:22,avail:88.4,down:3,trend:-1.2,color:'#a855f7'},
+    {name:'Enerplus',state:'North Dakota',units:11,avail:85.6,down:2,trend:-2.1,color:'#dc2626'},
+];
+const STATES_DATA=[
+    {name:'Oklahoma',units:74,custs:3,avail:96.1,trend:0.2,down:3},
+    {name:'Texas',units:229,custs:7,avail:95.8,trend:0.6,down:9},
+    {name:'New Mexico',units:65,custs:2,avail:94.8,trend:-0.1,down:3},
+    {name:'Wyoming',units:14,custs:1,avail:93.6,trend:0.4,down:1},
+    {name:'Colorado',units:54,custs:2,avail:91.5,trend:-0.5,down:5},
+    {name:'North Dakota',units:51,custs:3,avail:88.3,trend:-1.4,down:7},
+];
+
+// ===== STATE CARDS =====
+function renderStateCards(){
+    const c=document.getElementById('stateCards');
+    c.innerHTML=STATES_DATA.map(s=>{
+        const cls=s.avail>=95?'excellent':s.avail>=92?'good':s.avail>=88?'warning':'critical';
+        const fc={excellent:'#10b981',good:'#3b82f6',warning:'#f59e0b',critical:'#ef4444'}[cls];
+        const attn=s.avail<92?'critical-attention':s.avail<95?'attention':'';
+        const tDir=s.trend>=0?'up':'down';
+        return `<div class="state-card ${attn}">
+            <div class="state-name">${s.name}</div>
+            <div class="state-meta">${s.units} units · ${s.custs} customers</div>
+            <div class="state-gauge-row">
+                <div class="state-pct ${cls}">${s.avail}%</div>
+                <div class="state-trend ${tDir}"><i class="fas fa-arrow-${tDir}"></i> ${Math.abs(s.trend)}%</div>
+            </div>
+            <div class="state-bar"><div class="state-bar-fill" style="width:${s.avail}%;background:${fc}"></div></div>
+            <div class="state-bottom">
+                <div class="state-stat"><strong>${s.down}</strong> down</div>
+                <div class="state-stat">${s.avail>=95?'Above':'Below'} target</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ===== CUSTOMER CARDS =====
+function renderCustomerCards(sort='risk'){
+    let sorted=[...CUSTOMERS];
+    if(sort==='risk') sorted.sort((a,b)=>a.avail-b.avail);
+    else if(sort==='alpha') sorted.sort((a,b)=>a.name.localeCompare(b.name));
+    else sorted.sort((a,b)=>b.units-a.units);
+
+    const c=document.getElementById('customerCards');
+    c.innerHTML=sorted.map(cu=>{
+        const cls=cu.avail>=95?'excellent':cu.avail>=92?'good':cu.avail>=88?'warning':'critical';
+        const fc={excellent:'#10b981',good:'#3b82f6',warning:'#f59e0b',critical:'#ef4444'}[cls];
+        const flagged=cu.avail<90?'flagged':'';
+        const tDir=cu.trend>=0?'up':'down';
+        const runPct=cu.avail;const wrnPct=Math.min(100-cu.avail,3);const dwnPct=100-cu.avail-wrnPct;
+        const insights={
+            'Enerplus':'Longest downtime streak: 5 days',
+            'Whiting Petroleum':'PVR2847 has 7 restart cycles',
+            'Extraction Oil':'3 simultaneous failures Apr 15',
+            'Callon Petroleum':'Zero downtime — top performer',
+            'Diamondback Energy':'Most consistent fleet in TX',
+            'Pioneer Natural':'Strong recovery from March dip',
+        };
+        const ins=insights[cu.name]||`${cu.units} units across ${cu.state}`;
+        return `<div class="cust-card ${flagged}">
+            <div class="cust-top">
+                <div class="cust-avatar" style="background:${cu.color}">${cu.name.charAt(0)}</div>
+                <div class="cust-info"><h4>${cu.name}</h4><div class="c-meta">${cu.state} · ${cu.units} units</div></div>
+            </div>
+            <div class="cust-metrics">
+                <div class="cust-metric"><div class="cm-label">Availability</div><div class="cm-value ${cls}">${cu.avail}%</div></div>
+                <div class="cust-metric"><div class="cm-label">Down Now</div><div class="cm-value" style="color:${cu.down>0?'#ef4444':'#10b981'}">${cu.down>0?cu.down:'None'}</div></div>
+            </div>
+            <div class="cust-timeline"><div class="seg run" style="width:${runPct}%"></div><div class="seg wrn" style="width:${wrnPct}%"></div><div class="seg dwn" style="width:${dwnPct}%"></div></div>
+            <div class="cust-bottom">
+                <div class="cust-insight">${ins}</div>
+                <div class="cust-trend ${tDir}"><i class="fas fa-arrow-${tDir}"></i> ${Math.abs(cu.trend)}%</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+function sortCustomers(mode){
+    document.querySelectorAll('.section-actions .pill-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderCustomerCards(mode);
+}
+
+// ===== TREND CHART =====
+function renderTrendChart(){
+    const ctx=document.getElementById('trendChart').getContext('2d');
+    const days=30,labels=[],data=[],target=[];
+    const today=new Date(2026,3,28);
+    for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));data.push(Math.round(Math.max(85,Math.min(99,94+Math.sin(i*.3)*2.5+(Math.random()-.5)*3))*10)/10);target.push(95)}
+    new Chart(ctx,{type:'line',data:{labels,datasets:[
+        {label:'Fleet Availability',data,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',borderWidth:2.5,fill:true,tension:.35,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#3b82f6'},
+        {label:'Target (95%)',data:target,borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0,pointHoverRadius:0}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',align:'end',labels:{boxWidth:10,font:{size:10},padding:12,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8,callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y}%`}}},scales:{x:{grid:{display:false},ticks:{font:{size:9.5},color:'#9ca3af',maxTicksLimit:10}},y:{min:82,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9.5},color:'#9ca3af',callback:v=>v+'%'}}}}});
+}
+
+// ===== CAUSE CHART =====
+function renderCauseChart(){
+    const ctx=document.getElementById('causeChart').getContext('2d');
+    new Chart(ctx,{type:'doughnut',data:{labels:['Mechanical Failure','Electrical Fault','Communication Loss','Scheduled Maintenance','Operator Shutdown','Environmental'],datasets:[{data:[38,27,22,31,15,10],backgroundColor:['#ef4444','#f59e0b','#8b5cf6','#3b82f6','#06b6d4','#6b7280'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8,callbacks:{label:c=>`${c.label}: ${c.parsed} events`}}}}});
+}
+
+// ===== HEATMAP =====
+function renderHeatmap(){
+    const container=document.getElementById('heatmapContainer');
+    const days=30;const topC=[...CUSTOMERS].sort((a,b)=>b.units-a.units).slice(0,12);
+    const today=new Date(2026,3,28);const dayLabels=[];
+    for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);dayLabels.push(d.getDate())}
+    let html='<div class="heatmap-day-labels">';
+    dayLabels.forEach((d,i)=>{html+=`<div class="heatmap-day-label">${i%3===0?d:''}</div>`});html+='</div>';
+    topC.forEach(c=>{
+        html+=`<div class="heatmap-row"><div class="heatmap-label" title="${c.name}">${c.name}</div><div class="heatmap-cells">`;
+        for(let d=0;d<days;d++){const v=Math.max(70,Math.min(100,c.avail+(Math.random()-.5)*12));const g=v>=97?'g5':v>=93?'g4':v>=88?'g3':v>=82?'g2':v>=75?'g1':'g0';const ds=new Date(today.getFullYear(),today.getMonth(),today.getDate()-(days-1-d)).toLocaleDateString('en-US',{month:'short',day:'numeric'});html+=`<div class="heatmap-cell ${g}" data-tip="${c.name}\n${ds}: ${Math.round(v*10)/10}%"></div>`}
+        html+='</div></div>';
+    });
+    html+=`<div class="heatmap-legend"><span>Lower</span><div class="heatmap-legend-cell" style="background:#ef4444"></div><div class="heatmap-legend-cell" style="background:#f97316"></div><div class="heatmap-legend-cell" style="background:#fbbf24"></div><div class="heatmap-legend-cell" style="background:#6ee7b7"></div><div class="heatmap-legend-cell" style="background:#34d399"></div><div class="heatmap-legend-cell" style="background:#059669"></div><span>Higher</span></div>`;
+    container.innerHTML=html;
+}
+
+// ===== RAW TABLE =====
+function renderRawTable(){
+    const body=document.getElementById('rawTableBody');
+    let html='';
+    CUSTOMERS.forEach(c=>{for(let i=0;i<Math.min(c.units,5);i++){
+        const a=Math.round((80+Math.random()*20)*10)/10;
+        const st=a>95?'Running':a>85?'Warning':'Down';
+        const sc=st==='Running'?'#10b981':st==='Warning'?'#f59e0b':'#ef4444';
+        html+=`<tr><td style="font-weight:600;color:#3b82f6">PVR${2000+Math.floor(Math.random()*999)}</td><td>${c.name}</td><td>${c.state}</td><td style="color:${sc};font-weight:600">${a}%</td><td>${Math.round((100-a)/100*720)}h</td><td>${Math.floor(Math.random()*8)}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${st==='Running'?'#ecfdf5':st==='Warning'?'#fffbeb':'#fef2f2'};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${st}</span></td></tr>`
+    }});
+    body.innerHTML=html;
+}
+
+// ===== TABLE TOGGLE =====
+function toggleTable(){
+    const p=document.getElementById('tablePanel');
+    p.classList.toggle('visible');
+    if(p.classList.contains('visible')&&!p.dataset.loaded){renderRawTable();p.dataset.loaded='1'}
+}
+
+
+// ===== DATE PICKER =====
+let calYear=2026,calMonth=3,rangeStart=new Date(2026,2,29),rangeEnd=new Date(2026,3,28);
+function toggleDatepicker(){document.getElementById('datepicker').classList.toggle('open')}
+function changeMonth(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++}if(calMonth<0){calMonth=11;calYear--}renderCalendar()}
+function renderCalendar(){const g=document.getElementById('calGrid'),t=document.getElementById('calTitle'),ms=['January','February','March','April','May','June','July','August','September','October','November','December'];t.textContent=`${ms[calMonth]} ${calYear}`;const fd=new Date(calYear,calMonth,1).getDay(),dm=new Date(calYear,calMonth+1,0).getDate(),dp=new Date(calYear,calMonth,0).getDate();let h=['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="cal-dow">${d}</div>`).join('');for(let i=0;i<fd;i++)h+=`<div class="cal-day other">${dp-fd+1+i}</div>`;const td=new Date();for(let d=1;d<=dm;d++){const dt=new Date(calYear,calMonth,d);let c='';if(dt.toDateString()===td.toDateString())c+=' today';if(rangeStart&&rangeEnd&&dt>=rangeStart&&dt<=rangeEnd)c+=' in-range';if(rangeStart&&dt.toDateString()===rangeStart.toDateString())c+=' range-start';if(rangeEnd&&dt.toDateString()===rangeEnd.toDateString())c+=' range-end';h+=`<div class="cal-day${c}" onclick="pickDay(${d})">${d}</div>`}const tc=fd+dm,rm=(7-tc%7)%7;for(let i=1;i<=rm;i++)h+=`<div class="cal-day other">${i}</div>`;g.innerHTML=h}
+function pickDay(d){const cl=new Date(calYear,calMonth,d);if(!rangeStart||(rangeStart&&rangeEnd)){rangeStart=cl;rangeEnd=null}else{if(cl<rangeStart){rangeEnd=rangeStart;rangeStart=cl}else rangeEnd=cl}updateDateLabel();renderCalendar();setActivePreset('custom')}
+function setPreset(k){const td=new Date(2026,3,28);rangeEnd=new Date(td);if(k==='7d')rangeStart=new Date(td.getFullYear(),td.getMonth(),td.getDate()-6);else if(k==='30d')rangeStart=new Date(td.getFullYear(),td.getMonth(),td.getDate()-29);else if(k==='60d')rangeStart=new Date(td.getFullYear(),td.getMonth(),td.getDate()-59);else if(k==='1y')rangeStart=new Date(td.getFullYear()-1,td.getMonth(),td.getDate());else{setActivePreset('custom');return}setActivePreset(k);updateDateLabel();renderCalendar()}
+function setActivePreset(k){document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.month-preset-btn').forEach(b=>b.classList.remove('active'));const ls={custom:'Custom','7d':'Last 7 days','30d':'Last 30 days','60d':'Last 60 days','1y':'Last 1 year'};document.querySelectorAll('.preset-btn').forEach(b=>{if(b.textContent.trim()===ls[k])b.classList.add('active')})}
+function setMonthPreset(year,month){const td=new Date(2026,3,28);const isCurrentMonth=(year===td.getFullYear()&&month===td.getMonth());rangeStart=new Date(year,month,1);rangeEnd=isCurrentMonth?new Date(td):new Date(year,month+1,0);calYear=year;calMonth=month;setActivePreset(null);document.querySelectorAll('.month-preset-btn').forEach(b=>{if(parseInt(b.dataset.year)===year&&parseInt(b.dataset.month)===month)b.classList.add('active')});updateDateLabel();renderCalendar()}
+function renderMonthPresets(){const td=new Date(2026,3,28);const ms=['January','February','March','April','May','June','July','August','September','October','November','December'];const list=document.getElementById('monthPresetsList');let html='';for(let i=td.getMonth();i>=0;i--){const isCurrent=(i===td.getMonth());const label=isCurrent?`${ms[i]} (MTD)`:ms[i];const badge=isCurrent?'<span class="mtd-badge">MTD</span>':'';html+=`<button class="month-preset-btn" data-year="${td.getFullYear()}" data-month="${i}" onclick="setMonthPreset(${td.getFullYear()},${i})">${ms[i]}${badge}</button>`}for(let i=11;i>=td.getMonth();i--){html+=`<button class="month-preset-btn" data-year="${td.getFullYear()-1}" data-month="${i}" onclick="setMonthPreset(${td.getFullYear()-1},${i})">${ms[i]} ${td.getFullYear()-1}</button>`}list.innerHTML=html}
+function updateDateLabel(){const f=d=>`${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}`;document.getElementById('dateRangeLabel').textContent=rangeStart&&rangeEnd?`${f(rangeStart)} - ${f(rangeEnd)}`:rangeStart?`${f(rangeStart)} - ...`:'...'}
+function toggleExport(){document.getElementById('exportWrap').classList.toggle('open')}
+document.addEventListener('click',e=>{if(!e.target.closest('#datepicker'))document.getElementById('datepicker').classList.remove('open');if(!e.target.closest('#exportWrap'))document.getElementById('exportWrap').classList.remove('open')});
+
+// ===== TOOLTIP =====
+document.addEventListener('mouseover',e=>{const c=e.target.closest('.heatmap-cell'),t=document.getElementById('tooltip');if(c&&c.dataset.tip){t.textContent=c.dataset.tip;t.classList.add('visible')}else t.classList.remove('visible')});
+document.addEventListener('mousemove',e=>{const t=document.getElementById('tooltip');if(t.classList.contains('visible')){t.style.left=(e.clientX+12)+'px';t.style.top=(e.clientY-10)+'px'}});
+
+// ===== GENERATE VRU UNITS PER CUSTOMER =====
+const VRU_UNITS={};
+CUSTOMERS.forEach(c=>{
+    const units=[];
+    for(let i=0;i<c.units;i++){
+        const id=`PVR${2000+Math.floor(Math.random()*2000)}`;
+        const a=Math.round(Math.max(65,Math.min(100,c.avail+(Math.random()-.5)*16))*10)/10;
+        const st=a>95?'Running':a>85?'Warning':'Down';
+        const runH=Math.round(a/100*720);
+        const readyH=Math.round(Math.random()*20);
+        const faultH=Math.round((100-a)/100*720);
+        units.push({id,avail:a,status:st,runH,readyH,faultH,events:Math.floor(Math.random()*8),trend:Math.round((Math.random()*4-2)*10)/10});
+    }
+    units.sort((a,b)=>a.avail-b.avail);
+    VRU_UNITS[c.name]=units;
+});
+
+// ===== VIEW SWITCHING =====
+const VIEW_TABS={'Availability':'overviewView','Customer Summary':'customerView','Unit Performance':'vruView'};
+let activeView='overviewView';
+let custChartInstances={};
+
+function switchView(viewId){
+    document.getElementById('overviewView').style.display='none';
+    document.getElementById('customerView').style.display='none';
+    document.getElementById('vruView').style.display='none';
+    document.getElementById(viewId).style.display='block';
+    activeView=viewId;
+    if(viewId==='customerView'&&!document.getElementById('custReportSelect').options.length) initCustomerView();
+    if(viewId==='customerView') renderCustomerReport();
+    if(viewId==='vruView'&&!document.getElementById('vruCustSelect').options.length) initVruView();
+    if(viewId==='vruView') renderVruReport();
+}
+
+document.querySelectorAll('.report-tab').forEach(tab=>{tab.addEventListener('click',()=>{
+    document.querySelectorAll('.report-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const vId=VIEW_TABS[tab.textContent.trim()];
+    if(vId) switchView(vId);
+})});
+
+// ===== CUSTOMER REPORT =====
+function initCustomerView(){
+    const sel=document.getElementById('custReportSelect');
+    sel.innerHTML=CUSTOMERS.sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+}
+
+function renderCustomerReport(){
+    const name=document.getElementById('custReportSelect').value;
+    if(!name) return;
+    const c=CUSTOMERS.find(x=>x.name===name);
+    if(!c) return;
+    const units=VRU_UNITS[c.name]||[];
+    const cls=c.avail>=95?'excellent':c.avail>=92?'good':c.avail>=88?'warning':'critical';
+    const fc={excellent:'#10b981',good:'#3b82f6',warning:'#f59e0b',critical:'#ef4444'}[cls];
+    const tDir=c.trend>=0?'up':'down';
+    const running=units.filter(u=>u.status==='Running').length;
+    const warning=units.filter(u=>u.status==='Warning').length;
+    const down=units.filter(u=>u.status==='Down').length;
+    const totalDown=units.reduce((s,u)=>s+u.faultH,0);
+    const avgRecovery=Math.round(totalDown/Math.max(units.filter(u=>u.events>0).length,1)*10)/10;
+
+    const cont=document.getElementById('custReportContent');
+    let h=`
+    <div class="cv-banner ani d1">
+        <div class="cv-banner-main">
+            <div class="cv-name">${c.name}</div>
+            <div class="cv-meta"><i class="fas fa-map-marker-alt" style="margin-right:4px"></i>${c.state} · ${c.units} VRU Units · Last 30 Days</div>
+            <div class="cv-kpis">
+                <div class="cv-kpi"><div class="cv-kpi-label">Availability</div><div class="cv-kpi-value" style="color:${fc}">${c.avail}%</div><div class="cv-kpi-sub ${tDir}"><i class="fas fa-arrow-${tDir}" style="margin-right:3px"></i>${Math.abs(c.trend)}% vs last month</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Running</div><div class="cv-kpi-value" style="color:#6ee7b7">${running}</div><div class="cv-kpi-sub" style="color:rgba(255,255,255,.5)">of ${c.units} units</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Warning</div><div class="cv-kpi-value" style="color:#fcd34d">${warning}</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Down</div><div class="cv-kpi-value" style="color:#fca5a5">${down}</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Downtime Hours</div><div class="cv-kpi-value" style="color:#93c5fd">${totalDown}h</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Avg Recovery</div><div class="cv-kpi-value" style="color:#c4b5fd">${avgRecovery}h</div></div>
+            </div>
+        </div>
+        <div class="cv-gauge-card">
+            <svg width="110" height="70" viewBox="0 0 110 70">
+                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="${fc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c.avail/100*141.4}" stroke-dashoffset="0"/>
+                <text x="55" y="52" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${c.avail}</text>
+                <text x="55" y="66" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+            </svg>
+            <div style="font-size:10px;color:#6b7280;font-weight:500;margin-top:4px">Customer Availability</div>
+            <div style="font-size:9px;color:#9ca3af;margin-top:2px">Target: 95.0%</div>
+        </div>
+    </div>`;
+
+    // Unit cards grid
+    h+=`<div class="cv-section-title"><i class="fas fa-microchip"></i>All VRU Units<span>${c.units} units</span></div>`;
+    h+=`<div class="cv-unit-grid ani d2">`;
+    units.forEach(u=>{
+        const uc=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+        const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+        const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
+        h+=`<div class="cv-unit-row">
+            <div class="cv-unit-id">${u.id}</div>
+            <div class="cv-unit-bar"><div class="cv-unit-bar-fill" style="width:${u.avail}%;background:${uc}"></div></div>
+            <div class="cv-unit-pct" style="color:${uc}">${u.avail}%</div>
+            <div class="cv-unit-hours">${u.faultH}h down</div>
+            <div class="cv-unit-status" style="background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</div>
+        </div>`;
+    });
+    h+=`</div>`;
+
+    // Charts row
+    h+=`<div class="charts-row ani d3">
+        <div class="card"><div class="card-header"><h3>${c.name} — Availability Trend</h3></div><div class="card-body"><div class="chart-container"><canvas id="custTrendChart" height="200"></canvas></div></div></div>
+        <div class="card"><div class="card-header"><h3>Downtime Breakdown</h3></div><div class="card-body"><div class="chart-container"><canvas id="custCauseChart" height="200"></canvas></div></div></div>
+    </div>`;
+
+    // Exportable table
+    h+=`<div class="cv-section-title"><i class="fas fa-table"></i>Exportable Data<span>ready for PDF / CSV / Excel</span></div>`;
+    h+=`<div class="cv-table-section ani d4"><div class="scroll-y"><table class="data-table"><thead><tr><th>VRU Unit</th><th>Availability</th><th>Running Hours</th><th>Ready Hours</th><th>Faulted Hours</th><th>Events</th><th>Trend</th><th>Status</th></tr></thead><tbody>`;
+    units.forEach(u=>{
+        const uc=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+        const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+        const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
+        const td=u.trend>=0?'up':'down';const tc=u.trend>=0?'#059669':'#dc2626';
+        h+=`<tr><td style="font-weight:600;color:#3b82f6">${u.id}</td><td style="font-weight:600;color:${uc}">${u.avail}%</td><td>${u.runH}h</td><td>${u.readyH}h</td><td>${u.faultH}h</td><td>${u.events}</td><td style="color:${tc};font-weight:600"><i class="fas fa-arrow-${td}" style="font-size:10px;margin-right:2px"></i>${Math.abs(u.trend)}%</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td></tr>`;
+    });
+    h+=`</tbody></table></div></div>`;
+
+    cont.innerHTML=h;
+
+    // Render customer-specific charts
+    Object.values(custChartInstances).forEach(ci=>ci.destroy());
+    custChartInstances={};
+    const tCtx=document.getElementById('custTrendChart');
+    if(tCtx){
+        const days=30,labels=[],data=[],target=[];
+        const today=new Date(2026,3,28);
+        for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));data.push(Math.round(Math.max(75,Math.min(100,c.avail+(Math.sin(i*.25)*3)+(Math.random()-.5)*4))*10)/10);target.push(95)}
+        custChartInstances.trend=new Chart(tCtx.getContext('2d'),{type:'line',data:{labels,datasets:[{label:c.name+' Availability',data,borderColor:c.color,backgroundColor:c.color+'18',borderWidth:2.5,fill:true,tension:.35,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:c.color},{label:'Target (95%)',data:target,borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',align:'end',labels:{boxWidth:10,font:{size:10},padding:12,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8}},scales:{x:{grid:{display:false},ticks:{font:{size:9.5},color:'#9ca3af',maxTicksLimit:10}},y:{min:72,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9.5},color:'#9ca3af',callback:v=>v+'%'}}}}});
+    }
+    const cCtx=document.getElementById('custCauseChart');
+    if(cCtx){
+        custChartInstances.cause=new Chart(cCtx.getContext('2d'),{type:'doughnut',data:{labels:['Mechanical','Electrical','Comm Loss','Scheduled','Operator','Environmental'],datasets:[{data:[Math.floor(Math.random()*20)+5,Math.floor(Math.random()*15)+3,Math.floor(Math.random()*10)+2,Math.floor(Math.random()*12)+4,Math.floor(Math.random()*8)+1,Math.floor(Math.random()*5)+1],backgroundColor:['#ef4444','#f59e0b','#8b5cf6','#3b82f6','#06b6d4','#6b7280'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}}}}});
+    }
+}
+
+// ===== VRU REPORT =====
+function initVruView(){
+    const sel=document.getElementById('vruCustSelect');
+    sel.innerHTML=CUSTOMERS.sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+    populateVruUnits();
+}
+function populateVruUnits(){
+    const cName=document.getElementById('vruCustSelect').value;
+    const sel=document.getElementById('vruUnitSelect');
+    const units=VRU_UNITS[cName]||[];
+    sel.innerHTML=units.map(u=>`<option value="${u.id}">${u.id} (${u.avail}%)</option>`).join('');
+}
+
+let vruChartInstances={};
+function renderVruReport(){
+    const cName=document.getElementById('vruCustSelect').value;
+    const uId=document.getElementById('vruUnitSelect').value;
+    if(!cName||!uId) return;
+    const c=CUSTOMERS.find(x=>x.name===cName);
+    const u=(VRU_UNITS[cName]||[]).find(x=>x.id===uId);
+    if(!c||!u) return;
+
+    const uc=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+    const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+    const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
+    const totalH=u.runH+u.readyH+u.faultH;
+    const cont=document.getElementById('vruReportContent');
+
+    let h=`
+    <div class="cv-banner ani d1">
+        <div class="cv-banner-main">
+            <div class="cv-name" style="display:flex;align-items:center;gap:12px">${u.id} <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:${sbg};color:${sc}"><span style="width:6px;height:6px;border-radius:50%;background:${sc}"></span>${u.status}</span></div>
+            <div class="cv-meta"><i class="fas fa-building" style="margin-right:4px"></i>${c.name} · <i class="fas fa-map-marker-alt" style="margin:0 4px"></i>${c.state} · Last 30 Days</div>
+            <div class="cv-kpis">
+                <div class="cv-kpi"><div class="cv-kpi-label">Availability</div><div class="cv-kpi-value" style="color:${uc}">${u.avail}%</div><div class="cv-kpi-sub ${u.trend>=0?'up':'down'}"><i class="fas fa-arrow-${u.trend>=0?'up':'down'}" style="margin-right:3px"></i>${Math.abs(u.trend)}% vs last month</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Running Hours</div><div class="cv-kpi-value" style="color:#6ee7b7">${u.runH}h</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Ready Hours</div><div class="cv-kpi-value" style="color:#93c5fd">${u.readyH}h</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Faulted Hours</div><div class="cv-kpi-value" style="color:#fca5a5">${u.faultH}h</div></div>
+                <div class="cv-kpi"><div class="cv-kpi-label">Events</div><div class="cv-kpi-value" style="color:#c4b5fd">${u.events}</div></div>
+            </div>
+        </div>
+        <div class="cv-gauge-card">
+            <svg width="110" height="70" viewBox="0 0 110 70">
+                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+                <path d="M10 60 A45 45 0 0 1 100 60" fill="none" stroke="${uc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${u.avail/100*141.4}" stroke-dashoffset="0"/>
+                <text x="55" y="52" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${u.avail}</text>
+                <text x="55" y="66" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+            </svg>
+            <div style="font-size:10px;color:#6b7280;font-weight:500;margin-top:4px">Unit Availability</div>
+            <div style="font-size:9px;color:#9ca3af;margin-top:2px">Target: 95.0%</div>
+        </div>
+    </div>`;
+
+    // Hours breakdown visual
+    h+=`<div class="cv-section-title"><i class="fas fa-clock"></i>Hours Breakdown<span>${totalH} total hours</span></div>`;
+    h+=`<div class="vru-detail-grid ani d2">
+        <div class="vru-detail-card"><div class="vru-detail-label">Running</div><div class="vru-detail-value" style="color:#10b981">${u.runH}h</div><div class="vru-detail-sub">${Math.round(u.runH/totalH*100)}% of period</div></div>
+        <div class="vru-detail-card"><div class="vru-detail-label">Ready / Idle</div><div class="vru-detail-value" style="color:#3b82f6">${u.readyH}h</div><div class="vru-detail-sub">${Math.round(u.readyH/totalH*100)}% of period</div></div>
+        <div class="vru-detail-card"><div class="vru-detail-label">Faulted / Down</div><div class="vru-detail-value" style="color:#ef4444">${u.faultH}h</div><div class="vru-detail-sub">${Math.round(u.faultH/totalH*100)}% of period</div></div>
+        <div class="vru-detail-card"><div class="vru-detail-label">Availability</div><div class="vru-detail-value" style="color:${uc}">${u.avail}%</div><div class="vru-detail-sub">(Run+Ready)/(Run+Ready+Fault)</div></div>
+        <div class="vru-detail-card"><div class="vru-detail-label">Downtime Events</div><div class="vru-detail-value">${u.events}</div><div class="vru-detail-sub">in 30-day period</div></div>
+        <div class="vru-detail-card"><div class="vru-detail-label">MTBF</div><div class="vru-detail-value">${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</div><div class="vru-detail-sub">mean time between failures</div></div>
+    </div>`;
+
+    // Charts
+    h+=`<div class="charts-row ani d3">
+        <div class="card"><div class="card-header"><h3>${u.id} — Daily Availability</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruTrendChart" height="200"></canvas></div></div></div>
+        <div class="card"><div class="card-header"><h3>Hours Distribution</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruHoursChart" height="200"></canvas></div></div></div>
+    </div>`;
+
+    // Recent events
+    h+=`<div class="cv-section-title"><i class="fas fa-list-timeline"></i>Recent Downtime Events</div>`;
+    h+=`<div class="vru-events-list ani d4">`;
+    const eventTypes=['Mechanical Fault','Electrical Fault','Communication Loss','High Temperature Shutdown','Operator Shutdown','Sensor Malfunction'];
+    for(let i=0;i<Math.min(u.events,6);i++){
+        const day=Math.floor(Math.random()*28)+1;
+        const hour=Math.floor(Math.random()*24);
+        const dur=Math.round((Math.random()*12+0.5)*10)/10;
+        const type=eventTypes[Math.floor(Math.random()*eventTypes.length)];
+        const dotColor=type.includes('Mechanical')?'#ef4444':type.includes('Electrical')?'#f59e0b':type.includes('Comm')?'#8b5cf6':type.includes('Temp')?'#ef4444':type.includes('Operator')?'#06b6d4':'#6b7280';
+        h+=`<div class="vru-event"><div class="vru-event-dot" style="background:${dotColor}"></div><div class="vru-event-time">Apr ${day}, ${String(hour).padStart(2,'0')}:${String(Math.floor(Math.random()*60)).padStart(2,'0')}</div><div class="vru-event-desc">${type}</div><div class="vru-event-dur">${dur}h</div></div>`;
+    }
+    if(u.events===0) h+=`<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px"><i class="fas fa-check-circle" style="color:#10b981;margin-right:6px"></i>No downtime events in this period</div>`;
+    h+=`</div>`;
+
+    cont.innerHTML=h;
+
+    // Render VRU charts
+    Object.values(vruChartInstances).forEach(ci=>ci.destroy());
+    vruChartInstances={};
+    const tCtx=document.getElementById('vruTrendChart');
+    if(tCtx){
+        const days=30,labels=[],data=[],target=[];
+        const today=new Date(2026,3,28);
+        for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));data.push(Math.round(Math.max(50,Math.min(100,u.avail+(Math.sin(i*.4)*5)+(Math.random()-.5)*8))*10)/10);target.push(95)}
+        vruChartInstances.trend=new Chart(tCtx.getContext('2d'),{type:'line',data:{labels,datasets:[{label:u.id+' Availability',data,borderColor:uc,backgroundColor:uc+'18',borderWidth:2.5,fill:true,tension:.35,pointRadius:0,pointHoverRadius:5},{label:'Target',data:target,borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',align:'end',labels:{boxWidth:10,font:{size:10},padding:12,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8}},scales:{x:{grid:{display:false},ticks:{font:{size:9.5},color:'#9ca3af',maxTicksLimit:10}},y:{min:50,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9.5},color:'#9ca3af',callback:v=>v+'%'}}}}});
+    }
+    const hCtx=document.getElementById('vruHoursChart');
+    if(hCtx){
+        vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready/Idle','Faulted/Down'],datasets:[{data:[u.runH,u.readyH,u.faultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8,callbacks:{label:c=>`${c.label}: ${c.parsed}h`}}}}});
+    }
+}
+
+// ===== ATTENTION CARDS =====
+function renderAttentionCards(){
+    const worstUnits=[
+        {name:'PVR2614',customer:'Enerplus',state:'North Dakota',avail:72.3,hoursDown:199,days:5,sev:'critical'},
+        {name:'PVR2847',customer:'Whiting Petroleum',state:'North Dakota',avail:78.1,hoursDown:158,days:0,restarts:7,sev:'critical'},
+        {name:'PVR2391',customer:'Extraction Oil',state:'Colorado',avail:81.4,hoursDown:134,days:2,sev:'warning'},
+        {name:'PVR2055',customer:'Extraction Oil',state:'Colorado',avail:83.2,hoursDown:121,days:0,sev:'warning'},
+        {name:'PVR2730',customer:'Enerplus',state:'North Dakota',avail:84.6,hoursDown:111,days:1,sev:'warning'},
+    ];
+    const c=document.getElementById('attentionCards');
+    c.innerHTML=worstUnits.map((u,i)=>{
+        const cls=u.avail<80?'critical':'warning';
+        const fc=cls==='critical'?'#ef4444':'#f59e0b';
+        const detail=u.days>0?`Down <strong>${u.days} consecutive days</strong>`:u.restarts?`<strong>${u.restarts} restarts</strong> in 30 days`:`<strong>${u.hoursDown}h</strong> total downtime`;
+        return `<div class="attn-card sev-${u.sev}">
+            <div class="attn-rank">#${i+1}</div>
+            <div class="attn-unit">${u.name}</div>
+            <div class="attn-customer">${u.customer} · ${u.state}</div>
+            <div class="attn-avail ${cls}">${u.avail}%</div>
+            <div class="attn-bar"><div class="attn-bar-fill" style="width:${u.avail}%;background:${fc}"></div></div>
+            <div class="attn-detail">${detail}</div>
+        </div>`;
+    }).join('');
+}
+
+// ===== INIT =====
+renderMonthPresets();
+setPreset('30d');
+renderCalendar();
+renderStateCards();
+renderCustomerCards('risk');
+renderAttentionCards();
+renderTrendChart();
+renderCauseChart();
+renderHeatmap();
+</script>
+</body>
+</html>
