@@ -517,50 +517,17 @@
         </div>
     </div>
 
-    <!-- ===== STATES SECTION ===== -->
-    <div class="section-header ani d3">
-        <h2>By State <span>6 states · ranked by availability</span></h2>
-        <div class="section-actions">
-            <div class="pill-toggle"><button class="pill-btn active" onclick="toggleStateView('cards',this)">Cards</button><button class="pill-btn" onclick="toggleStateView('map',this)">Map</button></div>
-        </div>
-    </div>
-    <div class="state-cards ani d3" id="stateCards"></div>
-    <div id="stateMapView" style="display:none;padding:0 24px 16px">
-        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px;position:relative">
-            <svg id="stateMapSvg" viewBox="0 0 800 500" style="width:100%;max-width:800px;margin:0 auto;display:block"></svg>
-            <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:16px">
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95%</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#3b82f6;display:inline-block"></span> 92-95%</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-92%</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88%</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== CUSTOMERS SECTION ===== -->
-    <div class="section-header ani d4">
-        <h2>By Customer <span>18 customers · sorted by risk</span></h2>
-        <div class="section-actions">
-            <div class="pill-toggle">
-                <button class="pill-btn active" onclick="sortCustomers('risk')">Risk</button>
-                <button class="pill-btn" onclick="sortCustomers('alpha')">A-Z</button>
-                <button class="pill-btn" onclick="sortCustomers('units')">Size</button>
-            </div>
-        </div>
-    </div>
-    <div class="customer-cards" id="customerCards"></div>
-
     <!-- ===== ATTENTION SECTION ===== -->
-    <div class="section-header ani d4" style="margin-top:4px;">
+    <div class="section-header ani d2" style="margin-top:4px;">
         <h2><i class="fas fa-exclamation-circle" style="color:#ef4444;margin-right:6px;font-size:14px"></i>Needs Your Attention <span>5 worst-performing units</span></h2>
     </div>
-    <div class="attention-cards ani d4" id="attentionCards"></div>
+    <div class="attention-cards ani d2" id="attentionCards"></div>
 
     <!-- ===== ACTIONS RECOMMENDED ===== -->
-    <div class="section-header ani d5">
+    <div class="section-header ani d3">
         <h2><i class="fas fa-lightbulb" style="color:#f59e0b;margin-right:6px;font-size:14px"></i>Recommended Actions</h2>
     </div>
-    <div class="action-cards ani d5">
+    <div class="action-cards ani d3">
         <div class="action-card priority-high">
             <div class="action-priority">HIGH</div>
             <div class="action-body">
@@ -594,6 +561,39 @@
             </div>
         </div>
     </div>
+
+    <!-- ===== STATES SECTION ===== -->
+    <div class="section-header ani d3">
+        <h2>By State <span>6 states · ranked by availability</span></h2>
+        <div class="section-actions">
+            <div class="pill-toggle"><button class="pill-btn active" onclick="toggleStateView('cards',this)">Cards</button><button class="pill-btn" onclick="toggleStateView('map',this)">Map</button></div>
+        </div>
+    </div>
+    <div class="state-cards ani d3" id="stateCards"></div>
+    <div id="stateMapView" style="display:none;padding:0 24px 16px">
+        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px;position:relative">
+            <svg id="stateMapSvg" viewBox="0 0 800 500" style="width:100%;max-width:800px;margin:0 auto;display:block"></svg>
+            <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:16px">
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95%</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#3b82f6;display:inline-block"></span> 92-95%</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-92%</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CUSTOMERS SECTION ===== -->
+    <div class="section-header ani d4">
+        <h2>By Customer <span>18 customers · sorted by risk</span></h2>
+        <div class="section-actions">
+            <div class="pill-toggle">
+                <button class="pill-btn active" onclick="sortCustomers('risk')">Risk</button>
+                <button class="pill-btn" onclick="sortCustomers('alpha')">A-Z</button>
+                <button class="pill-btn" onclick="sortCustomers('units')">Size</button>
+            </div>
+        </div>
+    </div>
+    <div class="customer-cards" id="customerCards"></div>
 
     <!-- ===== MONTH COMPARISON ===== -->
     <div class="section-header ani d5">
