@@ -20,6 +20,10 @@
         .sidebar-item:hover,.sidebar-item.active{color:#fff}
         .sidebar-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#3b82f6;border-radius:0 3px 3px 0}
         .sidebar-badge{position:absolute;top:4px;right:8px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid #1a1a2e}
+        .sidebar-pulse{color:#3b82f6 !important;animation:sidebarPulse 2s ease-in-out infinite}
+        .sidebar-pulse::after{content:'';position:absolute;top:6px;right:6px;width:8px;height:8px;background:#3b82f6;border-radius:50%;animation:pulseRing 2s ease-in-out infinite}
+        @keyframes sidebarPulse{0%,100%{opacity:1}50%{opacity:.6}}
+        @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(59,130,246,.5)}70%{box-shadow:0 0 0 6px rgba(59,130,246,0)}100%{box-shadow:0 0 0 0 rgba(59,130,246,0)}}
 
         /* ===== MAIN ===== */
         .main{margin-left:56px;flex:1;min-width:0}
@@ -410,7 +414,7 @@
         <a class="sidebar-item" title="VRUs" onclick="showPage('overview')"><i class="fas fa-microchip"></i>VRUs</a>
         <a class="sidebar-item" title="Network" onclick="showPage('overview')"><i class="fas fa-project-diagram"></i>Network</a>
         <a class="sidebar-item" title="Alarms" onclick="showPage('overview')"><i class="fas fa-exclamation-triangle"></i>Alarms<span class="sidebar-badge"></span></a>
-        <a class="sidebar-item" title="Reports" onclick="showPage('reports')"><i class="fas fa-chart-bar"></i>Reports</a>
+        <a class="sidebar-item sidebar-pulse" id="sidebarReports" title="Reports" onclick="showPage('reports')"><i class="fas fa-chart-bar"></i>Reports</a>
         <a class="sidebar-item" title="More" onclick="showPage('overview')"><i class="fas fa-ellipsis-h"></i>More A...</a>
     </div>
 </nav>
@@ -426,52 +430,83 @@
 
     <!-- ===== OVERVIEW DASHBOARD PAGE ===== -->
     <div id="overviewDashPage">
-        <div class="ov-dash">
-            <div class="ov-welcome">Welcome back, Govind</div>
-            <div class="ov-sub">Platinum Compressor Fleet · 487 VRU units across 6 states</div>
-            <div class="ov-grid">
-                <div class="ov-stat" onclick="showPage('reports')">
-                    <div class="ov-stat-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-check-circle"></i></div>
-                    <div><div class="ov-stat-val" style="color:#10b981">94.7%</div><div class="ov-stat-label">Fleet Availability</div></div>
+        <!-- Overview Tabs -->
+        <div class="report-tabs-wrap"><div class="report-tabs" id="ovTabs">
+            <div class="report-tab active">Compressor & Customer Inventory</div>
+            <div class="report-tab">Compressor Status</div>
+            <div class="report-tab">Cause Prediction</div>
+            <div class="report-tab">Financials</div>
+        </div></div>
+
+        <div style="padding:16px 24px 0">
+            <!-- KPI Row -->
+            <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+                <div style="display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px 20px;min-width:140px">
+                    <i class="fas fa-cogs" style="font-size:20px;color:#3b82f6"></i>
+                    <div><div style="font-size:26px;font-weight:800;color:#1a1a2e">487</div><div style="font-size:10px;color:#6b7280">Total Compressors</div></div>
                 </div>
-                <div class="ov-stat" onclick="showPage('reports')">
-                    <div class="ov-stat-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-cogs"></i></div>
-                    <div><div class="ov-stat-val" style="color:#10b981">449</div><div class="ov-stat-label">Units Running</div></div>
+                <div style="display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px 20px;min-width:140px">
+                    <i class="fas fa-building" style="font-size:20px;color:#8b5cf6"></i>
+                    <div><div style="font-size:26px;font-weight:800;color:#1a1a2e">29</div><div style="font-size:10px;color:#6b7280">Customers</div></div>
                 </div>
-                <div class="ov-stat" onclick="showPage('reports')">
-                    <div class="ov-stat-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-exclamation-circle"></i></div>
-                    <div><div class="ov-stat-val" style="color:#ef4444">26</div><div class="ov-stat-label">Units Down</div></div>
-                </div>
-                <div class="ov-stat" onclick="showPage('reports')">
-                    <div class="ov-stat-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-bell"></i></div>
-                    <div><div class="ov-stat-val" style="color:#f59e0b">14</div><div class="ov-stat-label">Active Alarms</div></div>
-                </div>
-                <div class="ov-stat" onclick="showPage('reports')">
-                    <div class="ov-stat-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-clock"></i></div>
-                    <div><div class="ov-stat-val" style="color:#3b82f6">143</div><div class="ov-stat-label">Downtime Events (30d)</div></div>
-                </div>
-                <div class="ov-stat" onclick="showPage('reports')">
-                    <div class="ov-stat-icon" style="background:#f5f3ff;color:#8b5cf6"><i class="fas fa-arrow-up"></i></div>
-                    <div><div class="ov-stat-val" style="color:#8b5cf6">+1.3%</div><div class="ov-stat-label">vs Last Month</div></div>
+                <div style="flex:1"></div>
+                <div style="display:flex;align-items:center;gap:8px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:10px 16px">
+                    <span style="font-size:11px;color:#6b7280">Date Range</span>
+                    <span style="font-size:12px;font-weight:600;color:#1a1a2e">03/29/2026 — 04/28/2026</span>
                 </div>
             </div>
-            <div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px">Quick Access</div>
-            <div class="ov-quick">
-                <div class="ov-quick-card" onclick="showPage('reports')">
-                    <h3><i class="fas fa-chart-bar" style="color:#3b82f6"></i> Fleet Reports <span class="ov-q-arrow"><i class="fas fa-arrow-right"></i></span></h3>
-                    <p>Availability, downtime analysis, runtime hours, and fleet health reports with drill-down analytics.</p>
+
+            <!-- Emission Trend + All Faults -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+                <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px">
+                    <div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px">Emission Trend</div>
+                    <div style="display:flex;gap:20px;margin-bottom:12px">
+                        <div style="display:flex;align-items:center;gap:6px"><i class="fas fa-cloud" style="color:#6b7280"></i><div><div style="font-size:11px;font-weight:700">0 kg</div><div style="font-size:9px;color:#9ca3af">CO2 Emission</div></div></div>
+                        <div style="display:flex;align-items:center;gap:6px"><i class="fas fa-dollar-sign" style="color:#6b7280"></i><div><div style="font-size:11px;font-weight:700">$ 0</div><div style="font-size:9px;color:#9ca3af">Carbon Credits</div></div></div>
+                    </div>
+                    <div style="height:120px;position:relative"><canvas id="ovEmissionChart"></canvas></div>
                 </div>
-                <div class="ov-quick-card" onclick="showPage('reports')">
-                    <h3><i class="fas fa-map-marked-alt" style="color:#10b981"></i> State Summary <span class="ov-q-arrow"><i class="fas fa-arrow-right"></i></span></h3>
-                    <p>Performance breakdown across Oklahoma, Texas, New Mexico, Wyoming, Colorado, and North Dakota.</p>
+                <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px">
+                    <div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px">All Faults</div>
+                    <div style="display:flex;align-items:center;gap:20px">
+                        <div style="position:relative;width:150px;height:150px"><canvas id="ovFaultsChart"></canvas></div>
+                        <div>
+                            <div style="font-size:11px;color:#6b7280;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-right:4px"></span> Faulted: <strong style="color:#ef4444">992.7 Hrs</strong></div>
+                            <div style="font-size:11px;color:#6b7280"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;margin-right:4px"></span> Not Faulted: <strong style="color:#f59e0b">1,016.3 Hrs</strong></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="ov-quick-card" onclick="showPage('reports')">
-                    <h3><i class="fas fa-building" style="color:#8b5cf6"></i> Customer Reports <span class="ov-q-arrow"><i class="fas fa-arrow-right"></i></span></h3>
-                    <p>Per-customer availability, unit performance, downtime breakdown, and exportable data tables.</p>
+            </div>
+
+            <!-- Customer Overview -->
+            <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;margin-bottom:20px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="font-size:13px;font-weight:600;color:#1a1a2e">Customer Overview <span style="font-size:11px;color:#9ca3af;font-weight:400">· top customers</span></div>
                 </div>
-                <div class="ov-quick-card" onclick="showPage('reports')">
-                    <h3><i class="fas fa-microchip" style="color:#f59e0b"></i> Unit Performance <span class="ov-q-arrow"><i class="fas fa-arrow-right"></i></span></h3>
-                    <p>Individual VRU unit deep-dive with daily trends, hours breakdown, and downtime event timeline.</p>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px;font-size:10px;color:#6b7280">
+                    <div><i class="fas fa-chart-bar" style="color:#10b981;margin-right:3px"></i> Avail: 94.7%</div>
+                    <div><i class="fas fa-building" style="color:#3b82f6;margin-right:3px"></i> Total Customers: 18</div>
+                    <div><i class="fas fa-cogs" style="color:#8b5cf6;margin-right:3px"></i> Total Compressors: 487</div>
+                    <div><i class="fas fa-exclamation-circle" style="color:#ef4444;margin-right:3px"></i> Units Down: 26</div>
+                </div>
+                <div class="scroll-y" id="ovCustomerTable"></div>
+            </div>
+
+            <!-- Compressor Overview -->
+            <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;margin-bottom:20px">
+                <div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px">Compressor Overview <span style="font-size:11px;color:#9ca3af;font-weight:400">· all VRU units</span></div>
+                <div style="display:flex;gap:16px;margin-bottom:14px" id="ovStatusSummary"></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:6px;max-height:500px;overflow-y:auto;scrollbar-width:thin" id="ovCompressorGrid"></div>
+            </div>
+
+            <!-- Navigation Guide -->
+            <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;cursor:pointer" onclick="showPage('reports')">
+                <div style="width:52px;height:52px;border-radius:12px;background:#3b82f6;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <i class="fas fa-chart-bar" style="color:#fff;font-size:22px"></i>
+                </div>
+                <div style="flex:1">
+                    <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:3px">Ready to dive deeper? Open Fleet Reports <i class="fas fa-arrow-right" style="font-size:12px;color:#3b82f6;margin-left:4px"></i></div>
+                    <div style="font-size:12px;color:#6b7280;line-height:1.5">Click here or the <strong>Reports</strong> icon in the sidebar to access availability reports, downtime analysis, customer summaries, and more. Select a date range and click <strong>Run Report</strong> to generate.</div>
                 </div>
             </div>
         </div>
@@ -1781,6 +1816,93 @@ function renderMonthlyView(){
     tabs.addEventListener('scroll',upd);window.addEventListener('resize',upd);setTimeout(upd,100);
 })();
 
+// ===== OVERVIEW DASHBOARD RENDERS =====
+let ovEmissionChart=null, ovFaultsChart=null;
+
+function renderOvEmission(){
+    if(ovEmissionChart) ovEmissionChart.destroy();
+    const ctx=document.getElementById('ovEmissionChart').getContext('2d');
+    const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push((d.getMonth()+1)+'/'+d.getDate())}
+    const data=days.map(()=>Math.floor(Math.random()*40+5));
+    ovEmissionChart=new Chart(ctx,{type:'line',data:{labels:days,datasets:[{label:'CO₂ kg',data:data,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',borderWidth:2,fill:true,tension:.4,pointRadius:0,pointHoverRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e',titleFont:{size:11},bodyFont:{size:11}}},scales:{x:{display:true,grid:{display:false},ticks:{font:{size:8},maxTicksLimit:8,maxRotation:0}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
+}
+
+function renderOvFaults(){
+    if(ovFaultsChart) ovFaultsChart.destroy();
+    const ctx=document.getElementById('ovFaultsChart').getContext('2d');
+    ovFaultsChart=new Chart(ctx,{type:'doughnut',data:{labels:['Faulted','Not Faulted'],datasets:[{data:[992.7,1016.3],backgroundColor:['#ef4444','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},datalabels:DOUGHNUT_DATALABEL_OPTS,tooltip:{backgroundColor:'#1a1a2e',callbacks:{label:ctx=>ctx.label+': '+ctx.raw+' Hrs'}}}}});
+}
+
+function renderOvCustomerTable(){
+    const el=document.getElementById('ovCustomerTable');
+    const sorted=[...CUSTOMERS].sort((a,b)=>b.units-a.units).slice(0,12);
+    let h=`<table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="background:#f9fafb;border-bottom:1px solid #e5e7eb">
+            <th style="text-align:left;padding:8px 10px;font-weight:600;color:#6b7280">Customer</th>
+            <th style="text-align:left;padding:8px 10px;font-weight:600;color:#6b7280">Units</th>
+            <th style="text-align:left;padding:8px 10px;font-weight:600;color:#6b7280;min-width:180px">Availability</th>
+            <th style="text-align:center;padding:8px 10px;font-weight:600;color:#6b7280">Down</th>
+            <th style="text-align:center;padding:8px 10px;font-weight:600;color:#6b7280">Trend</th>
+            <th style="text-align:left;padding:8px 10px;font-weight:600;color:#6b7280">State</th>
+        </tr></thead><tbody>`;
+    sorted.forEach(c=>{
+        const fc=c.avail>=95?'#10b981':c.avail>=92?'#3b82f6':c.avail>=88?'#f59e0b':'#ef4444';
+        const tDir=c.trend>=0?'up':'down';const tColor=c.trend>=0?'#10b981':'#ef4444';
+        h+=`<tr style="border-bottom:1px solid #f3f4f6">
+            <td style="padding:8px 10px;font-weight:500;color:#1a1a2e">${c.name}</td>
+            <td style="padding:8px 10px;color:#6b7280">${c.units}</td>
+            <td style="padding:8px 10px"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden"><div style="width:${c.avail}%;height:100%;background:${fc};border-radius:3px"></div></div><span style="font-weight:600;color:${fc};font-size:11px;min-width:38px">${c.avail}%</span></div></td>
+            <td style="padding:8px 10px;text-align:center;color:${c.down>0?'#ef4444':'#6b7280'};font-weight:${c.down>0?'600':'400'}">${c.down}</td>
+            <td style="padding:8px 10px;text-align:center;color:${tColor};font-size:11px"><i class="fas fa-arrow-${tDir}" style="font-size:9px"></i> ${Math.abs(c.trend)}%</td>
+            <td style="padding:8px 10px;color:#6b7280">${c.state}</td>
+        </tr>`;
+    });
+    h+=`</tbody></table>`;
+    el.innerHTML=h;
+}
+
+function renderOvCompressorGrid(){
+    const statusEl=document.getElementById('ovStatusSummary');
+    const gridEl=document.getElementById('ovCompressorGrid');
+    const statuses=[
+        {label:'Running',count:411,color:'#10b981',icon:'fa-check-circle'},
+        {label:'Warning',count:50,color:'#f59e0b',icon:'fa-exclamation-triangle'},
+        {label:'Faulted',count:26,color:'#ef4444',icon:'fa-times-circle'}
+    ];
+    statusEl.innerHTML=statuses.map(s=>`<div style="display:flex;align-items:center;gap:8px;background:${s.color}10;border:1px solid ${s.color}30;border-radius:8px;padding:8px 14px">
+        <i class="fas ${s.icon}" style="color:${s.color};font-size:14px"></i>
+        <span style="font-size:22px;font-weight:700;color:${s.color}">${s.count}</span>
+        <span style="font-size:11px;color:#6b7280">${s.label}</span>
+    </div>`).join('');
+
+    let units=[];
+    CUSTOMERS.forEach(c=>{
+        for(let i=1;i<=c.units;i++){
+            const rnd=Math.random();
+            let status,color;
+            if(i<=c.down){status='Faulted';color='#ef4444'}
+            else if(rnd<0.1){status='Warning';color='#f59e0b'}
+            else{status='Running';color='#10b981'}
+            units.push({id:c.name.split(' ')[0]+'-VRU-'+String(i).padStart(3,'0'),customer:c.name,status,color,state:c.state});
+        }
+    });
+
+    gridEl.innerHTML=units.map(u=>`<div style="background:${u.color}0a;border:1px solid ${u.color}30;border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:6px;cursor:default" title="${u.customer} · ${u.state}">
+        <div style="width:8px;height:8px;border-radius:50%;background:${u.color};flex-shrink:0"></div>
+        <div style="min-width:0;overflow:hidden">
+            <div style="font-size:10px;font-weight:600;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.id}</div>
+            <div style="font-size:8px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.customer}</div>
+        </div>
+    </div>`).join('');
+}
+
+function initOverviewDashboard(){
+    renderOvEmission();
+    renderOvFaults();
+    renderOvCustomerTable();
+    renderOvCompressorGrid();
+}
+
 // ===== PAGE NAVIGATION =====
 let reportGenerated=false;
 function showPage(page){
@@ -1794,10 +1916,13 @@ function showPage(page){
         document.querySelectorAll('.sidebar-item')[7].classList.add('active');
         document.getElementById('breadcrumbCurrent').textContent='Reports';
     }
-    if(page==='reports'&&!reportGenerated){
-        document.getElementById('reportPlaceholder').style.display='flex';
-        document.getElementById('reportContent').style.display='none';
-        document.getElementById('reportLoading').style.display='none';
+    if(page==='reports'){
+        document.getElementById('sidebarReports').classList.remove('sidebar-pulse');
+        if(!reportGenerated){
+            document.getElementById('reportPlaceholder').style.display='flex';
+            document.getElementById('reportContent').style.display='none';
+            document.getElementById('reportLoading').style.display='none';
+        }
     }
 }
 
@@ -1821,6 +1946,7 @@ function runReport(){
 }
 
 // ===== INIT =====
+initOverviewDashboard();
 renderMonthPresets();
 setPreset('30d');
 renderCalendar();
