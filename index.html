@@ -568,10 +568,21 @@
     <div class="section-header ani d3">
         <h2>By State <span>6 states · ranked by availability</span></h2>
         <div class="section-actions">
-            <div class="pill-toggle"><button class="pill-btn active">Cards</button><button class="pill-btn">Map</button></div>
+            <div class="pill-toggle"><button class="pill-btn active" onclick="toggleStateView('cards',this)">Cards</button><button class="pill-btn" onclick="toggleStateView('map',this)">Map</button></div>
         </div>
     </div>
     <div class="state-cards ani d3" id="stateCards"></div>
+    <div id="stateMapView" style="display:none;padding:0 24px 16px">
+        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px;position:relative">
+            <svg id="stateMapSvg" viewBox="0 0 800 500" style="width:100%;max-width:800px;margin:0 auto;display:block"></svg>
+            <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:16px">
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95%</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#3b82f6;display:inline-block"></span> 92-95%</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-92%</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88%</div>
+            </div>
+        </div>
+    </div>
 
     <!-- ===== CUSTOMERS SECTION ===== -->
     <div class="section-header ani d4">
@@ -805,6 +816,44 @@ function renderStateCards(){
             </div>
         </div>`;
     }).join('');
+}
+
+// ===== STATE MAP VIEW =====
+function toggleStateView(mode,el){
+    const cards=document.getElementById('stateCards');
+    const map=document.getElementById('stateMapView');
+    el.closest('.pill-toggle').querySelectorAll('.pill-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+    if(mode==='map'){
+        cards.style.display='none';map.style.display='block';renderStateMap();
+    } else {
+        cards.style.display='';map.style.display='none';
+    }
+}
+
+function renderStateMap(){
+    const statePaths={
+        'Texas':{d:'M180,280 L180,220 L200,210 L230,200 L260,195 L290,200 L310,210 L340,215 L360,230 L370,260 L380,300 L370,340 L350,370 L320,390 L290,400 L260,395 L230,380 L200,360 L185,330 L175,305 Z',cx:280,cy:300},
+        'Oklahoma':{d:'M180,210 L180,180 L200,175 L260,170 L320,170 L350,175 L350,195 L340,215 L310,210 L290,200 L260,195 L230,200 L200,210 Z',cx:265,cy:190},
+        'New Mexico':{d:'M80,230 L80,340 L170,340 L175,305 L185,330 L180,280 L180,220 L130,225 Z',cx:130,cy:280},
+        'Colorado':{d:'M80,140 L80,230 L130,225 L180,220 L180,180 L180,140 Z',cx:130,cy:182},
+        'Wyoming':{d:'M80,60 L80,140 L180,140 L180,60 Z',cx:130,cy:100},
+        'North Dakota':{d:'M250,20 L250,80 L370,80 L370,20 Z',cx:310,cy:50}
+    };
+    const svg=document.getElementById('stateMapSvg');
+    let html='';
+    STATES_DATA.forEach(s=>{
+        const p=statePaths[s.name];if(!p) return;
+        const fc=s.avail>=95?'#10b981':s.avail>=92?'#3b82f6':s.avail>=88?'#f59e0b':'#ef4444';
+        const bg=s.avail>=95?'rgba(16,185,129,.15)':s.avail>=92?'rgba(59,130,246,.15)':s.avail>=88?'rgba(245,158,11,.15)':'rgba(239,68,68,.15)';
+        const tDir=s.trend>=0?'+':'';
+        html+=`<path d="${p.d}" fill="${bg}" stroke="${fc}" stroke-width="2.5" style="cursor:pointer;transition:all .2s"/>`;
+        html+=`<text x="${p.cx}" y="${p.cy-18}" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">${s.name}</text>`;
+        html+=`<text x="${p.cx}" y="${p.cy+2}" text-anchor="middle" font-size="22" font-weight="800" fill="${fc}">${s.avail}%</text>`;
+        html+=`<text x="${p.cx}" y="${p.cy+18}" text-anchor="middle" font-size="11" fill="#6b7280">${s.units} units · ${s.down} down</text>`;
+        html+=`<text x="${p.cx}" y="${p.cy+33}" text-anchor="middle" font-size="10" font-weight="600" fill="${s.trend>=0?'#10b981':'#ef4444'}">${tDir}${s.trend}% trend</text>`;
+    });
+    svg.innerHTML=html;
 }
 
 // ===== CUSTOMER CARDS =====
