@@ -403,6 +403,42 @@
         .ov-nav-banner{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:12px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;margin-bottom:14px}
         .ov-nav-banner:hover{border-color:#3b82f6;background:#fafbff}
 
+        /* ===== EXECUTIVE KPI STRIP ===== */
+        .exec-page-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 0}
+        .exec-page-title{font-size:18px;font-weight:800;color:#1a1a2e;display:flex;align-items:center;gap:8px}
+        .exec-page-meta{display:flex;align-items:center;gap:12px;font-size:10px;color:#9ca3af}
+        .exec-page-meta .meta-sep{width:3px;height:3px;border-radius:50%;background:#d1d5db}
+        .exec-kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 24px 10px}
+        .exec-kpi-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px 16px;position:relative;transition:box-shadow .15s}
+        .exec-kpi-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+        .exec-kpi-card.alert{border-left:3px solid #ef4444}
+        .exec-kpi-card.warn-accent{border-left:3px solid #f59e0b}
+        .exec-kpi-label{font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;font-weight:600}
+        .exec-kpi-value{font-size:26px;font-weight:800;line-height:1;color:#1a1a2e}
+        .exec-kpi-sub{display:flex;align-items:center;gap:3px;font-size:10px;margin-top:5px;font-weight:600}
+        .exec-kpi-sub.up{color:#10b981}.exec-kpi-sub.down{color:#ef4444}.exec-kpi-sub.neutral{color:#6b7280}
+        .exec-kpi-prev{font-size:9px;color:#c0c5ce;font-weight:400}
+        .sla-callout{margin:0 24px 14px;padding:12px 16px;border-radius:8px;display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.5}
+        .sla-callout i{font-size:15px;flex-shrink:0;margin-top:1px}
+        .sla-callout.danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+        .sla-callout.success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+        .sla-callout strong{font-weight:700}
+        .sla-cust-list{font-size:10.5px;color:#6b7280;margin-top:3px}
+        .sla-cust-list span{margin-right:6px}
+        .cust-risk-table{width:100%;border-collapse:collapse;font-size:12px}
+        .cust-risk-table thead th{background:#f9fafb;padding:8px 12px;text-align:left;font-weight:600;font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid #e5e7eb;white-space:nowrap}
+        .cust-risk-table tbody td{padding:7px 12px;border-bottom:1px solid #f3f4f6}
+        .cust-risk-table tbody tr:hover{background:#f9fafb}
+        .cust-risk-table tbody tr.sla-breach{background:#fef2f2}
+        .cust-risk-table tbody tr.sla-breach:hover{background:#fef2f2}
+        .sla-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700}
+        .sla-badge.above{background:#ecfdf5;color:#059669}.sla-badge.below{background:#fef2f2;color:#dc2626}.sla-badge.at-risk{background:#fffbeb;color:#d97706}
+        .expand-toggle{display:flex;align-items:center;gap:6px;padding:12px 24px 4px;font-size:11px;font-weight:600;color:#6b7280;cursor:pointer;user-select:none;transition:color .15s}
+        .expand-toggle:hover{color:#3b82f6}
+        .expand-toggle i{font-size:9px;transition:transform .2s}.expand-toggle.open i{transform:rotate(90deg)}
+        @media(max-width:1200px){.exec-kpi-strip{grid-template-columns:repeat(3,1fr)}}
+        @media(max-width:768px){.exec-kpi-strip{grid-template-columns:repeat(2,1fr)}}
+
         /* ===== REPORT LOADING ===== */
         .report-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;color:#9ca3af;text-align:center;padding:40px}
         .report-placeholder i{font-size:48px;margin-bottom:16px;color:#d1d5db}
@@ -690,208 +726,74 @@
 
     <!-- ===== OVERVIEW VIEW ===== -->
     <div id="overviewView">
-    <!-- ===== HERO ===== -->
-    <div class="hero ani d1">
-        <div class="hero-main">
-            <div class="hero-greeting">Fleet Availability Report · Last 30 Days</div>
-            <div class="hero-title">Your fleet is at <span class="accent">94.7%</span> availability</div>
-            <div class="hero-summary">
-                <strong>473 of 487 units</strong> ran within target this period. Availability is up <strong>1.3%</strong> from last month, but <strong>North Dakota</strong> is dragging the fleet down at 88.3%. You're <strong>0.3% away</strong> from hitting the 95% SLA target.
-            </div>
-            <div class="hero-badges">
-                <div class="hero-badge green"><i class="fas fa-arrow-up"></i> +1.3% vs last month</div>
-                <div class="hero-badge red"><span class="pulse" style="display:inline-block;width:6px;height:6px;background:#dc2626;border-radius:50%;margin-right:2px"></span> 26 units down now</div>
-                <div class="hero-badge orange"><i class="fas fa-crosshairs"></i> 0.3% to SLA target</div>
-                <div class="hero-badge blue"><i class="fas fa-clock"></i> 143 downtime events</div>
-            </div>
-        </div>
-        <div class="hero-status">
-            <div style="font-size:10px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">Live Status</div>
-            <div class="status-row"><div class="s-left"><div class="status-dot-lg green"></div><span class="s-label">Running</span></div><div><span class="s-value">449</span><span class="s-pct">92.2%</span></div></div>
-            <div class="status-row"><div class="s-left"><div class="status-dot-lg blue"></div><span class="s-label">Idle</span></div><div><span class="s-value">12</span><span class="s-pct">2.5%</span></div></div>
-            <div class="status-row"><div class="s-left"><div class="status-dot-lg orange"></div><span class="s-label">Warning</span></div><div><span class="s-value">14</span><span class="s-pct">2.9%</span></div></div>
-            <div class="status-row"><div class="s-left"><div class="status-dot-lg red"></div><span class="s-label">Down</span></div><div><span class="s-value">12</span><span class="s-pct">2.5%</span></div></div>
+    <!-- ===== EXECUTIVE HEADER ===== -->
+    <div class="exec-page-header ani d1">
+        <div class="exec-page-title"><i class="fas fa-shield-alt" style="color:#3b82f6;font-size:16px"></i> Fleet Availability Overview</div>
+        <div class="exec-page-meta">
+            <span><i class="fas fa-clock" style="margin-right:3px"></i> Last refreshed: Apr 28, 2026 08:42 AM</span>
+            <span class="meta-sep"></span>
+            <span title="Availability = (Running Hours + Ready Hours) / Total Calendar Hours per unit">Calculated from <strong style="color:#374151">473 of 487</strong> active units</span>
+            <span class="meta-sep"></span>
+            <span>Period: <strong style="color:#374151">Last 30 Days</strong></span>
         </div>
     </div>
 
-    <!-- ===== INSIGHT STRIP ===== -->
-    <div class="insights-strip ani d2">
-        <div class="insight-card">
-            <div class="insight-icon red"><i class="fas fa-arrow-trend-down"></i></div>
-            <div class="insight-body">
-                <h4>North Dakota dropped 3.2% this month</h4>
-                <p>Enerplus accounts for 60% of the decline. 2 units offline for 5+ days.</p>
-                <span class="insight-tag critical">Needs Attention</span>
-            </div>
+    <!-- ===== EXECUTIVE KPI STRIP ===== -->
+    <div class="exec-kpi-strip ani d1">
+        <div class="exec-kpi-card">
+            <div class="exec-kpi-label">Fleet Availability</div>
+            <div class="exec-kpi-value" style="color:#3b82f6">94.7%</div>
+            <div class="exec-kpi-sub up"><i class="fas fa-arrow-up" style="font-size:8px"></i> +1.3% vs last month</div>
+            <div class="exec-kpi-prev">was 93.4%</div>
         </div>
-        <div class="insight-card">
-            <div class="insight-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
-            <div class="insight-body">
-                <h4>Extraction Oil has 3 units down simultaneously</h4>
-                <p>Colorado customer averaging only 90.8% — worst in the state.</p>
-                <span class="insight-tag warning">Below SLA</span>
-            </div>
+        <div class="exec-kpi-card warn-accent">
+            <div class="exec-kpi-label">SLA Gap</div>
+            <div class="exec-kpi-value" style="color:#f59e0b">-0.3%</div>
+            <div class="exec-kpi-sub neutral">Target: 95.0%</div>
+            <div class="exec-kpi-prev">Closing — was -1.6% last month</div>
         </div>
-        <div class="insight-card">
-            <div class="insight-icon green"><i class="fas fa-trophy"></i></div>
-            <div class="insight-body">
-                <h4>Callon Petroleum hit 100% uptime this week</h4>
-                <p>24 units, zero downtime events. Best performer in Texas.</p>
-                <span class="insight-tag positive">Top Performer</span>
-            </div>
+        <div class="exec-kpi-card alert">
+            <div class="exec-kpi-label">Units Down Now</div>
+            <div class="exec-kpi-value" style="color:#ef4444">26</div>
+            <div class="exec-kpi-sub down"><i class="fas fa-arrow-up" style="font-size:8px"></i> +4 vs last month</div>
+            <div class="exec-kpi-prev">was 22 · 5.3% of fleet</div>
         </div>
-        <div class="insight-card">
-            <div class="insight-icon blue"><i class="fas fa-chart-line"></i></div>
-            <div class="insight-body">
-                <h4>Fleet trending toward 95% SLA target</h4>
-                <p>If current trajectory holds, you'll cross 95% by May 12.</p>
-                <span class="insight-tag info">On Track</span>
-            </div>
+        <div class="exec-kpi-card alert">
+            <div class="exec-kpi-label">Customers Below SLA</div>
+            <div class="exec-kpi-value" style="color:#ef4444">9 <span style="font-size:14px;font-weight:600;color:#9ca3af">/ 18</span></div>
+            <div class="exec-kpi-sub down"><i class="fas fa-exclamation-circle" style="font-size:8px"></i> 50% non-compliant</div>
+            <div class="exec-kpi-prev">was 7 last month</div>
         </div>
-        <div class="insight-card">
-            <div class="insight-icon purple"><i class="fas fa-repeat"></i></div>
-            <div class="insight-body">
-                <h4>PVR2847 has restarted 7 times in 30 days</h4>
-                <p>Whiting Petroleum unit — possible intermittent hardware fault.</p>
-                <span class="insight-tag warning">Recurring Issue</span>
+        <div class="exec-kpi-card">
+            <div class="exec-kpi-label">Avg Recovery Time</div>
+            <div class="exec-kpi-value">4.2<span style="font-size:14px;font-weight:600;color:#9ca3af">h</span></div>
+            <div class="exec-kpi-sub up"><i class="fas fa-arrow-down" style="font-size:8px"></i> -0.9h faster</div>
+            <div class="exec-kpi-prev">was 5.1h</div>
+        </div>
+        <div class="exec-kpi-card">
+            <div class="exec-kpi-label">Asset-Hours Lost</div>
+            <div class="exec-kpi-value">1,248<span style="font-size:14px;font-weight:600;color:#9ca3af">h</span></div>
+            <div class="exec-kpi-sub up"><i class="fas fa-arrow-down" style="font-size:8px"></i> -312h vs last month</div>
+            <div class="exec-kpi-prev">was 1,560h · ~$211K impact</div>
+        </div>
+    </div>
+
+    <!-- ===== SLA ALERT ===== -->
+    <div class="sla-callout danger ani d1">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+            <strong>9 customers currently below 95% SLA target</strong> — representing 235 units (48% of fleet). North Dakota is the weakest region at 88.3%.
+            <div class="sla-cust-list">
+                <span style="color:#ef4444;font-weight:600">Critical:</span> Enerplus (85.6%), Whiting Petroleum (88.4%)
+                <span style="margin-left:8px;color:#f59e0b;font-weight:600">Watch:</span> Extraction Oil (90.8%), Oasis Petroleum (91.2%), Centennial Dev (92.1%), Laramie (93.6%), Concho (93.9%), Cimarex (94.2%), Continental (94.7%)
             </div>
         </div>
     </div>
 
-    <!-- ===== ATTENTION SECTION ===== -->
-    <div class="section-header ani d2" style="margin-top:4px;">
-        <h2><i class="fas fa-exclamation-circle" style="color:#ef4444;margin-right:6px;font-size:14px"></i>Needs Your Attention <span>5 worst-performing units</span></h2>
-    </div>
-    <div class="attention-cards ani d2" id="attentionCards"></div>
-
-    <!-- ===== ACTIONS RECOMMENDED ===== -->
-    <div class="section-header ani d3">
-        <h2><i class="fas fa-lightbulb" style="color:#f59e0b;margin-right:6px;font-size:14px"></i>Recommended Actions</h2>
-    </div>
-    <div class="action-cards ani d3">
-        <div class="action-card priority-high">
-            <div class="action-priority">HIGH</div>
-            <div class="action-body">
-                <h4>Dispatch field tech to Enerplus — PVR2614</h4>
-                <p>Unit has been down 5 consecutive days with no auto-recovery. Likely mechanical failure requiring on-site intervention.</p>
-                <div class="action-meta"><span><i class="fas fa-map-marker-alt"></i> North Dakota</span><span><i class="fas fa-clock"></i> Down since Apr 23</span><span><i class="fas fa-dollar-sign"></i> ~$4,200/day revenue impact</span></div>
-            </div>
-        </div>
-        <div class="action-card priority-high">
-            <div class="action-priority">HIGH</div>
-            <div class="action-body">
-                <h4>Investigate PVR2847 restart loop — Whiting Petroleum</h4>
-                <p>7 restart cycles in 30 days suggests intermittent electrical or sensor fault. Schedule diagnostic before permanent failure.</p>
-                <div class="action-meta"><span><i class="fas fa-map-marker-alt"></i> North Dakota</span><span><i class="fas fa-repeat"></i> 7 restarts in 30d</span></div>
-            </div>
-        </div>
-        <div class="action-card priority-medium">
-            <div class="action-priority">MEDIUM</div>
-            <div class="action-body">
-                <h4>Review Extraction Oil Colorado fleet — 3 simultaneous failures</h4>
-                <p>All 3 failures occurred within a 4-hour window on Apr 15. Possible shared power supply or environmental cause worth investigating.</p>
-                <div class="action-meta"><span><i class="fas fa-map-marker-alt"></i> Colorado</span><span><i class="fas fa-bolt"></i> Correlated failures</span></div>
-            </div>
-        </div>
-        <div class="action-card priority-low">
-            <div class="action-priority">LOW</div>
-            <div class="action-body">
-                <h4>Schedule preventive maintenance for aging Colorado units</h4>
-                <p>Colorado's 91.5% availability is trending down for the 3rd consecutive month. Consider rotating PM schedule to address before summer peak.</p>
-                <div class="action-meta"><span><i class="fas fa-tools"></i> Preventive</span><span><i class="fas fa-calendar"></i> Before June</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== STATES SECTION ===== -->
-    <div class="section-header ani d3">
-        <h2>By State <span>6 states · ranked by availability</span></h2>
-        <div class="section-actions">
-            <div class="pill-toggle"><button class="pill-btn active" onclick="toggleStateView('cards',this)">Cards</button><button class="pill-btn" onclick="toggleStateView('map',this)">Map</button></div>
-        </div>
-    </div>
-    <div class="state-cards ani d3" id="stateCards"></div>
-    <div id="stateMapView" style="display:none;padding:0 24px 16px">
-        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px;position:relative">
-            <svg id="stateMapSvg" viewBox="0 0 800 500" style="width:100%;max-width:800px;margin:0 auto;display:block"></svg>
-            <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:16px">
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95%</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#3b82f6;display:inline-block"></span> 92-95%</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-92%</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88%</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== CUSTOMERS SECTION ===== -->
-    <div class="section-header ani d4">
-        <h2>By Customer <span>18 customers · sorted by risk</span></h2>
-        <div class="section-actions">
-            <div class="pill-toggle">
-                <button class="pill-btn active" onclick="sortCustomers('risk')">Risk</button>
-                <button class="pill-btn" onclick="sortCustomers('alpha')">A-Z</button>
-                <button class="pill-btn" onclick="sortCustomers('units')">Size</button>
-            </div>
-        </div>
-    </div>
-    <div class="customer-cards" id="customerCards"></div>
-
-    <!-- ===== MONTH COMPARISON ===== -->
-    <div class="section-header ani d5">
-        <h2>Month-over-Month <span>April vs March 2026</span></h2>
-    </div>
-    <div class="comparison-row ani d5">
-        <div class="comp-card">
-            <div class="comp-label">Fleet Availability</div>
-            <div class="comp-values">
-                <div class="comp-current">94.7%</div>
-                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
-                <div class="comp-previous">93.4%</div>
-            </div>
-            <div class="comp-delta up">+1.3%</div>
-        </div>
-        <div class="comp-card">
-            <div class="comp-label">Units Down (avg)</div>
-            <div class="comp-values">
-                <div class="comp-current">26</div>
-                <div class="comp-arrow down"><i class="fas fa-arrow-right"></i></div>
-                <div class="comp-previous">22</div>
-            </div>
-            <div class="comp-delta down">+4 more</div>
-        </div>
-        <div class="comp-card">
-            <div class="comp-label">Downtime Events</div>
-            <div class="comp-values">
-                <div class="comp-current">143</div>
-                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
-                <div class="comp-previous">155</div>
-            </div>
-            <div class="comp-delta up">-12 fewer</div>
-        </div>
-        <div class="comp-card">
-            <div class="comp-label">Avg Recovery Time</div>
-            <div class="comp-values">
-                <div class="comp-current">4.2h</div>
-                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
-                <div class="comp-previous">5.1h</div>
-            </div>
-            <div class="comp-delta up">-0.9h faster</div>
-        </div>
-        <div class="comp-card">
-            <div class="comp-label">SLA Compliance</div>
-            <div class="comp-values">
-                <div class="comp-current">78%</div>
-                <div class="comp-arrow up"><i class="fas fa-arrow-right"></i></div>
-                <div class="comp-previous">71%</div>
-            </div>
-            <div class="comp-delta up">+7% customers</div>
-        </div>
-    </div>
-
-    <!-- ===== CHARTS ===== -->
-    <div class="charts-row ani d5">
+    <!-- ===== TREND + ROOT CAUSE (moved up for executive visibility) ===== -->
+    <div class="charts-row ani d2">
         <div class="card">
-            <div class="card-header"><h3>Availability Trend <span class="card-subtitle">last 30 days</span></h3></div>
+            <div class="card-header"><h3>Availability Trend <span class="card-subtitle">vs 95% SLA target · last 30 days</span></h3></div>
             <div class="card-body"><div class="chart-container"><canvas id="trendChart" height="200"></canvas></div></div>
         </div>
         <div class="card">
@@ -900,14 +802,131 @@
         </div>
     </div>
 
-    <!-- ===== HEATMAP ===== -->
-    <div class="charts-row full ani d5">
+    <!-- ===== STATES SECTION (Where risk is concentrated) ===== -->
+    <div class="section-header ani d2">
+        <h2><i class="fas fa-map-marked-alt" style="color:#0ea5e9;margin-right:6px;font-size:14px"></i>By State <span>6 states · ranked by availability</span></h2>
+        <div class="section-actions">
+            <div class="pill-toggle"><button class="pill-btn active" onclick="toggleStateView('cards',this)">Cards</button><button class="pill-btn" onclick="toggleStateView('map',this)">Map</button></div>
+        </div>
+    </div>
+    <div class="state-cards ani d2" id="stateCards"></div>
+    <div id="stateMapView" style="display:none;padding:0 24px 16px">
+        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px;position:relative">
+            <svg id="stateMapSvg" viewBox="0 0 800 500" style="width:100%;max-width:800px;margin:0 auto;display:block"></svg>
+            <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:16px">
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95% Above SLA</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-95% At Risk</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88% Below SLA</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CUSTOMER SLA EXPOSURE ===== -->
+    <div class="section-header ani d3">
+        <h2><i class="fas fa-building" style="color:#8b5cf6;margin-right:6px;font-size:14px"></i>Customer SLA Exposure <span>18 customers · sorted by risk</span></h2>
+        <div class="section-actions">
+            <div class="pill-toggle">
+                <button class="pill-btn active" onclick="sortCustomers('risk')">SLA Risk</button>
+                <button class="pill-btn" onclick="sortCustomers('alpha')">A-Z</button>
+                <button class="pill-btn" onclick="sortCustomers('units')">Fleet Size</button>
+            </div>
+        </div>
+    </div>
+    <div style="margin:0 24px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden">
+        <div class="scroll-y" style="max-height:480px" id="customerCards"></div>
+    </div>
+
+    <!-- ===== ATTENTION SECTION ===== -->
+    <div class="section-header ani d3" style="margin-top:4px;">
+        <h2><i class="fas fa-exclamation-circle" style="color:#ef4444;margin-right:6px;font-size:14px"></i>Needs Your Attention <span>5 worst-performing units</span></h2>
+    </div>
+    <div class="attention-cards ani d3" id="attentionCards"></div>
+
+    <!-- ===== OPERATIONAL ACTION PLAN ===== -->
+    <div class="section-header ani d4">
+        <h2><i class="fas fa-clipboard-list" style="color:#3b82f6;margin-right:6px;font-size:14px"></i>Operational Action Plan <span>prioritized by availability impact</span></h2>
+    </div>
+    <div class="action-cards ani d3">
+        <div class="action-card priority-high">
+            <div class="action-priority">HIGH</div>
+            <div class="action-body">
+                <h4>Dispatch field tech to Enerplus — PVR2614</h4>
+                <p>Unit down 5 consecutive days, no auto-recovery. Likely mechanical failure requiring on-site intervention. Enerplus SLA at 85.6% — worst in fleet.</p>
+                <div class="action-meta">
+                    <span><i class="fas fa-user"></i> <strong>Owner:</strong> Field Ops — ND Team</span>
+                    <span><i class="fas fa-calendar-check"></i> <strong>ETA:</strong> Apr 30</span>
+                    <span><i class="fas fa-chart-line"></i> <strong>Impact:</strong> +0.4% fleet avail</span>
+                    <span><i class="fas fa-dollar-sign"></i> ~$4,200/day</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-card priority-high">
+            <div class="action-priority">HIGH</div>
+            <div class="action-body">
+                <h4>Investigate PVR2847 restart loop — Whiting Petroleum</h4>
+                <p>7 restart cycles in 30 days — intermittent electrical or sensor fault. Risk of permanent failure and cascade to adjacent units if not addressed.</p>
+                <div class="action-meta">
+                    <span><i class="fas fa-user"></i> <strong>Owner:</strong> Remote Diagnostics</span>
+                    <span><i class="fas fa-calendar-check"></i> <strong>ETA:</strong> Apr 29</span>
+                    <span><i class="fas fa-chart-line"></i> <strong>Impact:</strong> Prevent 3-unit cascade</span>
+                    <span><i class="fas fa-repeat"></i> 7 restarts</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-card priority-medium">
+            <div class="action-priority">MED</div>
+            <div class="action-body">
+                <h4>Review Extraction Oil Colorado fleet — 3 simultaneous failures</h4>
+                <p>All 3 failures within a 4-hour window on Apr 15. Shared power supply or environmental root cause likely. Customer at 90.8% — third month below SLA.</p>
+                <div class="action-meta">
+                    <span><i class="fas fa-user"></i> <strong>Owner:</strong> Regional Eng — CO</span>
+                    <span><i class="fas fa-calendar-check"></i> <strong>ETA:</strong> May 2</span>
+                    <span><i class="fas fa-chart-line"></i> <strong>Impact:</strong> +0.3% fleet avail</span>
+                    <span><i class="fas fa-bolt"></i> Correlated failures</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-card priority-medium">
+            <div class="action-priority">MED</div>
+            <div class="action-body">
+                <h4>Escalate Centennial Dev SLA risk — 3rd consecutive month below target</h4>
+                <p>Customer at 92.1% with downward trend (-0.3%/mo). 28 units, 2 currently down. Proactive account review recommended before breach escalation.</p>
+                <div class="action-meta">
+                    <span><i class="fas fa-user"></i> <strong>Owner:</strong> Account Mgr — J. Rodriguez</span>
+                    <span><i class="fas fa-calendar-check"></i> <strong>ETA:</strong> May 1 (review)</span>
+                    <span><i class="fas fa-chart-line"></i> <strong>Impact:</strong> SLA retention</span>
+                    <span><i class="fas fa-building"></i> Customer risk</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-card priority-low">
+            <div class="action-priority">LOW</div>
+            <div class="action-body">
+                <h4>Schedule preventive maintenance for aging Colorado units</h4>
+                <p>Colorado 91.5% availability trending down for 3rd consecutive month. Rotating PM schedule before summer peak will prevent projected 2-3% seasonal decline.</p>
+                <div class="action-meta">
+                    <span><i class="fas fa-user"></i> <strong>Owner:</strong> PM Scheduling</span>
+                    <span><i class="fas fa-calendar-check"></i> <strong>ETA:</strong> Before June</span>
+                    <span><i class="fas fa-chart-line"></i> <strong>Impact:</strong> Prevent -2.5% drop</span>
+                    <span><i class="fas fa-tools"></i> Preventive</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MoM data integrated into KPI strip above; charts moved to top -->
+
+    <!-- ===== HEATMAP (expandable analyst view) ===== -->
+    <div class="expand-toggle ani d5" onclick="toggleHeatmapSection(this)"><i class="fas fa-chevron-right"></i> Daily Availability Heatmap <span style="font-weight:400;color:#9ca3af;margin-left:4px">· analyst detail view</span></div>
+    <div id="heatmapSection" style="display:none">
+    <div class="charts-row full">
         <div class="card">
             <div class="card-header"><h3>Daily Availability Heatmap <span class="card-subtitle">by customer · 30 days</span></h3>
                 <select class="card-select" id="heatmapGroup" onchange="renderHeatmap()"><option value="customer">By Customer</option><option value="state">By State</option></select>
             </div>
             <div class="card-body"><div class="heatmap-container" id="heatmapContainer"></div></div>
         </div>
+    </div>
     </div>
 
     <!-- ===== VIEW RAW DATA BUTTON ===== -->
@@ -1019,21 +1038,24 @@ const STATES_DATA=[
 function renderStateCards(){
     const c=document.getElementById('stateCards');
     c.innerHTML=STATES_DATA.map(s=>{
-        const cls=s.avail>=95?'excellent':s.avail>=92?'good':s.avail>=88?'warning':'critical';
-        const fc={excellent:'#10b981',good:'#3b82f6',warning:'#f59e0b',critical:'#ef4444'}[cls];
-        const attn=s.avail<92?'critical-attention':s.avail<95?'attention':'';
+        const fc=s.avail>=95?'#10b981':s.avail>=88?'#f59e0b':'#ef4444';
+        const cls=s.avail>=95?'excellent':s.avail>=88?'warning':'critical';
+        const attn=s.avail<88?'critical-attention':s.avail<95?'attention':'';
+        const slaLabel=s.avail>=95?'Above SLA':'Below SLA';
+        const slaBg=s.avail>=95?'#ecfdf5':'#fef2f2';
+        const slaColor=s.avail>=95?'#059669':'#dc2626';
         const tDir=s.trend>=0?'up':'down';
         return `<div class="state-card ${attn}">
-            <div class="state-name">${s.name}</div>
-            <div class="state-meta">${s.units} units · ${s.custs} customers</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="state-name">${s.name}</div><span style="font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:8px;background:${slaBg};color:${slaColor}">${slaLabel}</span></div>
+            <div class="state-meta">${s.units} units · ${s.custs} customers · ${s.down} down</div>
             <div class="state-gauge-row">
                 <div class="state-pct ${cls}">${s.avail}%</div>
                 <div class="state-trend ${tDir}"><i class="fas fa-arrow-${tDir}"></i> ${Math.abs(s.trend)}%</div>
             </div>
             <div class="state-bar"><div class="state-bar-fill" style="width:${s.avail}%;background:${fc}"></div></div>
             <div class="state-bottom">
-                <div class="state-stat"><strong>${s.down}</strong> down</div>
-                <div class="state-stat">${s.avail>=95?'Above':'Below'} target</div>
+                <div class="state-stat" style="color:${s.down>0?'#ef4444':'#6b7280'}"><strong>${s.down}</strong> down now</div>
+                <div class="state-stat">${s.avail>=95?'<span style="color:#10b981">&#10003;</span> Compliant':'<span style="color:#ef4444">&#10007;</span> Non-compliant'}</div>
             </div>
         </div>`;
     }).join('');
@@ -1065,8 +1087,8 @@ function renderStateMap(){
     let html='';
     STATES_DATA.forEach(s=>{
         const p=statePaths[s.name];if(!p) return;
-        const fc=s.avail>=95?'#10b981':s.avail>=92?'#3b82f6':s.avail>=88?'#f59e0b':'#ef4444';
-        const bg=s.avail>=95?'rgba(16,185,129,.15)':s.avail>=92?'rgba(59,130,246,.15)':s.avail>=88?'rgba(245,158,11,.15)':'rgba(239,68,68,.15)';
+        const fc=s.avail>=95?'#10b981':s.avail>=88?'#f59e0b':'#ef4444';
+        const bg=s.avail>=95?'rgba(16,185,129,.15)':s.avail>=88?'rgba(245,158,11,.15)':'rgba(239,68,68,.15)';
         const tDir=s.trend>=0?'+':'';
         html+=`<path d="${p.d}" fill="${bg}" stroke="${fc}" stroke-width="2.5" style="cursor:pointer;transition:all .2s"/>`;
         html+=`<text x="${p.cx}" y="${p.cy-18}" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">${s.name}</text>`;
@@ -1077,45 +1099,48 @@ function renderStateMap(){
     svg.innerHTML=html;
 }
 
-// ===== CUSTOMER CARDS =====
+// ===== CUSTOMER SLA RISK TABLE =====
 function renderCustomerCards(sort='risk'){
     let sorted=[...CUSTOMERS];
     if(sort==='risk') sorted.sort((a,b)=>a.avail-b.avail);
     else if(sort==='alpha') sorted.sort((a,b)=>a.name.localeCompare(b.name));
     else sorted.sort((a,b)=>b.units-a.units);
 
+    const insights={
+        'Enerplus':'Longest downtime streak: 5 days','Whiting Petroleum':'PVR2847 restart loop (7×)',
+        'Extraction Oil':'3 simultaneous failures Apr 15','Callon Petroleum':'Zero downtime this period',
+        'Diamondback Energy':'Most consistent fleet','Pioneer Natural':'Recovery from March dip',
+        'Centennial Dev':'3rd month below target','Oasis Petroleum':'2 units recurring faults',
+        'Continental Resources':'Borderline — trending down','Concho Resources':'Bearing wear pattern',
+    };
+
     const c=document.getElementById('customerCards');
-    c.innerHTML=sorted.map(cu=>{
-        const cls=cu.avail>=95?'excellent':cu.avail>=92?'good':cu.avail>=88?'warning':'critical';
-        const fc={excellent:'#10b981',good:'#3b82f6',warning:'#f59e0b',critical:'#ef4444'}[cls];
-        const flagged=cu.avail<90?'flagged':'';
-        const tDir=cu.trend>=0?'up':'down';
-        const runPct=cu.avail;const wrnPct=Math.min(100-cu.avail,3);const dwnPct=100-cu.avail-wrnPct;
-        const insights={
-            'Enerplus':'Longest downtime streak: 5 days',
-            'Whiting Petroleum':'PVR2847 has 7 restart cycles',
-            'Extraction Oil':'3 simultaneous failures Apr 15',
-            'Callon Petroleum':'Zero downtime — top performer',
-            'Diamondback Energy':'Most consistent fleet in TX',
-            'Pioneer Natural':'Strong recovery from March dip',
-        };
-        const ins=insights[cu.name]||`${cu.units} units across ${cu.state}`;
-        return `<div class="cust-card ${flagged}">
-            <div class="cust-top">
-                <div class="cust-avatar" style="background:${cu.color}">${cu.name.charAt(0)}</div>
-                <div class="cust-info"><h4>${cu.name}</h4><div class="c-meta">${cu.state} · ${cu.units} units</div></div>
-            </div>
-            <div class="cust-metrics">
-                <div class="cust-metric"><div class="cm-label">Availability</div><div class="cm-value ${cls}">${cu.avail}%</div></div>
-                <div class="cust-metric"><div class="cm-label">Down Now</div><div class="cm-value" style="color:${cu.down>0?'#ef4444':'#10b981'}">${cu.down>0?cu.down:'None'}</div></div>
-            </div>
-            <div class="cust-timeline"><div class="seg run" style="width:${runPct}%"></div><div class="seg wrn" style="width:${wrnPct}%"></div><div class="seg dwn" style="width:${dwnPct}%"></div></div>
-            <div class="cust-bottom">
-                <div class="cust-insight">${ins}</div>
-                <div class="cust-trend ${tDir}"><i class="fas fa-arrow-${tDir}"></i> ${Math.abs(cu.trend)}%</div>
-            </div>
-        </div>`;
-    }).join('');
+    let h=`<table class="cust-risk-table"><thead><tr>
+        <th style="width:24px">#</th><th>Customer</th><th>State</th><th style="text-align:center">Units</th>
+        <th style="min-width:150px">Availability</th><th style="text-align:center">SLA Status</th>
+        <th style="text-align:center">Down</th><th style="text-align:center">vs Last Mo</th><th>Top Issue</th>
+    </tr></thead><tbody>`;
+    sorted.forEach((cu,i)=>{
+        const fc=cu.avail>=95?'#10b981':cu.avail>=92?'#3b82f6':cu.avail>=88?'#f59e0b':'#ef4444';
+        const slaClass=cu.avail>=95?'above':cu.avail>=92?'at-risk':'below';
+        const slaLabel=cu.avail>=95?'Above SLA':cu.avail>=92?'At Risk':'Below SLA';
+        const tDir=cu.trend>=0?'up':'down';const tColor=cu.trend>=0?'#10b981':'#ef4444';
+        const rowClass=cu.avail<90?'sla-breach':'';
+        const ins=insights[cu.name]||'—';
+        h+=`<tr class="${rowClass}">
+            <td style="color:#9ca3af;font-size:10px;text-align:center">${i+1}</td>
+            <td style="font-weight:600;color:#1a1a2e">${cu.name}</td>
+            <td style="color:#6b7280">${cu.state}</td>
+            <td style="text-align:center;font-weight:600">${cu.units}</td>
+            <td><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden"><div style="width:${cu.avail}%;height:100%;background:${fc};border-radius:2px"></div></div><span style="font-weight:700;color:${fc};font-size:11px;min-width:38px">${cu.avail}%</span></div></td>
+            <td style="text-align:center"><span class="sla-badge ${slaClass}">${slaLabel}</span></td>
+            <td style="text-align:center;color:${cu.down>0?'#ef4444':'#d1d5db'};font-weight:${cu.down>0?'700':'400'}">${cu.down}</td>
+            <td style="text-align:center;font-size:10px;color:${tColor};font-weight:600"><i class="fas fa-arrow-${tDir}" style="font-size:8px"></i> ${Math.abs(cu.trend)}%</td>
+            <td style="font-size:10.5px;color:#6b7280;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${ins}">${ins}</td>
+        </tr>`;
+    });
+    h+=`</tbody></table>`;
+    c.innerHTML=h;
 }
 function sortCustomers(mode){
     document.querySelectorAll('.section-actions .pill-btn').forEach(b=>b.classList.remove('active'));
@@ -1530,19 +1555,27 @@ function renderVruReport(){
 }
 
 // ===== ATTENTION CARDS =====
+function toggleHeatmapSection(el){
+    const sec=document.getElementById('heatmapSection');
+    const show=sec.style.display==='none';
+    sec.style.display=show?'block':'none';
+    el.classList.toggle('open',show);
+    if(show&&!sec.dataset.loaded){renderHeatmap();sec.dataset.loaded='1'}
+}
+
 function renderAttentionCards(){
     const worstUnits=[
-        {name:'PVR2614',customer:'Enerplus',state:'North Dakota',avail:72.3,hoursDown:199,days:5,sev:'critical'},
-        {name:'PVR2847',customer:'Whiting Petroleum',state:'North Dakota',avail:78.1,hoursDown:158,days:0,restarts:7,sev:'critical'},
-        {name:'PVR2391',customer:'Extraction Oil',state:'Colorado',avail:81.4,hoursDown:134,days:2,sev:'warning'},
-        {name:'PVR2055',customer:'Extraction Oil',state:'Colorado',avail:83.2,hoursDown:121,days:0,sev:'warning'},
-        {name:'PVR2730',customer:'Enerplus',state:'North Dakota',avail:84.6,hoursDown:111,days:1,sev:'warning'},
+        {name:'PVR2614',customer:'Enerplus',state:'North Dakota',avail:72.3,hoursDown:199,days:5,sev:'critical',sla:'Below SLA',issue:'Mechanical failure — no auto-recovery'},
+        {name:'PVR2847',customer:'Whiting Petroleum',state:'North Dakota',avail:78.1,hoursDown:158,days:0,restarts:7,sev:'critical',sla:'Below SLA',issue:'Restart loop — intermittent electrical fault'},
+        {name:'PVR2391',customer:'Extraction Oil',state:'Colorado',avail:81.4,hoursDown:134,days:2,sev:'warning',sla:'Below SLA',issue:'Correlated failure — shared power supply'},
+        {name:'PVR2055',customer:'Extraction Oil',state:'Colorado',avail:83.2,hoursDown:121,days:0,sev:'warning',sla:'Below SLA',issue:'Overheating — coolant system check needed'},
+        {name:'PVR2730',customer:'Enerplus',state:'North Dakota',avail:84.6,hoursDown:111,days:1,sev:'warning',sla:'Below SLA',issue:'Communication loss — sensor replacement'},
     ];
     const c=document.getElementById('attentionCards');
     c.innerHTML=worstUnits.map((u,i)=>{
         const cls=u.avail<80?'critical':'warning';
         const fc=cls==='critical'?'#ef4444':'#f59e0b';
-        const detail=u.days>0?`Down <strong>${u.days} consecutive days</strong>`:u.restarts?`<strong>${u.restarts} restarts</strong> in 30 days`:`<strong>${u.hoursDown}h</strong> total downtime`;
+        const detail=u.days>0?`Down <strong>${u.days} consecutive days</strong> · ${u.hoursDown}h lost`:u.restarts?`<strong>${u.restarts} restarts</strong> in 30d · ${u.hoursDown}h lost`:`<strong>${u.hoursDown}h</strong> total downtime`;
         return `<div class="attn-card sev-${u.sev}">
             <div class="attn-rank">#${i+1}</div>
             <div class="attn-unit">${u.name}</div>
@@ -1550,6 +1583,7 @@ function renderAttentionCards(){
             <div class="attn-avail ${cls}">${u.avail}%</div>
             <div class="attn-bar"><div class="attn-bar-fill" style="width:${u.avail}%;background:${fc}"></div></div>
             <div class="attn-detail">${detail}</div>
+            <div style="font-size:9px;color:#6b7280;margin-top:4px;border-top:1px solid #f3f4f6;padding-top:4px"><i class="fas fa-wrench" style="margin-right:3px;color:#9ca3af"></i>${u.issue}</div>
         </div>`;
     }).join('');
 }
