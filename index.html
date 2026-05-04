@@ -1699,7 +1699,7 @@ function renderGroupVru(c,units,cont){
 
     h+=`<div class="charts-row ani d3" style="padding:0 24px 16px">
         <div class="card"><div class="card-header"><h3>Group Availability Trend — ${units.length} Units</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruTrendChart" height="200"></canvas></div></div></div>
-        <div class="card"><div class="card-header"><h3>Hours Distribution</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruHoursChart" height="200"></canvas></div></div></div>
+        <div class="card"><div class="card-header"><h3>Hours Breakdown by Unit</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruHoursChart" height="200"></canvas></div></div></div>
     </div>`;
 
     h+=`<div class="cv-section-title"><i class="fas fa-th-list"></i>Unit Comparison Table</div>`;
@@ -1775,7 +1775,12 @@ function renderGroupVru(c,units,cont){
     }
     const hCtx=document.getElementById('vruHoursChart');
     if(hCtx){
-        vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready/Idle','Faulted/Down'],datasets:[{data:[totalRunH,totalReadyH,totalFaultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed.toLocaleString()}h`}},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
+        const uLabels=units.map(u=>u.id);
+        vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'bar',data:{labels:uLabels,datasets:[
+            {label:'Running',data:units.map(u=>u.runH),backgroundColor:'#10b981',borderRadius:2,barPercentage:.7},
+            {label:'Ready/Idle',data:units.map(u=>u.readyH),backgroundColor:'#3b82f6',borderRadius:2,barPercentage:.7},
+            {label:'Faulted/Down',data:units.map(u=>u.faultH),backgroundColor:'#ef4444',borderRadius:2,barPercentage:.7}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true,padding:8}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'h'}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9.5},color:'#374151',maxRotation:45}},y:{stacked:true,grid:{color:'#f3f4f6'},ticks:{font:{size:9},color:'#9ca3af',callback:v=>v+'h'}}}}});
     }
 }
 
