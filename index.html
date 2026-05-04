@@ -372,6 +372,16 @@
         .vru-event-time{font-size:11px;color:#9ca3af;min-width:100px}
         .vru-event-desc{font-size:12px;color:#374151;flex:1}
         .vru-event-dur{font-size:11px;font-weight:600;color:#6b7280}
+        .vru-multi-item{display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;transition:background .1s}
+        .vru-multi-item:hover{background:#f9fafb}
+        .vru-multi-item input[type=checkbox]{accent-color:#3b82f6;width:14px;height:14px;cursor:pointer;flex-shrink:0}
+        .vru-multi-item .vru-multi-label{font-size:12px;color:#374151;flex:1}
+        .vru-multi-item .vru-multi-avail{font-size:11px;font-weight:600}
+        .vru-multi-item .vru-multi-status{font-size:9px;padding:1px 6px;border-radius:10px;font-weight:600}
+        .vru-header-card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px 28px;margin:0 24px 16px}
+        .vru-header-title{font-size:20px;font-weight:800;color:#1a1a2e;display:flex;align-items:center;gap:10px}
+        .vru-header-meta{font-size:12px;color:#6b7280;margin-top:4px}
+        .vru-group-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;background:#eff6ff;color:#3b82f6;border:1px solid #bfdbfe}
 
         /* ===== OVERVIEW DASHBOARD ===== */
         .ov-filter-row{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb}
@@ -970,11 +980,36 @@
     <!-- ===== VRU REPORT VIEW ===== -->
     <div id="vruView" style="display:none">
         <div style="padding:20px 24px 0">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
-                <label style="font-size:13px;font-weight:600;color:#1a1a2e">Select Customer</label>
-                <select id="vruCustSelect" onchange="populateVruUnits();renderVruReport()" class="card-select" style="min-width:200px;padding:8px 32px 8px 10px;font-size:13px"></select>
-                <label style="font-size:13px;font-weight:600;color:#1a1a2e;margin-left:8px">Select VRU</label>
-                <select id="vruUnitSelect" onchange="renderVruReport()" class="card-select" style="min-width:180px;padding:8px 32px 8px 10px;font-size:13px"></select>
+            <div class="card" style="padding:16px 20px;margin-bottom:16px">
+                <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px">State</label>
+                        <select id="vruStateSelect" onchange="filterVruByState();populateVruUnits();renderVruReport()" class="card-select" style="min-width:160px;padding:8px 32px 8px 10px;font-size:13px">
+                            <option value="All">All States</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px">Customer</label>
+                        <select id="vruCustSelect" onchange="populateVruUnits();renderVruReport()" class="card-select" style="min-width:200px;padding:8px 32px 8px 10px;font-size:13px"></select>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;position:relative">
+                        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px">VRU Units</label>
+                        <div id="vruMultiSelectWrap" style="position:relative">
+                            <button id="vruMultiBtn" onclick="toggleVruDropdown()" class="card-select" style="min-width:220px;padding:8px 32px 8px 10px;font-size:13px;text-align:left;cursor:pointer;background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;display:flex;align-items:center;gap:6px">
+                                <span id="vruMultiBtnText" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Select units...</span>
+                                <span id="vruMultiBadge" style="display:none;background:#3b82f6;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;flex-shrink:0"></span>
+                            </button>
+                            <div id="vruMultiDrop" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;width:280px;max-height:320px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;overflow:hidden">
+                                <div style="padding:8px 10px;border-bottom:1px solid #f3f4f6;display:flex;gap:6px">
+                                    <button onclick="vruSelectAll()" style="flex:1;padding:5px 0;font-size:10px;font-weight:600;background:#eff6ff;color:#3b82f6;border:1px solid #bfdbfe;border-radius:4px;cursor:pointer">Select All</button>
+                                    <button onclick="vruDeselectAll()" style="flex:1;padding:5px 0;font-size:10px;font-weight:600;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;border-radius:4px;cursor:pointer">Clear All</button>
+                                </div>
+                                <div id="vruMultiList" style="max-height:260px;overflow-y:auto;padding:4px 0"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="renderVruReport()" style="padding:8px 20px;font-size:12px;font-weight:600;color:#fff;background:#3b82f6;border:none;border-radius:6px;cursor:pointer;transition:background .15s;margin-left:auto" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'"><i class="fas fa-chart-bar" style="margin-right:5px"></i>View Report</button>
+                </div>
             </div>
         </div>
         <div id="vruReportContent"></div>
@@ -1343,7 +1378,10 @@ function navigateTo(viewId,opts){
         if(opts&&opts.vruCustomer){
             const cs=document.getElementById('vruCustSelect');
             if(cs){cs.value=opts.vruCustomer;populateVruUnits();
-                if(opts.vruUnit){setTimeout(()=>{const us=document.getElementById('vruUnitSelect');if(us){us.value=opts.vruUnit;renderVruReport()}},50)}
+                if(opts.vruUnit){setTimeout(()=>{
+                    document.querySelectorAll('#vruMultiList input[type=checkbox]').forEach(cb=>{cb.checked=cb.value===opts.vruUnit});
+                    updateVruBtnText();renderVruReport();
+                },50)}
                 else renderVruReport();
             }
         }
@@ -1485,81 +1523,119 @@ function custDrillUp(){
 
 // ===== VRU REPORT =====
 function initVruView(){
-    const sel=document.getElementById('vruCustSelect');
-    sel.innerHTML=CUSTOMERS.sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+    const stateSel=document.getElementById('vruStateSelect');
+    const states=[...new Set(CUSTOMERS.map(c=>c.state))].sort();
+    stateSel.innerHTML='<option value="All">All States</option>'+states.map(s=>`<option value="${s}">${s}</option>`).join('');
+    filterVruByState();
     populateVruUnits();
+}
+function filterVruByState(){
+    const st=document.getElementById('vruStateSelect').value;
+    const sel=document.getElementById('vruCustSelect');
+    const filtered=st==='All'?CUSTOMERS:CUSTOMERS.filter(c=>c.state===st);
+    sel.innerHTML=filtered.sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${c.name}">${c.name} (${c.state})</option>`).join('');
 }
 function populateVruUnits(){
     const cName=document.getElementById('vruCustSelect').value;
-    const sel=document.getElementById('vruUnitSelect');
     const units=VRU_UNITS[cName]||[];
-    sel.innerHTML=units.map(u=>`<option value="${u.id}">${u.id} (${u.avail}%)</option>`).join('');
+    const list=document.getElementById('vruMultiList');
+    list.innerHTML=units.map((u,i)=>{
+        const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+        const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+        const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
+        return `<label class="vru-multi-item"><input type="checkbox" value="${u.id}" ${i===0?'checked':''} onchange="updateVruBtnText()"><span class="vru-multi-label">${u.id}</span><span class="vru-multi-avail" style="color:${ac}">${u.avail}%</span><span class="vru-multi-status" style="background:${sbg};color:${sc}">${u.status}</span></label>`;
+    }).join('');
+    updateVruBtnText();
 }
+function getSelectedVruIds(){
+    return [...document.querySelectorAll('#vruMultiList input[type=checkbox]:checked')].map(cb=>cb.value);
+}
+function updateVruBtnText(){
+    const sel=getSelectedVruIds();
+    const btn=document.getElementById('vruMultiBtnText');
+    const badge=document.getElementById('vruMultiBadge');
+    if(sel.length===0){btn.textContent='Select units...';badge.style.display='none'}
+    else if(sel.length===1){btn.textContent=sel[0];badge.style.display='none'}
+    else{btn.textContent=sel.length+' units selected';badge.textContent=sel.length;badge.style.display='inline-block'}
+}
+function toggleVruDropdown(){
+    const d=document.getElementById('vruMultiDrop');
+    d.style.display=d.style.display==='none'?'block':'none';
+}
+function vruSelectAll(){
+    document.querySelectorAll('#vruMultiList input[type=checkbox]').forEach(cb=>cb.checked=true);
+    updateVruBtnText();
+}
+function vruDeselectAll(){
+    document.querySelectorAll('#vruMultiList input[type=checkbox]').forEach(cb=>cb.checked=false);
+    updateVruBtnText();
+}
+document.addEventListener('click',function(e){
+    const wrap=document.getElementById('vruMultiSelectWrap');
+    if(wrap&&!wrap.contains(e.target)){document.getElementById('vruMultiDrop').style.display='none'}
+});
 
 let vruChartInstances={};
 function renderVruReport(){
     const cName=document.getElementById('vruCustSelect').value;
-    const uId=document.getElementById('vruUnitSelect').value;
-    if(!cName||!uId) return;
+    const selectedIds=getSelectedVruIds();
+    if(!cName||!selectedIds.length) return;
     const c=CUSTOMERS.find(x=>x.name===cName);
-    const u=(VRU_UNITS[cName]||[]).find(x=>x.id===uId);
-    if(!c||!u) return;
+    const allUnits=VRU_UNITS[cName]||[];
+    const units=allUnits.filter(u=>selectedIds.includes(u.id));
+    if(!c||!units.length) return;
 
+    Object.values(vruChartInstances).forEach(ci=>ci.destroy());
+    vruChartInstances={};
+    const cont=document.getElementById('vruReportContent');
+
+    if(units.length===1) renderSingleVru(c,units[0],cont);
+    else renderGroupVru(c,units,cont);
+}
+
+function renderSingleVru(c,u,cont){
     const uc=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
     const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
     const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
     const totalH=u.runH+u.readyH+u.faultH;
-    const cont=document.getElementById('vruReportContent');
 
-    let h=`
-    <div class="cv-banner ani d1">
-        <div class="cv-banner-main">
-            <div class="cv-name" style="display:flex;align-items:center;gap:12px">${u.id} <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:${sbg};color:${sc}"><span style="width:6px;height:6px;border-radius:50%;background:${sc}"></span>${u.status}</span></div>
-            <div class="cv-meta"><i class="fas fa-building" style="margin-right:4px"></i>${c.name} · <i class="fas fa-map-marker-alt" style="margin:0 4px"></i>${c.state} · Last 30 Days</div>
-            <div class="cv-kpis">
-                <div class="cv-kpi"><div class="cv-kpi-label">Availability</div><div class="cv-kpi-value" style="color:${uc}">${u.avail}%</div><div class="cv-kpi-sub ${u.trend>=0?'up':'down'}"><i class="fas fa-arrow-${u.trend>=0?'up':'down'}" style="margin-right:3px"></i>${Math.abs(u.trend)}% vs last month</div></div>
-                <div class="cv-kpi"><div class="cv-kpi-label">Running Hours</div><div class="cv-kpi-value" style="color:#6ee7b7">${u.runH}h</div></div>
-                <div class="cv-kpi"><div class="cv-kpi-label">Ready Hours</div><div class="cv-kpi-value" style="color:#93c5fd">${u.readyH}h</div></div>
-                <div class="cv-kpi"><div class="cv-kpi-label">Faulted Hours</div><div class="cv-kpi-value" style="color:#fca5a5">${u.faultH}h</div></div>
-                <div class="cv-kpi"><div class="cv-kpi-label">Events</div><div class="cv-kpi-value" style="color:#c4b5fd">${u.events}</div></div>
+    let h=`<div class="vru-header-card ani d1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+                <div class="vru-header-title">${u.id} <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:${sbg};color:${sc}"><span style="width:6px;height:6px;border-radius:50%;background:${sc}"></span>${u.status}</span></div>
+                <div class="vru-header-meta"><i class="fas fa-building" style="margin-right:4px"></i>${c.name} · <i class="fas fa-map-marker-alt" style="margin:0 4px"></i>${c.state} · Last 30 Days</div>
+            </div>
+            <div style="text-align:center">
+                <svg width="100" height="76" viewBox="0 0 120 90">
+                    <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+                    <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${uc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${u.avail/100*157}" stroke-dashoffset="0"/>
+                    <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${u.avail}</text>
+                    <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+                </svg>
+                <div style="font-size:9px;color:#9ca3af">Target: 95.0%</div>
             </div>
         </div>
-        <div class="cv-gauge-card">
-            <svg width="120" height="90" viewBox="0 0 120 90">
-                <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
-                <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${uc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${u.avail/100*157}" stroke-dashoffset="0"/>
-                <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${u.avail}</text>
-                <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
-            </svg>
-            <div style="font-size:10px;color:#6b7280;font-weight:500;margin-top:4px">Unit Availability</div>
-            <div style="font-size:9px;color:#9ca3af;margin-top:2px">Target: 95.0%</div>
-        </div>
     </div>`;
 
-    // Hours breakdown visual
-    h+=`<div class="cv-section-title"><i class="fas fa-clock"></i>Hours Breakdown<span>${totalH} total hours</span></div>`;
-    h+=`<div class="vru-detail-grid ani d2">
-        <div class="vru-detail-card"><div class="vru-detail-label">Running</div><div class="vru-detail-value" style="color:#10b981">${u.runH}h</div><div class="vru-detail-sub">${Math.round(u.runH/totalH*100)}% of period</div></div>
-        <div class="vru-detail-card"><div class="vru-detail-label">Ready / Idle</div><div class="vru-detail-value" style="color:#3b82f6">${u.readyH}h</div><div class="vru-detail-sub">${Math.round(u.readyH/totalH*100)}% of period</div></div>
-        <div class="vru-detail-card"><div class="vru-detail-label">Faulted / Down</div><div class="vru-detail-value" style="color:#ef4444">${u.faultH}h</div><div class="vru-detail-sub">${Math.round(u.faultH/totalH*100)}% of period</div></div>
-        <div class="vru-detail-card"><div class="vru-detail-label">Availability</div><div class="vru-detail-value" style="color:${uc}">${u.avail}%</div><div class="vru-detail-sub">(Run+Ready)/(Run+Ready+Fault)</div></div>
-        <div class="vru-detail-card"><div class="vru-detail-label">Downtime Events</div><div class="vru-detail-value">${u.events}</div><div class="vru-detail-sub">in 30-day period</div></div>
-        <div class="vru-detail-card"><div class="vru-detail-label">MTBF</div><div class="vru-detail-value">${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</div><div class="vru-detail-sub">mean time between failures</div></div>
-    </div>`;
+    h+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:0 24px 16px" class="ani d2">`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:${uc}18;color:${uc};margin-bottom:6px"><i class="fas fa-chart-line"></i></div><div style="font-size:22px;font-weight:800;color:${uc}">${u.avail}%</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Availability</div><div style="font-size:10px;margin-top:3px;color:${u.trend>=0?'#10b981':'#ef4444'}"><i class="fas fa-arrow-${u.trend>=0?'up':'down'}" style="margin-right:2px"></i>${Math.abs(u.trend)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981;margin-bottom:6px"><i class="fas fa-cogs"></i></div><div style="font-size:22px;font-weight:800;color:#10b981">${u.runH}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Running</div><div style="font-size:10px;color:#6b7280;margin-top:3px">${Math.round(u.runH/totalH*100)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6;margin-bottom:6px"><i class="fas fa-hourglass-half"></i></div><div style="font-size:22px;font-weight:800;color:#3b82f6">${u.readyH}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Ready / Idle</div><div style="font-size:10px;color:#6b7280;margin-top:3px">${Math.round(u.readyH/totalH*100)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444;margin-bottom:6px"><i class="fas fa-bolt"></i></div><div style="font-size:22px;font-weight:800;color:#ef4444">${u.faultH}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Faulted / Down</div><div style="font-size:10px;color:#6b7280;margin-top:3px">${Math.round(u.faultH/totalH*100)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6;margin-bottom:6px"><i class="fas fa-exclamation-circle"></i></div><div style="font-size:22px;font-weight:800;color:#8b5cf6">${u.events}</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Events</div><div style="font-size:10px;color:#6b7280;margin-top:3px">in 30 days</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fefce8;color:#ca8a04;margin-bottom:6px"><i class="fas fa-stopwatch"></i></div><div style="font-size:22px;font-weight:800;color:#ca8a04">${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</div><div style="font-size:9px;color:#6b7280;margin-top:2px">MTBF</div><div style="font-size:10px;color:#6b7280;margin-top:3px">mean time</div></div>`;
+    h+=`</div>`;
 
-    // Charts
-    h+=`<div class="charts-row ani d3">
+    h+=`<div class="charts-row ani d3" style="padding:0 24px 16px">
         <div class="card"><div class="card-header"><h3>${u.id} — Daily Availability</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruTrendChart" height="200"></canvas></div></div></div>
         <div class="card"><div class="card-header"><h3>Hours Distribution</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruHoursChart" height="200"></canvas></div></div></div>
     </div>`;
 
-    // Recent events
-    h+=`<div class="cv-section-title"><i class="fas fa-list-timeline"></i>Recent Downtime Events</div>`;
+    h+=`<div class="cv-section-title"><i class="fas fa-list"></i>Recent Downtime Events</div>`;
     h+=`<div class="vru-events-list ani d4">`;
     const eventTypes=['Mechanical Fault','Electrical Fault','Communication Loss','High Temperature Shutdown','Operator Shutdown','Sensor Malfunction'];
     for(let i=0;i<Math.min(u.events,6);i++){
-        const day=Math.floor(Math.random()*28)+1;
-        const hour=Math.floor(Math.random()*24);
+        const day=Math.floor(Math.random()*28)+1;const hour=Math.floor(Math.random()*24);
         const dur=Math.round((Math.random()*12+0.5)*10)/10;
         const type=eventTypes[Math.floor(Math.random()*eventTypes.length)];
         const dotColor=type.includes('Mechanical')?'#ef4444':type.includes('Electrical')?'#f59e0b':type.includes('Comm')?'#8b5cf6':type.includes('Temp')?'#ef4444':type.includes('Operator')?'#06b6d4':'#6b7280';
@@ -1567,22 +1643,91 @@ function renderVruReport(){
     }
     if(u.events===0) h+=`<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px"><i class="fas fa-check-circle" style="color:#10b981;margin-right:6px"></i>No downtime events in this period</div>`;
     h+=`</div>`;
-
     cont.innerHTML=h;
 
-    // Render VRU charts
-    Object.values(vruChartInstances).forEach(ci=>ci.destroy());
-    vruChartInstances={};
     const tCtx=document.getElementById('vruTrendChart');
     if(tCtx){
-        const days=30,labels=[],data=[],target=[];
-        const today=new Date(2026,3,28);
+        const days=30,labels=[],data=[],target=[];const today=new Date(2026,3,28);
         for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));data.push(Math.round(Math.max(50,Math.min(100,u.avail+(Math.sin(i*.4)*5)+(Math.random()-.5)*8))*10)/10);target.push(95)}
         vruChartInstances.trend=new Chart(tCtx.getContext('2d'),{type:'line',data:{labels,datasets:[{label:u.id+' Availability',data,borderColor:uc,backgroundColor:uc+'18',borderWidth:2.5,fill:true,tension:.35,pointRadius:0,pointHoverRadius:5},{label:'Target',data:target,borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',align:'end',labels:{boxWidth:10,font:{size:10},padding:12,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8}},scales:{x:{grid:{display:false},ticks:{font:{size:9.5},color:'#9ca3af',maxTicksLimit:10}},y:{min:50,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9.5},color:'#9ca3af',callback:v=>v+'%'}}}}});
     }
     const hCtx=document.getElementById('vruHoursChart');
     if(hCtx){
         vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready/Idle','Faulted/Down'],datasets:[{data:[u.runH,u.readyH,u.faultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,padding:8,callbacks:{label:c=>`${c.label}: ${c.parsed}h`}},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
+    }
+}
+
+function renderGroupVru(c,units,cont){
+    const totalRunH=units.reduce((s,u)=>s+u.runH,0);
+    const totalReadyH=units.reduce((s,u)=>s+u.readyH,0);
+    const totalFaultH=units.reduce((s,u)=>s+u.faultH,0);
+    const totalH=totalRunH+totalReadyH+totalFaultH;
+    const groupAvail=totalH>0?Math.round((totalRunH+totalReadyH)/totalH*1000)/10:0;
+    const totalEvents=units.reduce((s,u)=>s+u.events,0);
+    const running=units.filter(u=>u.status==='Running').length;
+    const warning=units.filter(u=>u.status==='Warning').length;
+    const down=units.filter(u=>u.status==='Down').length;
+    const gc=groupAvail>=95?'#10b981':groupAvail>=88?'#f59e0b':'#ef4444';
+
+    let h=`<div class="vru-header-card ani d1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+                <div class="vru-header-title"><i class="fas fa-layer-group" style="color:#3b82f6;font-size:18px"></i> VRU Group Performance <span class="vru-group-tag"><i class="fas fa-cubes"></i>${units.length} units</span></div>
+                <div class="vru-header-meta"><i class="fas fa-building" style="margin-right:4px"></i>${c.name} · <i class="fas fa-map-marker-alt" style="margin:0 4px"></i>${c.state} · Last 30 Days</div>
+                <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">${units.map(u=>{const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';return `<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;background:${ac}14;color:${ac};border:1px solid ${ac}30">${u.id}</span>`}).join('')}</div>
+            </div>
+            <div style="text-align:center">
+                <svg width="100" height="76" viewBox="0 0 120 90">
+                    <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+                    <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${gc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${groupAvail/100*157}" stroke-dashoffset="0"/>
+                    <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${groupAvail}</text>
+                    <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+                </svg>
+                <div style="font-size:9px;color:#9ca3af">Group Availability</div>
+            </div>
+        </div>
+    </div>`;
+
+    h+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:0 24px 16px" class="ani d2">`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:${gc}18;color:${gc};margin-bottom:6px"><i class="fas fa-chart-line"></i></div><div style="font-size:22px;font-weight:800;color:${gc}">${groupAvail}%</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Group Avail</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981;margin-bottom:6px"><i class="fas fa-cogs"></i></div><div style="font-size:22px;font-weight:800;color:#10b981">${totalRunH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Running</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6;margin-bottom:6px"><i class="fas fa-hourglass-half"></i></div><div style="font-size:22px;font-weight:800;color:#3b82f6">${totalReadyH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Ready</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444;margin-bottom:6px"><i class="fas fa-bolt"></i></div><div style="font-size:22px;font-weight:800;color:#ef4444">${totalFaultH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Faulted</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6;margin-bottom:6px"><i class="fas fa-exclamation-circle"></i></div><div style="font-size:22px;font-weight:800;color:#8b5cf6">${totalEvents}</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Total Events</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div style="display:flex;gap:6px;margin-bottom:6px"><span style="font-size:11px;font-weight:700;color:#10b981">${running}<i class="fas fa-check-circle" style="margin-left:2px;font-size:9px"></i></span><span style="font-size:11px;font-weight:700;color:#f59e0b">${warning}<i class="fas fa-exclamation-triangle" style="margin-left:2px;font-size:9px"></i></span><span style="font-size:11px;font-weight:700;color:#ef4444">${down}<i class="fas fa-times-circle" style="margin-left:2px;font-size:9px"></i></span></div><div style="font-size:9px;color:#6b7280">Status Split</div></div>`;
+    h+=`</div>`;
+
+    h+=`<div class="charts-row ani d3" style="padding:0 24px 16px">
+        <div class="card"><div class="card-header"><h3>Group Availability Trend — ${units.length} Units</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruTrendChart" height="200"></canvas></div></div></div>
+        <div class="card"><div class="card-header"><h3>Hours Distribution</h3></div><div class="card-body"><div class="chart-container"><canvas id="vruHoursChart" height="200"></canvas></div></div></div>
+    </div>`;
+
+    h+=`<div class="cv-section-title"><i class="fas fa-th-list"></i>Unit Comparison Table</div>`;
+    h+=`<div style="padding:0 24px 16px" class="ani d4"><div class="card"><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>Unit ID</th><th>Status</th><th>Availability</th><th>Running</th><th>Ready</th><th>Faulted</th><th>Events</th><th>MTBF</th><th>Trend</th></tr></thead><tbody>`;
+    [...units].sort((a,b)=>a.avail-b.avail).forEach(u=>{
+        const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+        const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+        const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
+        h+=`<tr><td style="font-weight:600;color:#3b82f6">${u.id}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td><td style="font-weight:700;color:${ac}">${u.avail}%</td><td style="color:#10b981">${u.runH}h</td><td style="color:#3b82f6">${u.readyH}h</td><td style="color:#ef4444">${u.faultH}h</td><td>${u.events}</td><td>${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</td><td style="color:${u.trend>=0?'#10b981':'#ef4444'};font-weight:600">${u.trend>=0?'+':''}${u.trend}%</td></tr>`;
+    });
+    h+=`</tbody></table></div></div></div></div>`;
+    cont.innerHTML=h;
+
+    const UNIT_COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#ec4899','#f97316','#84cc16','#14b8a6','#0ea5e9','#a855f7','#e11d48','#64748b','#059669'];
+    const tCtx=document.getElementById('vruTrendChart');
+    if(tCtx){
+        const days=30,labels=[];const today=new Date(2026,3,28);
+        for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}))}
+        const datasets=units.slice(0,8).map((u,idx)=>{
+            const data=[];for(let i=days-1;i>=0;i--) data.push(Math.round(Math.max(50,Math.min(100,u.avail+(Math.sin(i*.4+idx)*4)+(Math.random()-.5)*6))*10)/10);
+            return {label:u.id,data,borderColor:UNIT_COLORS[idx%UNIT_COLORS.length],borderWidth:1.8,tension:.35,pointRadius:0,pointHoverRadius:4,fill:false};
+        });
+        datasets.push({label:'Target',data:labels.map(()=>95),borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0});
+        vruChartInstances.trend=new Chart(tCtx.getContext('2d'),{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',align:'end',labels:{boxWidth:8,font:{size:9},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6}},scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#9ca3af',maxTicksLimit:10}},y:{min:50,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9},color:'#9ca3af',callback:v=>v+'%'}}}}});
+    }
+    const hCtx=document.getElementById('vruHoursChart');
+    if(hCtx){
+        vruChartInstances.hours=new Chart(hCtx.getContext('2d'),{type:'doughnut',data:{labels:['Running','Ready/Idle','Faulted/Down'],datasets:[{data:[totalRunH,totalReadyH,totalFaultH],backgroundColor:['#10b981','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10.5},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6,callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed.toLocaleString()}h`}},datalabels:DOUGHNUT_DATALABEL_OPTS}}});
     }
 }
 
