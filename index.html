@@ -4,111 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platinum VRU Compressor — Availability Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{font-size:14px}
-        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f2f5;color:#1a1a2e;display:flex;min-height:100vh;overflow-x:hidden}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#ffffff;color:#333333;display:flex;min-height:100vh;overflow-x:hidden}
 
         /* ===== SIDEBAR ===== */
-        .sidebar{width:56px;background:#1a1a2e;display:flex;flex-direction:column;align-items:center;padding:10px 0;position:fixed;top:0;left:0;bottom:0;z-index:100}
-        .sidebar-logo{width:32px;height:32px;background:#3b82f6;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;margin-bottom:20px}
+        .sidebar{width:56px;background:#1e1e2d;display:flex;flex-direction:column;align-items:center;padding:10px 0;position:fixed;top:0;left:0;bottom:0;z-index:100}
+        .sidebar-logo{width:32px;height:32px;background:#2196F3;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;margin-bottom:20px}
         .sidebar-nav{display:flex;flex-direction:column;gap:2px;width:100%}
         .sidebar-item{display:flex;flex-direction:column;align-items:center;padding:9px 0;color:#8892a4;text-decoration:none;font-size:8.5px;cursor:pointer;transition:all .15s;position:relative}
         .sidebar-item i{font-size:17px;margin-bottom:3px}
         .sidebar-item:hover,.sidebar-item.active{color:#fff}
-        .sidebar-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#3b82f6;border-radius:0 3px 3px 0}
-        .sidebar-badge{position:absolute;top:4px;right:8px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid #1a1a2e}
-        .sidebar-pulse{color:#3b82f6 !important;animation:sidebarPulse 2s ease-in-out infinite}
-        .sidebar-pulse::after{content:'';position:absolute;top:6px;right:6px;width:8px;height:8px;background:#3b82f6;border-radius:50%;animation:pulseRing 2s ease-in-out infinite}
+        .sidebar-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#2196F3;border-radius:0 3px 3px 0}
+        .sidebar-badge{position:absolute;top:4px;right:8px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid #1e1e2d}
+        .sidebar-pulse{color:#2196F3 !important;animation:sidebarPulse 2s ease-in-out infinite}
+        .sidebar-pulse::after{content:'';position:absolute;top:6px;right:6px;width:8px;height:8px;background:#2196F3;border-radius:50%;animation:pulseRing 2s ease-in-out infinite}
         @keyframes sidebarPulse{0%,100%{opacity:1}50%{opacity:.6}}
-        @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(59,130,246,.5)}70%{box-shadow:0 0 0 6px rgba(59,130,246,0)}100%{box-shadow:0 0 0 0 rgba(59,130,246,0)}}
+        @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(33,150,243,.5)}70%{box-shadow:0 0 0 6px rgba(33,150,243,0)}100%{box-shadow:0 0 0 0 rgba(33,150,243,0)}}
 
         /* ===== MAIN ===== */
         .main{margin-left:56px;flex:1;min-width:0}
 
         /* ===== TOPBAR ===== */
-        .topbar{background:#fff;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:50}
-        .breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:#6b7280}
-        .breadcrumb a{color:#6b7280;text-decoration:none}.breadcrumb a:hover{color:#3b82f6}
-        .breadcrumb .sep{color:#d1d5db}.breadcrumb .current{color:#1a1a2e;font-weight:600}
+        .topbar{background:#fff;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #dee2e6;position:sticky;top:0;z-index:50}
+        .breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:#6c757d}
+        .breadcrumb a{color:#6c757d;text-decoration:none}.breadcrumb a:hover{color:#2196F3}
+        .breadcrumb .sep{color:#d1d5db}.breadcrumb .current{color:#333333;font-weight:600}
         .topbar-right{display:flex;align-items:center;gap:14px}
-        .topbar-search{display:flex;align-items:center;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:0 10px;height:32px;width:220px}
-        .topbar-search:focus-within{border-color:#3b82f6;background:#fff}
-        .topbar-search i{color:#9ca3af;font-size:12px;margin-right:6px}
-        .topbar-search input{border:none;background:none;outline:none;font-size:12px;flex:1;color:#1a1a2e}
-        .user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
+        .topbar-search{display:flex;align-items:center;background:#f3f4f6;border:1px solid #dee2e6;border-radius:6px;padding:0 10px;height:32px;width:220px}
+        .topbar-search:focus-within{border-color:#2196F3;background:#fff}
+        .topbar-search i{color:#999999;font-size:12px;margin-right:6px}
+        .topbar-search input{border:none;background:none;outline:none;font-size:12px;flex:1;color:#333333}
+        .user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
 
         /* ===== REPORT TABS ===== */
-        .report-tabs-wrap{border-bottom:1px solid #e5e7eb;background:#fff}
+        .report-tabs-wrap{border-bottom:1px solid #dee2e6;background:#fff}
         .report-tabs{display:flex;overflow-x:auto;padding:0 24px;scrollbar-width:none}
         .report-tabs::-webkit-scrollbar{display:none}
-        .report-tab{padding:12px 20px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
+        .report-tab{padding:12px 20px;font-size:13px;font-weight:500;color:#6c757d;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
         .report-tab:hover{color:#374151}
-        .report-tab.active{color:#3b82f6;border-bottom-color:#3b82f6;font-weight:600}
-        .tab-scroll-btn{position:absolute;top:0;bottom:1px;width:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#6b7280;font-size:14px;z-index:2}
+        .report-tab.active{color:#2196F3;border-bottom-color:#2196F3;font-weight:600}
+        .tab-scroll-btn{position:absolute;top:0;bottom:1px;width:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#6c757d;font-size:14px;z-index:2}
         .tab-scroll-btn.right{right:0;background:linear-gradient(90deg,transparent,#fff 40%)}
         .tab-scroll-btn.left{left:0;background:linear-gradient(270deg,transparent,#fff 40%);display:none}
 
         /* ===== FILTER ROW ===== */
-        .filter-row{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#fff;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
+        .filter-row{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#fff;border-bottom:1px solid #dee2e6;flex-wrap:wrap}
         .filter-row-right{margin-left:auto;display:flex;align-items:center;gap:10px}
         .multiselect{position:relative;min-width:160px}
         .multiselect-trigger{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #d1d5db;border-radius:4px;padding:7px 10px;font-size:13px;color:#374151;cursor:pointer;min-width:140px;gap:8px;user-select:none}
-        .caret{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #6b7280;flex-shrink:0}
-        .multiselect.open .multiselect-trigger{border-color:#3b82f6}
+        .caret{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #6c757d;flex-shrink:0}
+        .multiselect.open .multiselect-trigger{border-color:#2196F3}
         .multiselect-dropdown{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #d1d5db;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:60;min-width:220px;margin-top:2px;max-height:320px;overflow:hidden;flex-direction:column}
         .multiselect.open .multiselect-dropdown{display:flex}
-        .multiselect-search-row{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid #e5e7eb}
-        .multiselect-search-row input[type="checkbox"]{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer;flex-shrink:0}
+        .multiselect-search-row{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid #dee2e6}
+        .multiselect-search-row input[type="checkbox"]{width:16px;height:16px;accent-color:#2196F3;cursor:pointer;flex-shrink:0}
         .multiselect-search-row input[type="text"]{flex:1;border:1px solid #d1d5db;border-radius:3px;padding:4px 8px;font-size:12px;outline:none}
-        .multiselect-search-row input[type="text"]:focus{border-color:#3b82f6}
+        .multiselect-search-row input[type="text"]:focus{border-color:#2196F3}
         .ms-icons{display:flex;align-items:center;gap:4px}
-        .ms-icons button{background:none;border:none;color:#6b7280;cursor:pointer;font-size:13px;padding:2px}
-        .ms-icons button:hover{color:#1a1a2e}
+        .ms-icons button{background:none;border:none;color:#6c757d;cursor:pointer;font-size:13px;padding:2px}
+        .ms-icons button:hover{color:#333333}
         .multiselect-list{overflow-y:auto;max-height:240px;padding:4px 0}
         .multiselect-list::-webkit-scrollbar{width:6px}.multiselect-list::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
         .multiselect-option{display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;font-size:13px;color:#374151;transition:background .1s}
         .multiselect-option:hover{background:#f3f4f6}
-        .multiselect-option input[type="checkbox"]{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer}
+        .multiselect-option input[type="checkbox"]{width:16px;height:16px;accent-color:#2196F3;cursor:pointer}
 
         .datepicker-wrap{position:relative}
         .datepicker-trigger{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d1d5db;border-radius:4px;padding:7px 10px;font-size:13px;color:#374151;cursor:pointer;user-select:none}
-        .cal-icon{width:28px;height:28px;background:#3b82f6;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
+        .cal-icon{width:28px;height:28px;background:#2196F3;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
         .datepicker-popup{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #d1d5db;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.12);z-index:60;margin-top:2px;padding:16px}
         .datepicker-wrap.open .datepicker-popup{display:flex;gap:24px}
         .calendar-section{min-width:260px}
         .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-        .cal-header button{background:none;border:none;cursor:pointer;color:#6b7280;font-size:14px;padding:4px}
-        .cal-header button:hover{color:#1a1a2e}
-        .cal-header .cal-title{font-size:14px;font-weight:600;color:#1a1a2e}
+        .cal-header button{background:none;border:none;cursor:pointer;color:#6c757d;font-size:14px;padding:4px}
+        .cal-header button:hover{color:#333333}
+        .cal-header .cal-title{font-size:14px;font-weight:600;color:#333333}
         .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0}
-        .cal-dow{text-align:center;font-size:11px;font-weight:600;color:#6b7280;padding:4px 0 8px}
+        .cal-dow{text-align:center;font-size:11px;font-weight:600;color:#6c757d;padding:4px 0 8px}
         .cal-day{text-align:center;padding:7px 4px;font-size:12px;cursor:pointer;border-radius:4px;color:#374151;transition:all .1s}
         .cal-day:hover{background:#eff6ff}
-        .cal-day.other{color:#d1d5db}.cal-day.today{color:#3b82f6;font-weight:700}
+        .cal-day.other{color:#d1d5db}.cal-day.today{color:#2196F3;font-weight:700}
         .cal-day.in-range{background:#dbeafe;color:#1e40af}
-        .cal-day.range-start,.cal-day.range-end{background:#3b82f6;color:#fff;font-weight:600;border-radius:50%}
+        .cal-day.range-start,.cal-day.range-end{background:#2196F3;color:#fff;font-weight:600;border-radius:50%}
         .presets-section{display:flex;flex-direction:column;gap:4px;min-width:120px;padding-top:4px}
         .preset-btn{background:none;border:none;text-align:left;padding:8px 12px;font-size:13px;color:#374151;cursor:pointer;border-radius:4px;transition:all .1s}
-        .preset-btn:hover{background:#f3f4f6}.preset-btn.active{color:#3b82f6;font-weight:600}
+        .preset-btn:hover{background:#f3f4f6}.preset-btn.active{color:#2196F3;font-weight:600}
 
-        .month-presets-col{display:flex;flex-direction:column;min-width:130px;padding-top:4px;border-left:1px solid #e5e7eb;padding-left:12px;max-height:230px}
-        .month-presets-label{font-size:9.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;padding:0 12px 6px;flex-shrink:0}
+        .month-presets-col{display:flex;flex-direction:column;min-width:130px;padding-top:4px;border-left:1px solid #dee2e6;padding-left:12px;max-height:230px}
+        .month-presets-label{font-size:9.5px;font-weight:600;color:#999999;text-transform:uppercase;letter-spacing:.5px;padding:0 12px 6px;flex-shrink:0}
         .month-presets-list{display:flex;flex-direction:column;gap:0;overflow-y:auto;flex:1;scrollbar-width:thin}
         .month-presets-list::-webkit-scrollbar{width:4px}
         .month-presets-list::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
         .month-preset-btn{background:none;border:none;text-align:left;padding:6px 12px;font-size:12px;color:#374151;cursor:pointer;border-radius:4px;transition:all .1s;display:flex;align-items:center;justify-content:space-between;gap:6px;white-space:nowrap}
         .month-preset-btn:hover{background:#f3f4f6}
-        .month-preset-btn.active{color:#3b82f6;font-weight:600}
+        .month-preset-btn.active{color:#2196F3;font-weight:600}
         .month-preset-btn .mtd-badge{font-size:8.5px;font-weight:600;color:#f59e0b;background:#fffbeb;padding:1px 5px;border-radius:8px}
 
-        .btn-run-report{padding:7px 18px;font-size:13px;font-weight:500;color:#3b82f6;background:#fff;border:1px solid #3b82f6;border-radius:4px;cursor:pointer;transition:all .15s}
+        .btn-run-report{padding:7px 18px;font-size:13px;font-weight:500;color:#2196F3;background:#fff;border:1px solid #2196F3;border-radius:4px;cursor:pointer;transition:all .15s}
         .btn-run-report:hover{background:#eff6ff}
         .btn-export-wrap{position:relative}
         .btn-export{display:flex;align-items:center;gap:6px;padding:7px 14px;font-size:13px;font-weight:500;color:#374151;background:#fff;border:1px solid #d1d5db;border-radius:4px;cursor:pointer}
-        .btn-export:hover{background:#f9fafb}
+        .btn-export:hover{background:#f8f9fa}
         .export-dropdown{display:none;position:absolute;top:100%;right:0;background:#fff;border:1px solid #d1d5db;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:60;margin-top:2px;min-width:140px}
         .btn-export-wrap.open .export-dropdown{display:block}
         .export-option{padding:8px 14px;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:8px}
@@ -116,14 +115,14 @@
 
         /* ===== HERO SECTION ===== */
         .hero{padding:24px 24px 0;display:flex;gap:16px;align-items:stretch}
-        .hero-main{flex:1;background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:28px 32px;color:#1a1a2e;position:relative;overflow:hidden;min-height:200px;display:flex;flex-direction:column;justify-content:center}
-        .hero-main::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 70%);border-radius:50%}
+        .hero-main{flex:1;background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:28px 32px;color:#333333;position:relative;overflow:hidden;min-height:200px;display:flex;flex-direction:column;justify-content:center}
+        .hero-main::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(33,150,243,.06) 0%,transparent 70%);border-radius:50%}
         .hero-main::before{content:'';position:absolute;right:40px;bottom:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(16,185,129,.05) 0%,transparent 70%);border-radius:50%}
-        .hero-greeting{font-size:13px;color:#9ca3af;margin-bottom:4px;font-weight:400}
-        .hero-title{font-size:24px;font-weight:800;line-height:1.2;margin-bottom:6px;color:#1a1a2e}
-        .hero-title .accent{color:#3b82f6}
-        .hero-summary{font-size:13px;color:#6b7280;line-height:1.6;max-width:480px;margin-bottom:16px}
-        .hero-summary strong{color:#1a1a2e}
+        .hero-greeting{font-size:13px;color:#999999;margin-bottom:4px;font-weight:400}
+        .hero-title{font-size:24px;font-weight:600;line-height:1.2;margin-bottom:6px;color:#333333}
+        .hero-title .accent{color:#2196F3}
+        .hero-summary{font-size:13px;color:#6c757d;line-height:1.6;max-width:480px;margin-bottom:16px}
+        .hero-summary strong{color:#333333}
         .hero-badges{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
         .hero-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600}
         .hero-badge.green{background:#ecfdf5;color:#059669}
@@ -131,43 +130,43 @@
         .hero-badge.blue{background:#eff6ff;color:#2563eb}
         .hero-badge.orange{background:#fffbeb;color:#d97706}
 
-        .hero-gauge{width:200px;flex-shrink:0;background:#fff;border-radius:14px;border:1px solid #e5e7eb;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+        .hero-gauge{width:200px;flex-shrink:0;background:#fff;border-radius:6px;border:1px solid #dee2e6;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
         .gauge-svg{margin-bottom:6px}
-        .gauge-label{font-size:10px;font-weight:500;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
-        .gauge-target{font-size:10px;color:#9ca3af;margin-top:4px}
+        .gauge-label{font-size:10px;font-weight:500;color:#6c757d;text-transform:uppercase;letter-spacing:.5px}
+        .gauge-target{font-size:10px;color:#999999;margin-top:4px}
 
-        .hero-status{width:200px;flex-shrink:0;background:#fff;border-radius:14px;border:1px solid #e5e7eb;display:flex;flex-direction:column;justify-content:center;padding:18px 20px;gap:10px}
+        .hero-status{width:200px;flex-shrink:0;background:#fff;border-radius:6px;border:1px solid #dee2e6;display:flex;flex-direction:column;justify-content:center;padding:18px 20px;gap:10px}
         .status-row{display:flex;align-items:center;justify-content:space-between}
         .status-row .s-left{display:flex;align-items:center;gap:8px}
         .status-dot-lg{width:10px;height:10px;border-radius:50%}
-        .status-dot-lg.green{background:#10b981}.status-dot-lg.blue{background:#3b82f6}
+        .status-dot-lg.green{background:#10b981}.status-dot-lg.blue{background:#2196F3}
         .status-dot-lg.orange{background:#f59e0b}.status-dot-lg.red{background:#ef4444}
-        .status-row .s-label{font-size:12px;color:#6b7280}
-        .status-row .s-value{font-size:16px;font-weight:700;color:#1a1a2e}
-        .status-row .s-pct{font-size:10px;color:#9ca3af;margin-left:2px}
+        .status-row .s-label{font-size:12px;color:#6c757d}
+        .status-row .s-value{font-size:16px;font-weight:700;color:#333333}
+        .status-row .s-pct{font-size:10px;color:#999999;margin-left:2px}
 
         /* ===== FLEET HOURS STRIP ===== */
         .fleet-hours-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px 24px}
-        .fleet-hour-card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all .2s}
-        .fleet-hour-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.05)}
-        .fleet-hour-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-        .fleet-hour-value{font-size:20px;font-weight:700;color:#1a1a2e;line-height:1}
-        .fleet-hour-label{font-size:11px;color:#6b7280;margin-top:3px}
+        .fleet-hour-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all .2s}
+        .fleet-hour-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .fleet-hour-icon{width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+        .fleet-hour-value{font-size:20px;font-weight:700;color:#333333;line-height:1}
+        .fleet-hour-label{font-size:11px;color:#6c757d;margin-top:3px}
         .fleet-hour-pct{font-size:10px;font-weight:600;margin-top:2px}
 
         /* ===== INSIGHT STRIP ===== */
         .insights-strip{display:flex;gap:12px;padding:16px 24px;overflow-x:auto;scrollbar-width:none}
         .insights-strip::-webkit-scrollbar{display:none}
-        .insight-card{flex-shrink:0;width:280px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;display:flex;gap:12px;cursor:pointer;transition:all .2s}
-        .insight-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
-        .insight-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+        .insight-card{flex-shrink:0;width:280px;background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px;display:flex;gap:12px;cursor:pointer;transition:all .2s}
+        .insight-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .insight-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
         .insight-icon.red{background:#fef2f2;color:#ef4444}
         .insight-icon.orange{background:#fffbeb;color:#f59e0b}
         .insight-icon.green{background:#f0fdf4;color:#22c55e}
-        .insight-icon.blue{background:#eff6ff;color:#3b82f6}
+        .insight-icon.blue{background:#eff6ff;color:#2196F3}
         .insight-icon.purple{background:#faf5ff;color:#a855f7}
-        .insight-body h4{font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:3px;line-height:1.3}
-        .insight-body p{font-size:11px;color:#6b7280;line-height:1.4}
+        .insight-body h4{font-size:12px;font-weight:600;color:#333333;margin-bottom:3px;line-height:1.3}
+        .insight-body p{font-size:11px;color:#6c757d;line-height:1.4}
         .insight-body .insight-tag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:600}
         .insight-tag.critical{background:#fef2f2;color:#dc2626}
         .insight-tag.warning{background:#fffbeb;color:#d97706}
@@ -176,67 +175,67 @@
 
         /* ===== SECTION HEADER ===== */
         .section-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 10px}
-        .section-header h2{font-size:15px;font-weight:700;color:#1a1a2e}
-        .section-header h2 span{color:#9ca3af;font-weight:400;font-size:12px;margin-left:6px}
+        .section-header h2{font-size:15px;font-weight:600;color:#333333}
+        .section-header h2 span{color:#999999;font-weight:400;font-size:12px;margin-left:6px}
         .section-actions{display:flex;gap:6px;align-items:center}
-        .pill-toggle{display:flex;background:#f3f4f6;border-radius:6px;overflow:hidden;border:1px solid #e5e7eb}
-        .pill-btn{padding:5px 12px;font-size:11px;font-weight:500;color:#6b7280;cursor:pointer;border:none;background:none;transition:all .15s}
-        .pill-btn.active{background:#fff;color:#1a1a2e;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+        .pill-toggle{display:flex;background:#f3f4f6;border-radius:6px;overflow:hidden;border:1px solid #dee2e6}
+        .pill-btn{padding:5px 12px;font-size:11px;font-weight:500;color:#6c757d;cursor:pointer;border:none;background:none;transition:all .15s}
+        .pill-btn.active{background:#fff;color:#333333;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
         /* ===== STATE CARDS (replacing bar chart) ===== */
         .state-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:0 24px 16px}
-        .state-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-        .state-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .state-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+        .state-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
         .state-card.attention{border-left:3px solid #f59e0b}
         .state-card.critical-attention{border-left:3px solid #ef4444}
-        .state-name{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
-        .state-meta{font-size:10px;color:#9ca3af;margin-bottom:12px}
+        .state-name{font-size:13px;font-weight:600;color:#333333;margin-bottom:2px}
+        .state-meta{font-size:10px;color:#999999;margin-bottom:12px}
         .state-gauge-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px}
-        .state-pct{font-size:28px;font-weight:800;line-height:1}
-        .state-pct.excellent{color:#10b981}.state-pct.good{color:#3b82f6}.state-pct.warning{color:#f59e0b}.state-pct.critical{color:#ef4444}
+        .state-pct{font-size:28px;font-weight:700;line-height:1}
+        .state-pct.excellent{color:#10b981}.state-pct.good{color:#2196F3}.state-pct.warning{color:#f59e0b}.state-pct.critical{color:#ef4444}
         .state-trend{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:600}
         .state-trend.up{color:#059669}.state-trend.down{color:#dc2626}
         .state-bar{width:100%;height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden;margin-bottom:8px}
         .state-bar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
         .state-bottom{display:flex;justify-content:space-between;align-items:center}
-        .state-stat{font-size:10px;color:#6b7280}
-        .state-stat strong{color:#1a1a2e}
+        .state-stat{font-size:10px;color:#6c757d}
+        .state-stat strong{color:#333333}
         .state-sparkline{width:60px;height:20px}
 
         /* ===== CUSTOMER CARDS (replacing table) ===== */
         .customer-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding:0 24px 16px}
-        .cust-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;transition:all .2s;cursor:pointer;position:relative}
-        .cust-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .cust-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px;transition:all .2s;cursor:pointer;position:relative}
+        .cust-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
         .cust-card.flagged::before{content:'';position:absolute;top:0;right:16px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #ef4444}
         .cust-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
         .cust-avatar{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
-        .cust-info h4{font-size:13px;font-weight:600;color:#1a1a2e;line-height:1.2}
-        .cust-info .c-meta{font-size:10.5px;color:#9ca3af}
+        .cust-info h4{font-size:13px;font-weight:600;color:#333333;line-height:1.2}
+        .cust-info .c-meta{font-size:10.5px;color:#999999}
         .cust-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
         .cust-metric{display:flex;flex-direction:column}
-        .cust-metric .cm-label{font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:1px}
+        .cust-metric .cm-label{font-size:9px;color:#999999;text-transform:uppercase;letter-spacing:.4px;margin-bottom:1px}
         .cust-metric .cm-value{font-size:16px;font-weight:700;line-height:1.2}
-        .cust-metric .cm-value.excellent{color:#10b981}.cust-metric .cm-value.good{color:#3b82f6}
+        .cust-metric .cm-value.excellent{color:#10b981}.cust-metric .cm-value.good{color:#2196F3}
         .cust-metric .cm-value.warning{color:#f59e0b}.cust-metric .cm-value.critical{color:#ef4444}
         .cust-timeline{width:100%;height:8px;border-radius:4px;overflow:hidden;display:flex;gap:1px;margin-bottom:8px}
         .cust-timeline .seg{height:100%;border-radius:2px}
         .cust-timeline .seg.run{background:#10b981}.cust-timeline .seg.wrn{background:#f59e0b}.cust-timeline .seg.dwn{background:#ef4444}
         .cust-bottom{display:flex;align-items:center;justify-content:space-between}
-        .cust-insight{font-size:10px;color:#6b7280;font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .cust-insight{font-size:10px;color:#6c757d;font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .cust-trend{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600}
         .cust-trend.up{background:#ecfdf5;color:#059669}.cust-trend.down{background:#fef2f2;color:#dc2626}
 
         /* ===== CHARTS ROW ===== */
         .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 24px 14px}
         .charts-row.full{grid-template-columns:1fr}
-        .card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;overflow:hidden}
-        .card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f3f4f6}
-        .card-header h3{font-size:13px;font-weight:600;color:#1a1a2e}
-        .card-subtitle{font-size:10.5px;color:#9ca3af;font-weight:400;margin-left:6px}
+        .card{background:#fff;border-radius:6px;border:1px solid #dee2e6;overflow:hidden}
+        .card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #dee2e6}
+        .card-header h3{font-size:13px;font-weight:600;color:#333333}
+        .card-subtitle{font-size:10.5px;color:#999999;font-weight:400;margin-left:6px}
         .card-body{padding:18px}
         .chart-container{width:100%;position:relative}
         .chart-container canvas{width:100%!important}
-        .card-select{padding:5px 24px 5px 8px;font-size:11px;font-weight:500;color:#374151;background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5L5 6.5L8 3.5' fill='none' stroke='%236b7280' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
+        .card-select{padding:5px 24px 5px 8px;font-size:11px;font-weight:500;color:#374151;background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5L5 6.5L8 3.5' fill='none' stroke='%236c757d' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
 
         /* ===== HEATMAP ===== */
         .heatmap-container{padding:4px 0}
@@ -248,29 +247,29 @@
         .heatmap-cell.g5{background:#059669}.heatmap-cell.g4{background:#34d399}.heatmap-cell.g3{background:#6ee7b7}
         .heatmap-cell.g2{background:#fbbf24}.heatmap-cell.g1{background:#f97316}.heatmap-cell.g0{background:#ef4444}
         .heatmap-day-labels{display:flex;gap:2px;margin-left:118px;margin-bottom:4px}
-        .heatmap-day-label{flex:1;text-align:center;font-size:8.5px;color:#9ca3af;min-width:12px;max-width:22px}
-        .heatmap-legend{display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:10px;font-size:9.5px;color:#9ca3af}
+        .heatmap-day-label{flex:1;text-align:center;font-size:8.5px;color:#999999;min-width:12px;max-width:22px}
+        .heatmap-legend{display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:10px;font-size:9.5px;color:#999999}
         .heatmap-legend-cell{width:12px;height:12px;border-radius:2px}
 
         /* ===== VIEW TABLE TOGGLE ===== */
         .table-toggle-area{padding:12px 24px 24px;text-align:center}
-        .btn-view-table{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;font-size:13px;font-weight:500;color:#3b82f6;background:#fff;border:1px solid #3b82f6;border-radius:8px;cursor:pointer;transition:all .15s}
+        .btn-view-table{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;font-size:13px;font-weight:500;color:#2196F3;background:#fff;border:1px solid #2196F3;border-radius:6px;cursor:pointer;transition:all .15s}
         .btn-view-table:hover{background:#eff6ff}
 
         /* ===== HIDDEN TABLE ===== */
-        .table-panel{display:none;margin:0 24px 24px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+        .table-panel{display:none;margin:0 24px 24px;background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden}
         .table-panel.visible{display:block}
         .data-table{width:100%;border-collapse:collapse}
-        .data-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;background:#f9fafb;border-bottom:1px solid #e5e7eb;white-space:nowrap;cursor:pointer}
+        .data-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:#333333;text-transform:uppercase;letter-spacing:.3px;background:#f8f9fa;border-bottom:2px solid #dee2e6;white-space:nowrap;cursor:pointer}
         .data-table thead th:hover{color:#374151}
-        .data-table tbody tr{border-bottom:1px solid #f3f4f6;transition:background .1s}
-        .data-table tbody tr:hover{background:#f9fafb}
+        .data-table tbody tr{border-bottom:1px solid #dee2e6;transition:background .1s}
+        .data-table tbody tr:hover{background:#f8f9fa}
         .data-table tbody td{padding:10px 14px;font-size:13px}
         .scroll-y{overflow-y:auto;max-height:400px}
         .scroll-y::-webkit-scrollbar{width:4px}.scroll-y::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
 
         /* ===== TOOLTIP ===== */
-        .tooltip{position:fixed;background:#1a1a2e;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px;pointer-events:none;z-index:200;display:none;max-width:200px;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+        .tooltip{position:fixed;background:#1e1e2d;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px;pointer-events:none;z-index:200;display:none;max-width:200px;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.2)}
         .tooltip.visible{display:block}
 
         /* ===== RESPONSIVE ===== */
@@ -288,174 +287,174 @@
         /* ===== ATTENTION CARDS ===== */
         .attention-cards{display:flex;gap:12px;padding:0 24px 16px;overflow-x:auto;scrollbar-width:none}
         .attention-cards::-webkit-scrollbar{display:none}
-        .attn-card{flex-shrink:0;width:220px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px;position:relative;overflow:hidden;transition:all .2s;cursor:pointer}
-        .attn-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+        .attn-card{flex-shrink:0;width:220px;background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:14px;position:relative;overflow:hidden;transition:all .2s;cursor:pointer}
+        .attn-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
         .attn-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
         .attn-card.sev-critical::before{background:#ef4444}
         .attn-card.sev-warning::before{background:#f59e0b}
-        .attn-rank{position:absolute;top:10px;right:12px;font-size:24px;font-weight:800;color:#f3f4f6}
-        .attn-unit{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
-        .attn-customer{font-size:10.5px;color:#9ca3af;margin-bottom:10px}
-        .attn-avail{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+        .attn-rank{position:absolute;top:10px;right:12px;font-size:24px;font-weight:700;color:#f3f4f6}
+        .attn-unit{font-size:14px;font-weight:600;color:#333333;margin-bottom:2px}
+        .attn-customer{font-size:10.5px;color:#999999;margin-bottom:10px}
+        .attn-avail{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
         .attn-avail.critical{color:#ef4444}.attn-avail.warning{color:#f59e0b}
-        .attn-detail{font-size:10px;color:#6b7280;line-height:1.5}
-        .attn-detail strong{color:#1a1a2e}
+        .attn-detail{font-size:10px;color:#6c757d;line-height:1.5}
+        .attn-detail strong{color:#333333}
         .attn-bar{width:100%;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden;margin:8px 0 6px}
         .attn-bar-fill{height:100%;border-radius:2px}
 
         /* ===== ACTION CARDS ===== */
         .action-cards{display:flex;flex-direction:column;gap:10px;padding:0 24px 20px}
-        .action-card{display:flex;gap:14px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px 18px;transition:all .2s}
-        .action-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
-        .action-priority{writing-mode:vertical-rl;text-orientation:mixed;font-size:9px;font-weight:800;letter-spacing:1px;padding:4px 2px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .action-card{display:flex;gap:14px;background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px 18px;transition:all .2s}
+        .action-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .action-priority{writing-mode:vertical-rl;text-orientation:mixed;font-size:9px;font-weight:700;letter-spacing:1px;padding:4px 2px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .action-card.priority-high .action-priority{background:#fef2f2;color:#dc2626}
         .action-card.priority-medium .action-priority{background:#fffbeb;color:#d97706}
         .action-card.priority-low .action-priority{background:#eff6ff;color:#2563eb}
-        .action-body h4{font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:4px}
-        .action-body p{font-size:11.5px;color:#6b7280;line-height:1.5;margin-bottom:8px}
-        .action-meta{display:flex;gap:14px;font-size:10px;color:#9ca3af}
+        .action-body h4{font-size:13px;font-weight:600;color:#333333;margin-bottom:4px}
+        .action-body p{font-size:11.5px;color:#6c757d;line-height:1.5;margin-bottom:8px}
+        .action-meta{display:flex;gap:14px;font-size:10px;color:#999999}
         .action-meta span{display:flex;align-items:center;gap:4px}
         .action-meta i{font-size:10px}
 
         /* ===== COMPARISON ROW ===== */
         .comparison-row{display:flex;gap:12px;padding:0 24px 20px;overflow-x:auto;scrollbar-width:none}
         .comparison-row::-webkit-scrollbar{display:none}
-        .comp-card{flex:1;min-width:160px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;text-align:center;transition:all .2s}
-        .comp-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
-        .comp-label{font-size:10px;font-weight:500;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+        .comp-card{flex:1;min-width:160px;background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px;text-align:center;transition:all .2s}
+        .comp-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .comp-label{font-size:10px;font-weight:500;color:#999999;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
         .comp-values{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
-        .comp-current{font-size:22px;font-weight:800;color:#1a1a2e}
+        .comp-current{font-size:22px;font-weight:700;color:#333333}
         .comp-arrow{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px}
         .comp-arrow.up{background:#ecfdf5;color:#059669}
         .comp-arrow.down{background:#fef2f2;color:#dc2626}
-        .comp-previous{font-size:14px;font-weight:500;color:#9ca3af;text-decoration:line-through}
+        .comp-previous{font-size:14px;font-weight:500;color:#999999;text-decoration:line-through}
         .comp-delta{font-size:11px;font-weight:600}
         .comp-delta.up{color:#059669}
         .comp-delta.down{color:#dc2626}
 
         /* ===== CUSTOMER/VRU REPORT VIEWS ===== */
         .cv-banner{padding:24px;display:flex;gap:16px;align-items:stretch}
-        .cv-banner-main{flex:1;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border-radius:14px;padding:24px 28px;color:#fff;position:relative;overflow:hidden}
-        .cv-banner-main::after{content:'';position:absolute;right:-20px;top:-20px;width:150px;height:150px;background:radial-gradient(circle,rgba(59,130,246,.2) 0%,transparent 70%);border-radius:50%}
-        .cv-name{font-size:22px;font-weight:800;margin-bottom:4px}
+        .cv-banner-main{flex:1;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border-radius:6px;padding:24px 28px;color:#fff;position:relative;overflow:hidden}
+        .cv-banner-main::after{content:'';position:absolute;right:-20px;top:-20px;width:150px;height:150px;background:radial-gradient(circle,rgba(33,150,243,.2) 0%,transparent 70%);border-radius:50%}
+        .cv-name{font-size:22px;font-weight:700;margin-bottom:4px}
         .cv-meta{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:14px}
         .cv-kpis{display:flex;gap:16px;flex-wrap:wrap}
-        .cv-kpi{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 16px;min-width:120px;backdrop-filter:blur(8px)}
+        .cv-kpi{background:rgba(255,255,255,.08);border-radius:6px;padding:12px 16px;min-width:120px;backdrop-filter:blur(8px)}
         .cv-kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5);margin-bottom:4px}
-        .cv-kpi-value{font-size:22px;font-weight:800;line-height:1}
+        .cv-kpi-value{font-size:22px;font-weight:700;line-height:1}
         .cv-kpi-sub{font-size:10px;margin-top:4px}
         .cv-kpi-sub.up{color:#6ee7b7}.cv-kpi-sub.down{color:#fca5a5}
-        .cv-gauge-card{width:180px;flex-shrink:0;background:#fff;border-radius:14px;border:1px solid #e5e7eb;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center}
+        .cv-gauge-card{width:180px;flex-shrink:0;background:#fff;border-radius:6px;border:1px solid #dee2e6;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center}
         .cv-unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;padding:0 24px 16px;max-width:100%;overflow:hidden}
-        .cv-unit-row{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all .2s;cursor:pointer;min-width:0;overflow:hidden}
-        .cv-unit-row:hover{box-shadow:0 4px 12px rgba(0,0,0,.06);transform:translateY(-1px)}
-        .cv-unit-id{font-size:14px;font-weight:700;color:#3b82f6;min-width:70px}
+        .cv-unit-row{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all .2s;cursor:pointer;min-width:0;overflow:hidden}
+        .cv-unit-row:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .cv-unit-id{font-size:14px;font-weight:700;color:#2196F3;min-width:70px}
         .cv-unit-bar{flex:1;height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden}
         .cv-unit-bar-fill{height:100%;border-radius:3px}
         .cv-unit-pct{font-size:15px;font-weight:700;min-width:55px;text-align:right}
         .cv-unit-status{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;min-width:70px;justify-content:center}
-        .cv-unit-hours{font-size:11px;color:#6b7280;min-width:50px;text-align:right}
-        .cv-table-section{margin:0 24px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+        .cv-unit-hours{font-size:11px;color:#6c757d;min-width:50px;text-align:right}
+        .cv-table-section{margin:0 24px 16px;background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden}
         .cv-table-section .data-table tbody td{font-size:12px;padding:8px 14px}
-        .cv-section-title{font-size:15px;font-weight:700;color:#1a1a2e;padding:16px 24px 10px;display:flex;align-items:center;gap:8px}
-        .cv-section-title i{font-size:13px;color:#3b82f6}
-        .cv-section-title span{color:#9ca3af;font-weight:400;font-size:12px;margin-left:4px}
+        .cv-section-title{font-size:15px;font-weight:600;color:#333333;padding:16px 24px 10px;display:flex;align-items:center;gap:8px}
+        .cv-section-title i{font-size:13px;color:#e74c3c}
+        .cv-section-title span{color:#999999;font-weight:400;font-size:12px;margin-left:4px}
 
         .vru-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:0 24px 16px}
-        .vru-detail-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:16px;text-align:center}
-        .vru-detail-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:#9ca3af;margin-bottom:6px}
-        .vru-detail-value{font-size:24px;font-weight:800;line-height:1;color:#1a1a2e}
-        .vru-detail-sub{font-size:10px;color:#6b7280;margin-top:4px}
+        .vru-detail-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px;text-align:center}
+        .vru-detail-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:#999999;margin-bottom:6px}
+        .vru-detail-value{font-size:24px;font-weight:700;line-height:1;color:#333333}
+        .vru-detail-sub{font-size:10px;color:#6c757d;margin-top:4px}
         .vru-events-list{padding:0 24px 16px;display:flex;flex-direction:column;gap:8px}
-        .vru-event{display:flex;align-items:center;gap:12px;background:#fff;border-radius:8px;border:1px solid #e5e7eb;padding:12px 16px}
+        .vru-event{display:flex;align-items:center;gap:12px;background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:12px 16px}
         .vru-event-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-        .vru-event-time{font-size:11px;color:#9ca3af;min-width:100px}
+        .vru-event-time{font-size:11px;color:#999999;min-width:100px}
         .vru-event-desc{font-size:12px;color:#374151;flex:1}
-        .vru-event-dur{font-size:11px;font-weight:600;color:#6b7280}
+        .vru-event-dur{font-size:11px;font-weight:600;color:#6c757d}
         .vru-multi-item{display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;transition:background .1s}
-        .vru-multi-item:hover{background:#f9fafb}
-        .vru-multi-item input[type=checkbox]{accent-color:#3b82f6;width:14px;height:14px;cursor:pointer;flex-shrink:0}
+        .vru-multi-item:hover{background:#f8f9fa}
+        .vru-multi-item input[type=checkbox]{accent-color:#2196F3;width:14px;height:14px;cursor:pointer;flex-shrink:0}
         .vru-multi-item .vru-multi-label{font-size:12px;color:#374151;flex:1}
         .vru-multi-item .vru-multi-avail{font-size:11px;font-weight:600}
         .vru-multi-item .vru-multi-status{font-size:9px;padding:1px 6px;border-radius:10px;font-weight:600}
-        .vru-header-card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px 28px;margin:0 24px 16px}
-        .vru-header-title{font-size:20px;font-weight:800;color:#1a1a2e;display:flex;align-items:center;gap:10px}
-        .vru-header-meta{font-size:12px;color:#6b7280;margin-top:4px}
-        .vru-group-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;background:#eff6ff;color:#3b82f6;border:1px solid #bfdbfe}
+        .vru-header-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:24px 28px;margin:0 24px 16px}
+        .vru-header-title{font-size:20px;font-weight:700;color:#333333;display:flex;align-items:center;gap:10px}
+        .vru-header-meta{font-size:12px;color:#6c757d;margin-top:4px}
+        .vru-group-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;background:#eff6ff;color:#2196F3;border:1px solid #bfdbfe}
 
         /* ===== OVERVIEW DASHBOARD ===== */
-        .ov-filter-row{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb}
+        .ov-filter-row{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#f8f9fa;border-bottom:1px solid #dee2e6}
         .ov-filter-select{padding:5px 26px 5px 8px;font-size:11px;font-weight:500;color:#374151;background:#fff;border:1px solid #d1d5db;border-radius:4px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5L5 6.5L8 3.5' fill='none' stroke='%236b7280' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center;min-width:110px}
-        .ov-filter-select:focus{border-color:#3b82f6;outline:none}
-        .ov-kpi-strip{display:flex;gap:0;background:#fff;border-radius:6px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:14px}
+        .ov-filter-select:focus{border-color:#2196F3;outline:none}
+        .ov-kpi-strip{display:flex;gap:0;background:#fff;border-radius:6px;border:1px solid #dee2e6;overflow:hidden;margin-bottom:14px}
         .ov-kpi-item{flex:1;padding:10px 14px;border-right:1px solid #f3f4f6;display:flex;align-items:center;gap:8px}
         .ov-kpi-item:last-child{border-right:none}
         .ov-kpi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-        .ov-kpi-val{font-size:18px;font-weight:700;color:#1a1a2e;line-height:1}
-        .ov-kpi-label{font-size:9px;color:#9ca3af;margin-top:1px}
+        .ov-kpi-val{font-size:18px;font-weight:700;color:#333333;line-height:1}
+        .ov-kpi-label{font-size:9px;color:#999999;margin-top:1px}
         .ov-table{width:100%;border-collapse:collapse;font-size:12px}
-        .ov-table thead th{background:#f9fafb;padding:7px 10px;text-align:left;font-weight:600;font-size:10px;color:#6b7280;border-bottom:1px solid #e5e7eb;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px}
-        .ov-table tbody td{padding:6px 10px;border-bottom:1px solid #f3f4f6;color:#374151;font-size:11.5px}
-        .ov-table tbody tr:hover{background:#f9fafb}
+        .ov-table thead th{background:#f8f9fa;padding:7px 10px;text-align:left;font-weight:600;font-size:10px;color:#333333;border-bottom:2px solid #dee2e6;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px}
+        .ov-table tbody td{padding:6px 10px;border-bottom:1px solid #dee2e6;color:#374151;font-size:11.5px}
+        .ov-table tbody tr:hover{background:#f8f9fa}
         .ov-comp-tile{width:13px;height:13px;border-radius:2px;display:inline-block;margin:1px;cursor:default;transition:transform .1s}
         .ov-comp-tile:hover{transform:scale(1.6);z-index:2}
-        .ov-section{background:#fff;border-radius:6px;border:1px solid #e5e7eb;margin-bottom:14px;overflow:hidden}
+        .ov-section{background:#fff;border-radius:6px;border:1px solid #dee2e6;margin-bottom:14px;overflow:hidden}
         .ov-section-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f3f4f6}
-        .ov-section-head h3{font-size:12px;font-weight:600;color:#1a1a2e;display:flex;align-items:center;gap:6px}
-        .ov-section-head .ov-badge{font-size:9px;font-weight:600;padding:2px 6px;border-radius:10px;background:#eff6ff;color:#3b82f6}
+        .ov-section-head h3{font-size:12px;font-weight:600;color:#333333;display:flex;align-items:center;gap:6px}
+        .ov-section-head .ov-badge{font-size:9px;font-weight:600;padding:2px 6px;border-radius:10px;background:#eff6ff;color:#2196F3}
         .ov-section-body{padding:12px 14px}
         .ov-status-bar{display:flex;gap:14px;margin-bottom:10px;padding:6px 0}
-        .ov-status-chip{display:flex;align-items:center;gap:5px;font-size:10px;color:#6b7280}
+        .ov-status-chip{display:flex;align-items:center;gap:5px;font-size:10px;color:#6c757d}
         .ov-status-chip .dot{width:7px;height:7px;border-radius:50%}
-        .ov-status-chip strong{font-size:13px;color:#1a1a2e}
+        .ov-status-chip strong{font-size:13px;color:#333333}
         .ov-comp-group{margin-bottom:8px}
-        .ov-comp-group-label{font-size:9px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;display:flex;align-items:center;gap:4px}
-        .ov-nav-banner{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:12px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;margin-bottom:14px}
-        .ov-nav-banner:hover{border-color:#3b82f6;background:#fafbff}
+        .ov-comp-group-label{font-size:9px;font-weight:600;color:#999999;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;display:flex;align-items:center;gap:4px}
+        .ov-nav-banner{background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:12px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;margin-bottom:14px}
+        .ov-nav-banner:hover{border-color:#2196F3;background:#fafbff}
 
         /* ===== EXECUTIVE KPI STRIP ===== */
         .exec-page-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 0}
-        .exec-page-title{font-size:18px;font-weight:800;color:#1a1a2e;display:flex;align-items:center;gap:8px}
-        .exec-page-meta{display:flex;align-items:center;gap:12px;font-size:10px;color:#9ca3af}
+        .exec-page-title{font-size:18px;font-weight:600;color:#333333;display:flex;align-items:center;gap:8px}
+        .exec-page-meta{display:flex;align-items:center;gap:12px;font-size:10px;color:#999999}
         .exec-page-meta .meta-sep{width:3px;height:3px;border-radius:50%;background:#d1d5db}
         .exec-kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 24px 10px}
-        .exec-kpi-card{background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:14px 16px;position:relative;transition:box-shadow .15s}
-        .exec-kpi-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.05);border-color:#3b82f6}
+        .exec-kpi-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:14px 16px;position:relative;transition:box-shadow .15s}
+        .exec-kpi-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06);border-color:#2196F3}
         .exec-kpi-card.alert{border-left:3px solid #ef4444}
         .exec-kpi-card.warn-accent{border-left:3px solid #f59e0b}
-        .exec-kpi-label{font-size:9px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;font-weight:600}
-        .exec-kpi-value{font-size:26px;font-weight:800;line-height:1;color:#1a1a2e}
+        .exec-kpi-label{font-size:9px;color:#999999;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;font-weight:600}
+        .exec-kpi-value{font-size:26px;font-weight:700;line-height:1;color:#333333}
         .exec-kpi-sub{display:flex;align-items:center;gap:3px;font-size:10px;margin-top:5px;font-weight:600}
-        .exec-kpi-sub.up{color:#10b981}.exec-kpi-sub.down{color:#ef4444}.exec-kpi-sub.neutral{color:#6b7280}
+        .exec-kpi-sub.up{color:#10b981}.exec-kpi-sub.down{color:#ef4444}.exec-kpi-sub.neutral{color:#6c757d}
         .exec-kpi-prev{font-size:9px;color:#c0c5ce;font-weight:400}
         .sla-callout{margin:0 24px 14px;padding:12px 16px;border-radius:8px;display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.5}
         .sla-callout i{font-size:15px;flex-shrink:0;margin-top:1px}
         .sla-callout.danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
         .sla-callout.success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
         .sla-callout strong{font-weight:700}
-        .sla-cust-list{font-size:10.5px;color:#6b7280;margin-top:3px}
+        .sla-cust-list{font-size:10.5px;color:#6c757d;margin-top:3px}
         .sla-cust-list span{margin-right:6px}
         .cust-risk-table{width:100%;border-collapse:collapse;font-size:12px}
-        .cust-risk-table thead th{background:#f9fafb;padding:8px 12px;text-align:left;font-weight:600;font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid #e5e7eb;white-space:nowrap}
-        .cust-risk-table tbody td{padding:7px 12px;border-bottom:1px solid #f3f4f6}
-        .cust-risk-table tbody tr:hover{background:#f9fafb}
+        .cust-risk-table thead th{background:#f8f9fa;padding:8px 12px;text-align:left;font-weight:600;font-size:10px;color:#333333;text-transform:uppercase;letter-spacing:.3px;border-bottom:2px solid #dee2e6;white-space:nowrap}
+        .cust-risk-table tbody td{padding:7px 12px;border-bottom:1px solid #dee2e6}
+        .cust-risk-table tbody tr:hover{background:#f8f9fa}
         .cust-risk-table tbody tr.sla-breach{background:#fef2f2}
         .cust-risk-table tbody tr.sla-breach:hover{background:#fef2f2}
         .sla-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700}
         .sla-badge.above{background:#ecfdf5;color:#059669}.sla-badge.below{background:#fef2f2;color:#dc2626}.sla-badge.at-risk{background:#fffbeb;color:#d97706}
-        .expand-toggle{display:flex;align-items:center;gap:6px;padding:12px 24px 4px;font-size:11px;font-weight:600;color:#6b7280;cursor:pointer;user-select:none;transition:color .15s}
-        .expand-toggle:hover{color:#3b82f6}
+        .expand-toggle{display:flex;align-items:center;gap:6px;padding:12px 24px 4px;font-size:11px;font-weight:600;color:#6c757d;cursor:pointer;user-select:none;transition:color .15s}
+        .expand-toggle:hover{color:#2196F3}
         .expand-toggle i{font-size:9px;transition:transform .2s}.expand-toggle.open i{transform:rotate(90deg)}
         @media(max-width:1200px){.exec-kpi-strip{grid-template-columns:repeat(3,1fr)}}
         @media(max-width:768px){.exec-kpi-strip{grid-template-columns:repeat(2,1fr)}}
 
         /* ===== REPORT LOADING ===== */
-        .report-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;color:#9ca3af;text-align:center;padding:40px}
+        .report-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;color:#999999;text-align:center;padding:40px}
         .report-placeholder i{font-size:48px;margin-bottom:16px;color:#d1d5db}
-        .report-placeholder h3{font-size:16px;font-weight:600;color:#6b7280;margin-bottom:6px}
-        .report-placeholder p{font-size:13px;color:#9ca3af}
+        .report-placeholder h3{font-size:16px;font-weight:600;color:#6c757d;margin-bottom:6px}
+        .report-placeholder p{font-size:13px;color:#999999}
         .report-loading{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:400px;text-align:center;padding:40px}
-        .report-loading .spinner{width:40px;height:40px;border:3px solid #e5e7eb;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:16px}
+        .report-loading .spinner{width:40px;height:40px;border:3px solid #dee2e6;border-top-color:#2196F3;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:16px}
         @keyframes spin{to{transform:rotate(360deg)}}
 
         @media print{.sidebar,.topbar,.filter-row,.report-tabs-wrap,.insights-strip,.table-toggle-area{display:none!important}.main{margin-left:0}}
@@ -512,8 +511,8 @@
                 <option>Running</option><option>Warning</option><option>Faulted</option>
             </select>
             <div style="flex:1"></div>
-            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#6b7280">
-                <i class="fas fa-calendar-alt" style="color:#3b82f6"></i>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#6c757d">
+                <i class="fas fa-calendar-alt" style="color:#2196F3"></i>
                 <span style="font-weight:600;color:#374151">03/29/2026 — 04/28/2026</span>
             </div>
         </div>
@@ -523,7 +522,7 @@
             <!-- KPI Strip -->
             <div class="ov-kpi-strip">
                 <div class="ov-kpi-item">
-                    <div class="ov-kpi-dot" style="background:#3b82f6"></div>
+                    <div class="ov-kpi-dot" style="background:#2196F3"></div>
                     <div><div class="ov-kpi-val">487</div><div class="ov-kpi-label">Total Compressors</div></div>
                 </div>
                 <div class="ov-kpi-item">
@@ -556,8 +555,8 @@
             <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:14px">
                 <div class="ov-section">
                     <div class="ov-section-head">
-                        <h3><i class="fas fa-chart-line" style="color:#3b82f6;font-size:11px"></i> Emission Trend</h3>
-                        <div style="display:flex;gap:12px;font-size:10px;color:#6b7280">
+                        <h3><i class="fas fa-chart-line" style="color:#2196F3;font-size:11px"></i> Emission Trend</h3>
+                        <div style="display:flex;gap:12px;font-size:10px;color:#6c757d">
                             <span><i class="fas fa-cloud" style="margin-right:3px"></i> 0 kg CO₂</span>
                             <span><i class="fas fa-dollar-sign" style="margin-right:3px"></i> $0 Credits</span>
                         </div>
@@ -572,9 +571,9 @@
                     <div class="ov-section-body" style="display:flex;align-items:center;gap:16px">
                         <div style="position:relative;width:120px;height:120px;flex-shrink:0"><canvas id="ovFaultsChart"></canvas></div>
                         <div style="flex:1;font-size:11px">
-                            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="width:10px;height:10px;border-radius:2px;background:#ef4444;display:inline-block"></span><span style="color:#6b7280">Faulted</span><strong style="margin-left:auto;color:#ef4444">992.7 Hrs</strong></div>
-                            <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#f59e0b;display:inline-block"></span><span style="color:#6b7280">Not Faulted</span><strong style="margin-left:auto;color:#f59e0b">1,016.3 Hrs</strong></div>
-                            <div style="margin-top:10px;padding-top:8px;border-top:1px solid #f3f4f6;display:flex;justify-content:space-between;font-size:10px;color:#9ca3af"><span>Total: 2,009 Hrs</span><span>Fault Rate: 49.4%</span></div>
+                            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="width:10px;height:10px;border-radius:2px;background:#ef4444;display:inline-block"></span><span style="color:#6c757d">Faulted</span><strong style="margin-left:auto;color:#ef4444">992.7 Hrs</strong></div>
+                            <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#f59e0b;display:inline-block"></span><span style="color:#6c757d">Not Faulted</span><strong style="margin-left:auto;color:#f59e0b">1,016.3 Hrs</strong></div>
+                            <div style="margin-top:10px;padding-top:8px;border-top:1px solid #f3f4f6;display:flex;justify-content:space-between;font-size:10px;color:#999999"><span>Total: 2,009 Hrs</span><span>Fault Rate: 49.4%</span></div>
                         </div>
                     </div>
                 </div>
@@ -584,12 +583,12 @@
             <div class="ov-section">
                 <div class="ov-section-head">
                     <h3><i class="fas fa-building" style="color:#8b5cf6;font-size:11px"></i> Customer Overview <span class="ov-badge">18 customers</span></h3>
-                    <div style="display:flex;gap:10px;font-size:10px;color:#6b7280">
+                    <div style="display:flex;gap:10px;font-size:10px;color:#6c757d">
                         <span><span style="color:#10b981;font-weight:600">94.7%</span> Avg Avail</span>
                         <span>·</span>
                         <span><span style="color:#ef4444;font-weight:600">26</span> Down</span>
                         <span>·</span>
-                        <span><span style="font-weight:600;color:#1a1a2e">487</span> Total Units</span>
+                        <span><span style="font-weight:600;color:#333333">487</span> Total Units</span>
                     </div>
                 </div>
                 <div class="ov-section-body" style="padding:0">
@@ -608,12 +607,12 @@
 
             <!-- Navigation Guide -->
             <div class="ov-nav-banner" onclick="showPage('reports')">
-                <div style="width:36px;height:36px;border-radius:8px;background:#3b82f6;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <div style="width:36px;height:36px;border-radius:6px;background:#2196F3;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                     <i class="fas fa-chart-bar" style="color:#fff;font-size:14px"></i>
                 </div>
                 <div style="flex:1">
-                    <div style="font-size:12px;font-weight:600;color:#1a1a2e">Open VRU Reports <i class="fas fa-arrow-right" style="font-size:10px;color:#3b82f6;margin-left:4px"></i></div>
-                    <div style="font-size:10px;color:#9ca3af">VRU availability reports, downtime analysis, customer summaries — click <strong style="color:#6b7280">Reports</strong> in sidebar or here</div>
+                    <div style="font-size:12px;font-weight:600;color:#333333">Open VRU Reports <i class="fas fa-arrow-right" style="font-size:10px;color:#2196F3;margin-left:4px"></i></div>
+                    <div style="font-size:10px;color:#999999">VRU availability reports, downtime analysis, customer summaries — click <strong style="color:#6c757d">Reports</strong> in sidebar or here</div>
                 </div>
             </div>
         </div>
@@ -624,14 +623,14 @@
                 <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#10b981"></div><div><div class="ov-kpi-val" style="color:#10b981">411</div><div class="ov-kpi-label">Running</div></div></div>
                 <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#f59e0b"></div><div><div class="ov-kpi-val" style="color:#f59e0b">50</div><div class="ov-kpi-label">Warning</div></div></div>
                 <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#ef4444"></div><div><div class="ov-kpi-val" style="color:#ef4444">26</div><div class="ov-kpi-label">Faulted</div></div></div>
-                <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#3b82f6"></div><div><div class="ov-kpi-val">94.7%</div><div class="ov-kpi-label">Availability</div></div></div>
+                <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#2196F3"></div><div><div class="ov-kpi-val">94.7%</div><div class="ov-kpi-label">Availability</div></div></div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-                <div class="ov-section"><div class="ov-section-head"><h3><i class="fas fa-chart-pie" style="color:#3b82f6;font-size:11px"></i> Status Distribution</h3></div><div class="ov-section-body" style="height:220px;position:relative"><canvas id="ovStatusPieChart"></canvas></div></div>
+                <div class="ov-section"><div class="ov-section-head"><h3><i class="fas fa-chart-pie" style="color:#2196F3;font-size:11px"></i> Status Distribution</h3></div><div class="ov-section-body" style="height:220px;position:relative"><canvas id="ovStatusPieChart"></canvas></div></div>
                 <div class="ov-section"><div class="ov-section-head"><h3><i class="fas fa-chart-bar" style="color:#8b5cf6;font-size:11px"></i> Status by State</h3></div><div class="ov-section-body" style="height:220px;position:relative"><canvas id="ovStatusByStateChart"></canvas></div></div>
             </div>
             <div class="ov-section">
-                <div class="ov-section-head"><h3><i class="fas fa-list" style="color:#6b7280;font-size:11px"></i> Faulted Units <span class="ov-badge" style="background:#fef2f2;color:#ef4444">26 units</span></h3></div>
+                <div class="ov-section-head"><h3><i class="fas fa-list" style="color:#6c757d;font-size:11px"></i> Faulted Units <span class="ov-badge" style="background:#fef2f2;color:#ef4444">26 units</span></h3></div>
                 <div class="ov-section-body" style="padding:0"><div class="scroll-y" style="max-height:300px" id="ovFaultedTable"></div></div>
             </div>
         </div>
@@ -654,14 +653,14 @@
                 <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#ef4444"></div><div><div class="ov-kpi-val" style="color:#ef4444">$284K</div><div class="ov-kpi-label">Lost Revenue (Downtime)</div></div></div>
                 <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#f59e0b"></div><div><div class="ov-kpi-val" style="color:#f59e0b">$127K</div><div class="ov-kpi-label">Maintenance Cost</div></div></div>
                 <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#10b981"></div><div><div class="ov-kpi-val" style="color:#10b981">$1.8M</div><div class="ov-kpi-label">Revenue (Running)</div></div></div>
-                <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#3b82f6"></div><div><div class="ov-kpi-val">$3,692</div><div class="ov-kpi-label">Avg $/Unit/Month</div></div></div>
+                <div class="ov-kpi-item"><div class="ov-kpi-dot" style="background:#2196F3"></div><div><div class="ov-kpi-val">$3,692</div><div class="ov-kpi-label">Avg $/Unit/Month</div></div></div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
                 <div class="ov-section"><div class="ov-section-head"><h3><i class="fas fa-dollar-sign" style="color:#10b981;font-size:11px"></i> Revenue vs Cost Trend</h3></div><div class="ov-section-body" style="height:220px;position:relative"><canvas id="ovRevCostChart"></canvas></div></div>
                 <div class="ov-section"><div class="ov-section-head"><h3><i class="fas fa-chart-pie" style="color:#ef4444;font-size:11px"></i> Cost Breakdown</h3></div><div class="ov-section-body" style="height:220px;position:relative"><canvas id="ovCostBreakChart"></canvas></div></div>
             </div>
             <div class="ov-section">
-                <div class="ov-section-head"><h3><i class="fas fa-table" style="color:#6b7280;font-size:11px"></i> Financial Summary by Customer</h3></div>
+                <div class="ov-section-head"><h3><i class="fas fa-table" style="color:#6c757d;font-size:11px"></i> Financial Summary by Customer</h3></div>
                 <div class="ov-section-body" style="padding:0"><div class="scroll-y" style="max-height:300px" id="ovFinTable"></div></div>
             </div>
         </div>
@@ -728,7 +727,7 @@
     <div id="reportLoading" class="report-loading">
         <div class="spinner"></div>
         <div style="font-size:14px;font-weight:600;color:#374151">Generating report...</div>
-        <div style="font-size:12px;color:#9ca3af;margin-top:4px">Analyzing 487 VRU units across 6 states</div>
+        <div style="font-size:12px;color:#999999;margin-top:4px">Analyzing 487 VRU units across 6 states</div>
     </div>
 
     <!-- ===== REPORT CONTENT (hidden until Run Report) ===== -->
@@ -738,7 +737,7 @@
     <div id="overviewView">
     <!-- ===== EXECUTIVE HEADER ===== -->
     <div class="exec-page-header ani d1">
-        <div class="exec-page-title"><i class="fas fa-shield-alt" style="color:#3b82f6;font-size:16px"></i> VRU Availability Overview</div>
+        <div class="exec-page-title"><i class="fas fa-shield-alt" style="color:#2196F3;font-size:16px"></i> VRU Availability Overview</div>
         <div class="exec-page-meta">
             <span><i class="fas fa-clock" style="margin-right:3px"></i> Last refreshed: Apr 28, 2026 08:42 AM</span>
             <span class="meta-sep"></span>
@@ -752,7 +751,7 @@
     <div class="exec-kpi-strip ani d1">
         <div class="exec-kpi-card" style="cursor:pointer" onclick="navigateTo('monthlyView')" title="View Monthly Report →">
             <div class="exec-kpi-label">VRU Availability</div>
-            <div class="exec-kpi-value" style="color:#3b82f6">94.7%</div>
+            <div class="exec-kpi-value" style="color:#2196F3">94.7%</div>
             <div class="exec-kpi-sub up"><i class="fas fa-arrow-up" style="font-size:8px"></i> +1.3% vs last month</div>
             <div class="exec-kpi-prev">was 93.4%</div>
         </div>
@@ -770,19 +769,19 @@
         </div>
         <div class="exec-kpi-card alert" style="cursor:pointer" onclick="navigateTo('customerView')" title="View Customer Summary →">
             <div class="exec-kpi-label">Customers Below SLA</div>
-            <div class="exec-kpi-value" style="color:#ef4444">9 <span style="font-size:14px;font-weight:600;color:#9ca3af">/ 18</span></div>
+            <div class="exec-kpi-value" style="color:#ef4444">9 <span style="font-size:14px;font-weight:600;color:#999999">/ 18</span></div>
             <div class="exec-kpi-sub down"><i class="fas fa-exclamation-circle" style="font-size:8px"></i> 50% non-compliant</div>
             <div class="exec-kpi-prev">was 7 last month</div>
         </div>
         <div class="exec-kpi-card" style="cursor:pointer" onclick="navigateTo('downtimeView')" title="View Downtime Analysis →">
             <div class="exec-kpi-label">Avg Recovery Time</div>
-            <div class="exec-kpi-value">4.2<span style="font-size:14px;font-weight:600;color:#9ca3af">h</span></div>
+            <div class="exec-kpi-value">4.2<span style="font-size:14px;font-weight:600;color:#999999">h</span></div>
             <div class="exec-kpi-sub up"><i class="fas fa-arrow-down" style="font-size:8px"></i> -0.9h faster</div>
             <div class="exec-kpi-prev">was 5.1h</div>
         </div>
         <div class="exec-kpi-card" style="cursor:pointer" onclick="navigateTo('runtimeView')" title="View Runtime Hours →">
             <div class="exec-kpi-label">Asset-Hours Lost</div>
-            <div class="exec-kpi-value">1,248<span style="font-size:14px;font-weight:600;color:#9ca3af">h</span></div>
+            <div class="exec-kpi-value">1,248<span style="font-size:14px;font-weight:600;color:#999999">h</span></div>
             <div class="exec-kpi-sub up"><i class="fas fa-arrow-down" style="font-size:8px"></i> -312h vs last month</div>
             <div class="exec-kpi-prev">was 1,560h · ~$211K impact</div>
         </div>
@@ -792,19 +791,19 @@
     <div class="sla-callout danger ani d1">
         <i class="fas fa-exclamation-triangle"></i>
         <div>
-            <strong>9 customers currently below 95% SLA target</strong> — representing 205 VRU units (42% of total). <a onclick="navigateTo('stateSummaryView')" style="cursor:pointer;text-decoration:underline;color:#3b82f6;font-weight:600">North Dakota</a> is the weakest region at 88.8%.
+            <strong>9 customers currently below 95% SLA target</strong> — representing 205 VRU units (42% of total). <a onclick="navigateTo('stateSummaryView')" style="cursor:pointer;text-decoration:underline;color:#2196F3;font-weight:600">North Dakota</a> is the weakest region at 88.8%.
             <div class="sla-cust-list">
                 <span style="color:#ef4444;font-weight:600">Critical:</span>
-                <a onclick="navigateTo('customerView',{customer:'Enerplus'})" style="cursor:pointer;text-decoration:underline;color:#3b82f6">Enerplus</a> (85.6%),
-                <a onclick="navigateTo('customerView',{customer:'Whiting Petroleum'})" style="cursor:pointer;text-decoration:underline;color:#3b82f6">Whiting Petroleum</a> (88.4%)
+                <a onclick="navigateTo('customerView',{customer:'Enerplus'})" style="cursor:pointer;text-decoration:underline;color:#2196F3">Enerplus</a> (85.6%),
+                <a onclick="navigateTo('customerView',{customer:'Whiting Petroleum'})" style="cursor:pointer;text-decoration:underline;color:#2196F3">Whiting Petroleum</a> (88.4%)
                 <span style="margin-left:8px;color:#f59e0b;font-weight:600">Watch:</span>
-                <a onclick="navigateTo('customerView',{customer:'Extraction Oil'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Extraction Oil</a> (90.8%),
-                <a onclick="navigateTo('customerView',{customer:'Oasis Petroleum'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Oasis Petroleum</a> (91.2%),
-                <a onclick="navigateTo('customerView',{customer:'Centennial Dev'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Centennial Dev</a> (92.1%),
-                <a onclick="navigateTo('customerView',{customer:'Laramie Resources'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Laramie</a> (93.6%),
-                <a onclick="navigateTo('customerView',{customer:'Concho Resources'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Concho</a> (93.9%),
-                <a onclick="navigateTo('customerView',{customer:'Cimarex Energy'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Cimarex</a> (94.2%),
-                <a onclick="navigateTo('customerView',{customer:'Continental Resources'})" style="cursor:pointer;text-decoration:underline;color:#6b7280">Continental</a> (94.7%)
+                <a onclick="navigateTo('customerView',{customer:'Extraction Oil'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Extraction Oil</a> (90.8%),
+                <a onclick="navigateTo('customerView',{customer:'Oasis Petroleum'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Oasis Petroleum</a> (91.2%),
+                <a onclick="navigateTo('customerView',{customer:'Centennial Dev'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Centennial Dev</a> (92.1%),
+                <a onclick="navigateTo('customerView',{customer:'Laramie Resources'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Laramie</a> (93.6%),
+                <a onclick="navigateTo('customerView',{customer:'Concho Resources'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Concho</a> (93.9%),
+                <a onclick="navigateTo('customerView',{customer:'Cimarex Energy'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Cimarex</a> (94.2%),
+                <a onclick="navigateTo('customerView',{customer:'Continental Resources'})" style="cursor:pointer;text-decoration:underline;color:#6c757d">Continental</a> (94.7%)
             </div>
         </div>
     </div>
@@ -816,8 +815,8 @@
             <div class="card-body"><div class="chart-container"><canvas id="trendChart" height="200"></canvas></div></div>
         </div>
         <div class="card">
-            <div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="ovCauseDrillTitle">Downtime by Cause <span class="card-subtitle">this period</span></h3><button id="ovCauseDrillBack" onclick="ovCauseDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div>
-            <div class="card-body" style="position:relative"><div id="ovCauseDrillHint" style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;color:#9ca3af"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><div class="chart-container"><canvas id="causeChart" height="200"></canvas></div></div>
+            <div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="ovCauseDrillTitle">Downtime by Cause <span class="card-subtitle">this period</span></h3><button id="ovCauseDrillBack" onclick="ovCauseDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #dee2e6;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div>
+            <div class="card-body" style="position:relative"><div id="ovCauseDrillHint" style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;color:#999999"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><div class="chart-container"><canvas id="causeChart" height="200"></canvas></div></div>
         </div>
     </div>
 
@@ -830,12 +829,12 @@
     </div>
     <div class="state-cards ani d2" id="stateCards"></div>
     <div id="stateMapView" style="display:none;padding:0 24px 16px">
-        <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:24px;position:relative">
+        <div style="background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:24px;position:relative">
             <svg id="stateMapSvg" viewBox="0 0 800 500" style="width:100%;max-width:800px;margin:0 auto;display:block"></svg>
             <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:16px">
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95% Above SLA</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-95% At Risk</div>
-                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88% Below SLA</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6c757d"><span style="width:12px;height:12px;border-radius:3px;background:#10b981;display:inline-block"></span> &ge;95% Above SLA</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6c757d"><span style="width:12px;height:12px;border-radius:3px;background:#f59e0b;display:inline-block"></span> 88-95% At Risk</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6c757d"><span style="width:12px;height:12px;border-radius:3px;background:#ef4444;display:inline-block"></span> &lt;88% Below SLA</div>
             </div>
         </div>
     </div>
@@ -851,7 +850,7 @@
             </div>
         </div>
     </div>
-    <div style="margin:0 24px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden">
+    <div style="margin:0 24px 16px;background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden">
         <div class="scroll-y" style="max-height:480px" id="customerCards"></div>
     </div>
 
@@ -863,13 +862,13 @@
 
     <!-- ===== OPERATIONAL ACTION PLAN ===== -->
     <div class="section-header ani d4">
-        <h2><i class="fas fa-clipboard-list" style="color:#3b82f6;margin-right:6px;font-size:14px"></i>Operational Action Plan <span>prioritized by availability impact</span></h2>
+        <h2><i class="fas fa-clipboard-list" style="color:#2196F3;margin-right:6px;font-size:14px"></i>Operational Action Plan <span>prioritized by availability impact</span></h2>
     </div>
     <div class="action-cards ani d3">
         <div class="action-card priority-high">
             <div class="action-priority">HIGH</div>
             <div class="action-body">
-                <h4>Dispatch field tech to <a onclick="navigateTo('customerView',{customer:'Enerplus'});event.stopPropagation()" style="cursor:pointer;color:#3b82f6;text-decoration:underline">Enerplus</a> — <a onclick="navigateTo('vruView',{vruCustomer:'Enerplus'});event.stopPropagation()" style="cursor:pointer;color:#3b82f6;text-decoration:underline">PVR2614</a></h4>
+                <h4>Dispatch field tech to <a onclick="navigateTo('customerView',{customer:'Enerplus'});event.stopPropagation()" style="cursor:pointer;color:#2196F3;text-decoration:underline">Enerplus</a> — <a onclick="navigateTo('vruView',{vruCustomer:'Enerplus'});event.stopPropagation()" style="cursor:pointer;color:#2196F3;text-decoration:underline">PVR2614</a></h4>
                 <p>Unit down 5 consecutive days, no auto-recovery. Likely mechanical failure requiring on-site intervention. Enerplus SLA at 85.6% — worst in VRU fleet.</p>
                 <div class="action-meta">
                     <span><i class="fas fa-user"></i> <strong>Owner:</strong> Field Ops — ND Team</span>
@@ -882,7 +881,7 @@
         <div class="action-card priority-high">
             <div class="action-priority">HIGH</div>
             <div class="action-body">
-                <h4>Investigate <a onclick="navigateTo('vruView',{vruCustomer:'Whiting Petroleum'});event.stopPropagation()" style="cursor:pointer;color:#3b82f6;text-decoration:underline">PVR2847</a> restart loop — <a onclick="navigateTo('customerView',{customer:'Whiting Petroleum'});event.stopPropagation()" style="cursor:pointer;color:#3b82f6;text-decoration:underline">Whiting Petroleum</a></h4>
+                <h4>Investigate <a onclick="navigateTo('vruView',{vruCustomer:'Whiting Petroleum'});event.stopPropagation()" style="cursor:pointer;color:#2196F3;text-decoration:underline">PVR2847</a> restart loop — <a onclick="navigateTo('customerView',{customer:'Whiting Petroleum'});event.stopPropagation()" style="cursor:pointer;color:#2196F3;text-decoration:underline">Whiting Petroleum</a></h4>
                 <p>7 restart cycles in 30 days — intermittent electrical or sensor fault. Risk of permanent failure and cascade to adjacent units if not addressed.</p>
                 <div class="action-meta">
                     <span><i class="fas fa-user"></i> <strong>Owner:</strong> Remote Diagnostics</span>
@@ -895,7 +894,7 @@
         <div class="action-card priority-medium">
             <div class="action-priority">MED</div>
             <div class="action-body">
-                <h4>Review <a onclick="navigateTo('customerView',{customer:'Extraction Oil'});event.stopPropagation()" style="cursor:pointer;color:#3b82f6;text-decoration:underline">Extraction Oil</a> Colorado VRUs — 3 simultaneous failures</h4>
+                <h4>Review <a onclick="navigateTo('customerView',{customer:'Extraction Oil'});event.stopPropagation()" style="cursor:pointer;color:#2196F3;text-decoration:underline">Extraction Oil</a> Colorado VRUs — 3 simultaneous failures</h4>
                 <p>All 3 failures within a 4-hour window on Apr 15. Shared power supply or environmental root cause likely. Customer at 90.8% — third month below SLA.</p>
                 <div class="action-meta">
                     <span><i class="fas fa-user"></i> <strong>Owner:</strong> Regional Eng — CO</span>
@@ -908,7 +907,7 @@
         <div class="action-card priority-medium">
             <div class="action-priority">MED</div>
             <div class="action-body">
-                <h4>Escalate <a onclick="navigateTo('customerView',{customer:'Centennial Dev'});event.stopPropagation()" style="cursor:pointer;color:#3b82f6;text-decoration:underline">Centennial Dev</a> SLA risk — 3rd consecutive month below target</h4>
+                <h4>Escalate <a onclick="navigateTo('customerView',{customer:'Centennial Dev'});event.stopPropagation()" style="cursor:pointer;color:#2196F3;text-decoration:underline">Centennial Dev</a> SLA risk — 3rd consecutive month below target</h4>
                 <p>Customer at 92.1% with downward trend (-0.3%/mo). 28 units, 2 currently down. Proactive account review recommended before breach escalation.</p>
                 <div class="action-meta">
                     <span><i class="fas fa-user"></i> <strong>Owner:</strong> Account Mgr — J. Rodriguez</span>
@@ -936,7 +935,7 @@
     <!-- MoM data integrated into KPI strip above; charts moved to top -->
 
     <!-- ===== HEATMAP (expandable analyst view) ===== -->
-    <div class="expand-toggle open ani d5" onclick="toggleHeatmapSection(this)"><i class="fas fa-chevron-right"></i> Daily Availability Heatmap <span style="font-weight:400;color:#9ca3af;margin-left:4px">· analyst detail view</span></div>
+    <div class="expand-toggle open ani d5" onclick="toggleHeatmapSection(this)"><i class="fas fa-chevron-right"></i> Daily Availability Heatmap <span style="font-weight:400;color:#999999;margin-left:4px">· analyst detail view</span></div>
     <div id="heatmapSection" style="display:block">
     <div class="charts-row full">
         <div class="card">
@@ -969,7 +968,7 @@
     <div id="customerView" style="display:none">
         <div style="padding:20px 24px 0">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-                <label style="font-size:13px;font-weight:600;color:#1a1a2e">Select Customer</label>
+                <label style="font-size:13px;font-weight:600;color:#333333">Select Customer</label>
                 <select id="custReportSelect" onchange="renderCustomerReport()" class="card-select" style="min-width:220px;padding:8px 32px 8px 10px;font-size:13px"></select>
             </div>
         </div>
@@ -983,32 +982,32 @@
             <div class="card" style="padding:16px 20px;margin-bottom:16px;overflow:visible">
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
                     <div style="display:flex;align-items:center;gap:8px">
-                        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px">State</label>
+                        <label style="font-size:12px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:.3px">State</label>
                         <select id="vruStateSelect" onchange="filterVruByState();populateVruUnits();renderVruReport()" class="card-select" style="min-width:160px;padding:8px 32px 8px 10px;font-size:13px">
                             <option value="All">All States</option>
                         </select>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px">
-                        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px">Customer</label>
+                        <label style="font-size:12px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:.3px">Customer</label>
                         <select id="vruCustSelect" onchange="populateVruUnits();renderVruReport()" class="card-select" style="min-width:200px;padding:8px 32px 8px 10px;font-size:13px"></select>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;position:relative">
-                        <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.3px">VRU Units</label>
+                        <label style="font-size:12px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:.3px">VRU Units</label>
                         <div id="vruMultiSelectWrap" style="position:relative">
-                            <button id="vruMultiBtn" onclick="toggleVruDropdown()" class="card-select" style="min-width:220px;padding:8px 32px 8px 10px;font-size:13px;text-align:left;cursor:pointer;background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;display:flex;align-items:center;gap:6px">
+                            <button id="vruMultiBtn" onclick="toggleVruDropdown()" class="card-select" style="min-width:220px;padding:8px 32px 8px 10px;font-size:13px;text-align:left;cursor:pointer;background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;display:flex;align-items:center;gap:6px">
                                 <span id="vruMultiBtnText" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Select units...</span>
-                                <span id="vruMultiBadge" style="display:none;background:#3b82f6;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;flex-shrink:0"></span>
+                                <span id="vruMultiBadge" style="display:none;background:#2196F3;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;flex-shrink:0"></span>
                             </button>
-                            <div id="vruMultiDrop" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;width:280px;max-height:320px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;overflow:hidden">
+                            <div id="vruMultiDrop" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;width:280px;max-height:320px;background:#fff;border:1px solid #dee2e6;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;overflow:hidden">
                                 <div style="padding:8px 10px;border-bottom:1px solid #f3f4f6;display:flex;gap:6px">
-                                    <button onclick="vruSelectAll()" style="flex:1;padding:5px 0;font-size:10px;font-weight:600;background:#eff6ff;color:#3b82f6;border:1px solid #bfdbfe;border-radius:4px;cursor:pointer">Select All</button>
-                                    <button onclick="vruDeselectAll()" style="flex:1;padding:5px 0;font-size:10px;font-weight:600;background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb;border-radius:4px;cursor:pointer">Clear All</button>
+                                    <button onclick="vruSelectAll()" style="flex:1;padding:5px 0;font-size:10px;font-weight:600;background:#eff6ff;color:#2196F3;border:1px solid #bfdbfe;border-radius:4px;cursor:pointer">Select All</button>
+                                    <button onclick="vruDeselectAll()" style="flex:1;padding:5px 0;font-size:10px;font-weight:600;background:#f8f9fa;color:#6c757d;border:1px solid #dee2e6;border-radius:4px;cursor:pointer">Clear All</button>
                                 </div>
                                 <div id="vruMultiList" style="max-height:260px;overflow-y:auto;padding:4px 0"></div>
                             </div>
                         </div>
                     </div>
-                    <button onclick="renderVruReport()" style="padding:8px 20px;font-size:12px;font-weight:600;color:#fff;background:#3b82f6;border:none;border-radius:6px;cursor:pointer;transition:background .15s;margin-left:auto" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'"><i class="fas fa-chart-bar" style="margin-right:5px"></i>View Report</button>
+                    <button onclick="renderVruReport()" style="padding:8px 20px;font-size:12px;font-weight:600;color:#fff;background:#2196F3;border:none;border-radius:6px;cursor:pointer;transition:background .15s;margin-left:auto" onmouseover="this.style.background='#1976D2'" onmouseout="this.style.background='#2196F3'"><i class="fas fa-chart-bar" style="margin-right:5px"></i>View Report</button>
                 </div>
             </div>
         </div>
@@ -1098,7 +1097,7 @@ function renderStateCards(){
             </div>
             <div class="state-bar"><div class="state-bar-fill" style="width:${s.avail}%;background:${fc}"></div></div>
             <div class="state-bottom">
-                <div class="state-stat" style="color:${s.down>0?'#ef4444':'#6b7280'}"><strong>${s.down}</strong> down now</div>
+                <div class="state-stat" style="color:${s.down>0?'#ef4444':'#6c757d'}"><strong>${s.down}</strong> down now</div>
                 <div class="state-stat">${s.avail>=95?'<span style="color:#10b981">&#10003;</span> Compliant':'<span style="color:#ef4444">&#10007;</span> Non-compliant'}</div>
             </div>
         </div>`;
@@ -1135,9 +1134,9 @@ function renderStateMap(){
         const bg=s.avail>=95?'rgba(16,185,129,.15)':s.avail>=88?'rgba(245,158,11,.15)':'rgba(239,68,68,.15)';
         const tDir=s.trend>=0?'+':'';
         html+=`<path d="${p.d}" fill="${bg}" stroke="${fc}" stroke-width="2.5" style="cursor:pointer;transition:all .2s"/>`;
-        html+=`<text x="${p.cx}" y="${p.cy-18}" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">${s.name}</text>`;
-        html+=`<text x="${p.cx}" y="${p.cy+2}" text-anchor="middle" font-size="22" font-weight="800" fill="${fc}">${s.avail}%</text>`;
-        html+=`<text x="${p.cx}" y="${p.cy+18}" text-anchor="middle" font-size="11" fill="#6b7280">${s.units} units · ${s.down} down</text>`;
+        html+=`<text x="${p.cx}" y="${p.cy-18}" text-anchor="middle" font-size="14" font-weight="700" fill="#333333">${s.name}</text>`;
+        html+=`<text x="${p.cx}" y="${p.cy+2}" text-anchor="middle" font-size="22" font-weight="700" fill="${fc}">${s.avail}%</text>`;
+        html+=`<text x="${p.cx}" y="${p.cy+18}" text-anchor="middle" font-size="11" fill="#6c757d">${s.units} units · ${s.down} down</text>`;
         html+=`<text x="${p.cx}" y="${p.cy+33}" text-anchor="middle" font-size="10" font-weight="600" fill="${s.trend>=0?'#10b981':'#ef4444'}">${tDir}${s.trend}% trend</text>`;
     });
     svg.innerHTML=html;
@@ -1165,22 +1164,22 @@ function renderCustomerCards(sort='risk'){
         <th style="text-align:center">Down</th><th style="text-align:center">vs Last Mo</th><th>Top Issue</th>
     </tr></thead><tbody>`;
     sorted.forEach((cu,i)=>{
-        const fc=cu.avail>=95?'#10b981':cu.avail>=92?'#3b82f6':cu.avail>=88?'#f59e0b':'#ef4444';
+        const fc=cu.avail>=95?'#10b981':cu.avail>=92?'#2196F3':cu.avail>=88?'#f59e0b':'#ef4444';
         const slaClass=cu.avail>=95?'above':cu.avail>=92?'at-risk':'below';
         const slaLabel=cu.avail>=95?'Above SLA':cu.avail>=92?'At Risk':'Below SLA';
         const tDir=cu.trend>=0?'up':'down';const tColor=cu.trend>=0?'#10b981':'#ef4444';
         const rowClass=cu.avail<90?'sla-breach':'';
         const ins=insights[cu.name]||'—';
         h+=`<tr class="${rowClass}" onclick="navigateTo('customerView',{customer:'${cu.name.replace(/'/g,"\\'")}'})" style="cursor:pointer" title="View ${cu.name} report →">
-            <td style="color:#9ca3af;font-size:10px;text-align:center">${i+1}</td>
-            <td style="font-weight:600;color:#3b82f6">${cu.name} <i class="fas fa-external-link-alt" style="font-size:8px;color:#c0c5ce;margin-left:2px"></i></td>
-            <td style="color:#6b7280">${cu.state}</td>
+            <td style="color:#999999;font-size:10px;text-align:center">${i+1}</td>
+            <td style="font-weight:600;color:#2196F3">${cu.name} <i class="fas fa-external-link-alt" style="font-size:8px;color:#c0c5ce;margin-left:2px"></i></td>
+            <td style="color:#6c757d">${cu.state}</td>
             <td style="text-align:center;font-weight:600">${cu.units}</td>
             <td><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden"><div style="width:${cu.avail}%;height:100%;background:${fc};border-radius:2px"></div></div><span style="font-weight:700;color:${fc};font-size:11px;min-width:38px">${cu.avail}%</span></div></td>
             <td style="text-align:center"><span class="sla-badge ${slaClass}">${slaLabel}</span></td>
             <td style="text-align:center;color:${cu.down>0?'#ef4444':'#d1d5db'};font-weight:${cu.down>0?'700':'400'}">${cu.down}</td>
             <td style="text-align:center;font-size:10px;color:${tColor};font-weight:600"><i class="fas fa-arrow-${tDir}" style="font-size:8px"></i> ${Math.abs(cu.trend)}%</td>
-            <td style="font-size:10.5px;color:#6b7280;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${ins}">${ins}</td>
+            <td style="font-size:10.5px;color:#6c757d;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${ins}">${ins}</td>
         </tr>`;
     });
     h+=`</tbody></table>`;
@@ -1279,7 +1278,7 @@ function renderRawTable(){
         const a=Math.round((80+Math.random()*20)*10)/10;
         const st=a>95?'Running':a>85?'Warning':'Down';
         const sc=st==='Running'?'#10b981':st==='Warning'?'#f59e0b':'#ef4444';
-        html+=`<tr><td style="font-weight:600;color:#3b82f6">PVR${2000+Math.floor(Math.random()*999)}</td><td>${c.name}</td><td>${c.state}</td><td style="color:${sc};font-weight:600">${a}%</td><td>${Math.round((100-a)/100*720)}h</td><td>${Math.floor(Math.random()*8)}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${st==='Running'?'#ecfdf5':st==='Warning'?'#fffbeb':'#fef2f2'};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${st}</span></td></tr>`
+        html+=`<tr><td style="font-weight:600;color:#2196F3">PVR${2000+Math.floor(Math.random()*999)}</td><td>${c.name}</td><td>${c.state}</td><td style="color:${sc};font-weight:600">${a}%</td><td>${Math.round((100-a)/100*720)}h</td><td>${Math.floor(Math.random()*8)}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${st==='Running'?'#ecfdf5':st==='Warning'?'#fffbeb':'#fef2f2'};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${st}</span></td></tr>`
     }});
     body.innerHTML=html;
 }
@@ -1401,7 +1400,7 @@ function renderCustomerReport(){
     if(!c) return;
     const units=VRU_UNITS[c.name]||[];
     const cls=c.avail>=95?'excellent':c.avail>=92?'good':c.avail>=88?'warning':'critical';
-    const fc={excellent:'#10b981',good:'#3b82f6',warning:'#f59e0b',critical:'#ef4444'}[cls];
+    const fc={excellent:'#10b981',good:'#2196F3',warning:'#f59e0b',critical:'#ef4444'}[cls];
     const tDir=c.trend>=0?'up':'down';
     const running=units.filter(u=>u.status==='Running').length;
     const warning=units.filter(u=>u.status==='Warning').length;
@@ -1428,11 +1427,11 @@ function renderCustomerReport(){
             <svg width="120" height="90" viewBox="0 0 120 90">
                 <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
                 <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${fc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c.avail/100*157}" stroke-dashoffset="0"/>
-                <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${c.avail}</text>
-                <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+                <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="700" fill="#333333">${c.avail}</text>
+                <text x="60" y="88" text-anchor="middle" font-size="9" fill="#999999">%</text>
             </svg>
-            <div style="font-size:10px;color:#6b7280;font-weight:500;margin-top:4px">Customer Availability</div>
-            <div style="font-size:9px;color:#9ca3af;margin-top:2px">Target: 95.0%</div>
+            <div style="font-size:10px;color:#6c757d;font-weight:500;margin-top:4px">Customer Availability</div>
+            <div style="font-size:9px;color:#999999;margin-top:2px">Target: 95.0%</div>
         </div>
     </div>`;
 
@@ -1456,7 +1455,7 @@ function renderCustomerReport(){
     // Charts row
     h+=`<div class="charts-row ani d3">
         <div class="card"><div class="card-header"><h3>${c.name} — Availability Trend</h3></div><div class="card-body"><div class="chart-container"><canvas id="custTrendChart" height="200"></canvas></div></div></div>
-        <div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="custDrillTitle">Downtime Breakdown</h3><button id="custDrillBack" onclick="custDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="position:relative"><div id="custDrillHint" style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;color:#9ca3af"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to see affected units</div><div class="chart-container"><canvas id="custCauseChart" height="200"></canvas></div></div></div>
+        <div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="custDrillTitle">Downtime Breakdown</h3><button id="custDrillBack" onclick="custDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #dee2e6;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="position:relative"><div id="custDrillHint" style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;color:#999999"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to see affected units</div><div class="chart-container"><canvas id="custCauseChart" height="200"></canvas></div></div></div>
     </div>`;
 
     // Exportable table
@@ -1467,7 +1466,7 @@ function renderCustomerReport(){
         const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
         const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
         const td=u.trend>=0?'up':'down';const tc=u.trend>=0?'#059669':'#dc2626';
-        h+=`<tr><td style="font-weight:600;color:#3b82f6">${u.id}</td><td style="font-weight:600;color:${uc}">${u.avail}%</td><td>${u.runH}h</td><td>${u.readyH}h</td><td>${u.faultH}h</td><td>${u.events}</td><td style="color:${tc};font-weight:600"><i class="fas fa-arrow-${td}" style="font-size:10px;margin-right:2px"></i>${Math.abs(u.trend)}%</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td></tr>`;
+        h+=`<tr><td style="font-weight:600;color:#2196F3">${u.id}</td><td style="font-weight:600;color:${uc}">${u.avail}%</td><td>${u.runH}h</td><td>${u.readyH}h</td><td>${u.faultH}h</td><td>${u.events}</td><td style="color:${tc};font-weight:600"><i class="fas fa-arrow-${td}" style="font-size:10px;margin-right:2px"></i>${Math.abs(u.trend)}%</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td></tr>`;
     });
     h+=`</tbody></table></div></div>`;
 
@@ -1609,21 +1608,21 @@ function renderSingleVru(c,u,cont){
                 <svg width="100" height="76" viewBox="0 0 120 90">
                     <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
                     <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${uc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${u.avail/100*157}" stroke-dashoffset="0"/>
-                    <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${u.avail}</text>
-                    <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+                    <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="700" fill="#333333">${u.avail}</text>
+                    <text x="60" y="88" text-anchor="middle" font-size="9" fill="#999999">%</text>
                 </svg>
-                <div style="font-size:9px;color:#9ca3af">Target: 95.0%</div>
+                <div style="font-size:9px;color:#999999">Target: 95.0%</div>
             </div>
         </div>
     </div>`;
 
     h+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:0 24px 16px" class="ani d2">`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:${uc}18;color:${uc};margin-bottom:6px"><i class="fas fa-chart-line"></i></div><div style="font-size:22px;font-weight:800;color:${uc}">${u.avail}%</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Availability</div><div style="font-size:10px;margin-top:3px;color:${u.trend>=0?'#10b981':'#ef4444'}"><i class="fas fa-arrow-${u.trend>=0?'up':'down'}" style="margin-right:2px"></i>${Math.abs(u.trend)}%</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981;margin-bottom:6px"><i class="fas fa-cogs"></i></div><div style="font-size:22px;font-weight:800;color:#10b981">${u.runH}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Running</div><div style="font-size:10px;color:#6b7280;margin-top:3px">${Math.round(u.runH/totalH*100)}%</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6;margin-bottom:6px"><i class="fas fa-hourglass-half"></i></div><div style="font-size:22px;font-weight:800;color:#3b82f6">${u.readyH}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Ready / Idle</div><div style="font-size:10px;color:#6b7280;margin-top:3px">${Math.round(u.readyH/totalH*100)}%</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444;margin-bottom:6px"><i class="fas fa-bolt"></i></div><div style="font-size:22px;font-weight:800;color:#ef4444">${u.faultH}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Faulted / Down</div><div style="font-size:10px;color:#6b7280;margin-top:3px">${Math.round(u.faultH/totalH*100)}%</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6;margin-bottom:6px"><i class="fas fa-exclamation-circle"></i></div><div style="font-size:22px;font-weight:800;color:#8b5cf6">${u.events}</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Events</div><div style="font-size:10px;color:#6b7280;margin-top:3px">in 30 days</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fefce8;color:#ca8a04;margin-bottom:6px"><i class="fas fa-stopwatch"></i></div><div style="font-size:22px;font-weight:800;color:#ca8a04">${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</div><div style="font-size:9px;color:#6b7280;margin-top:2px">MTBF</div><div style="font-size:10px;color:#6b7280;margin-top:3px">mean time</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:${uc}18;color:${uc};margin-bottom:6px"><i class="fas fa-chart-line"></i></div><div style="font-size:22px;font-weight:700;color:${uc}">${u.avail}%</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Availability</div><div style="font-size:10px;margin-top:3px;color:${u.trend>=0?'#10b981':'#ef4444'}"><i class="fas fa-arrow-${u.trend>=0?'up':'down'}" style="margin-right:2px"></i>${Math.abs(u.trend)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981;margin-bottom:6px"><i class="fas fa-cogs"></i></div><div style="font-size:22px;font-weight:700;color:#10b981">${u.runH}h</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Running</div><div style="font-size:10px;color:#6c757d;margin-top:3px">${Math.round(u.runH/totalH*100)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3;margin-bottom:6px"><i class="fas fa-hourglass-half"></i></div><div style="font-size:22px;font-weight:700;color:#2196F3">${u.readyH}h</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Ready / Idle</div><div style="font-size:10px;color:#6c757d;margin-top:3px">${Math.round(u.readyH/totalH*100)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444;margin-bottom:6px"><i class="fas fa-bolt"></i></div><div style="font-size:22px;font-weight:700;color:#ef4444">${u.faultH}h</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Faulted / Down</div><div style="font-size:10px;color:#6c757d;margin-top:3px">${Math.round(u.faultH/totalH*100)}%</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6;margin-bottom:6px"><i class="fas fa-exclamation-circle"></i></div><div style="font-size:22px;font-weight:700;color:#8b5cf6">${u.events}</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Events</div><div style="font-size:10px;color:#6c757d;margin-top:3px">in 30 days</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fefce8;color:#ca8a04;margin-bottom:6px"><i class="fas fa-stopwatch"></i></div><div style="font-size:22px;font-weight:700;color:#ca8a04">${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</div><div style="font-size:9px;color:#6c757d;margin-top:2px">MTBF</div><div style="font-size:10px;color:#6c757d;margin-top:3px">mean time</div></div>`;
     h+=`</div>`;
 
     h+=`<div class="charts-row ani d3" style="padding:0 24px 16px">
@@ -1638,10 +1637,10 @@ function renderSingleVru(c,u,cont){
         const day=Math.floor(Math.random()*28)+1;const hour=Math.floor(Math.random()*24);
         const dur=Math.round((Math.random()*12+0.5)*10)/10;
         const type=eventTypes[Math.floor(Math.random()*eventTypes.length)];
-        const dotColor=type.includes('Mechanical')?'#ef4444':type.includes('Electrical')?'#f59e0b':type.includes('Comm')?'#8b5cf6':type.includes('Temp')?'#ef4444':type.includes('Operator')?'#06b6d4':'#6b7280';
+        const dotColor=type.includes('Mechanical')?'#ef4444':type.includes('Electrical')?'#f59e0b':type.includes('Comm')?'#8b5cf6':type.includes('Temp')?'#ef4444':type.includes('Operator')?'#06b6d4':'#6c757d';
         h+=`<div class="vru-event"><div class="vru-event-dot" style="background:${dotColor}"></div><div class="vru-event-time">Apr ${day}, ${String(hour).padStart(2,'0')}:${String(Math.floor(Math.random()*60)).padStart(2,'0')}</div><div class="vru-event-desc">${type}</div><div class="vru-event-dur">${dur}h</div></div>`;
     }
-    if(u.events===0) h+=`<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px"><i class="fas fa-check-circle" style="color:#10b981;margin-right:6px"></i>No downtime events in this period</div>`;
+    if(u.events===0) h+=`<div style="padding:20px;text-align:center;color:#999999;font-size:13px"><i class="fas fa-check-circle" style="color:#10b981;margin-right:6px"></i>No downtime events in this period</div>`;
     h+=`</div>`;
     cont.innerHTML=h;
 
@@ -1672,7 +1671,7 @@ function renderGroupVru(c,units,cont){
     let h=`<div class="vru-header-card ani d1">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
-                <div class="vru-header-title"><i class="fas fa-layer-group" style="color:#3b82f6;font-size:18px"></i> VRU Group Performance <span class="vru-group-tag"><i class="fas fa-cubes"></i>${units.length} units</span></div>
+                <div class="vru-header-title"><i class="fas fa-layer-group" style="color:#2196F3;font-size:18px"></i> VRU Group Performance <span class="vru-group-tag"><i class="fas fa-cubes"></i>${units.length} units</span></div>
                 <div class="vru-header-meta"><i class="fas fa-building" style="margin-right:4px"></i>${c.name} · <i class="fas fa-map-marker-alt" style="margin:0 4px"></i>${c.state} · Last 30 Days</div>
                 <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">${units.map(u=>{const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';return `<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;background:${ac}14;color:${ac};border:1px solid ${ac}30">${u.id}</span>`}).join('')}</div>
             </div>
@@ -1680,21 +1679,21 @@ function renderGroupVru(c,units,cont){
                 <svg width="100" height="76" viewBox="0 0 120 90">
                     <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
                     <path d="M10 55 A50 50 0 0 1 110 55" fill="none" stroke="${gc}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${groupAvail/100*157}" stroke-dashoffset="0"/>
-                    <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="800" fill="#1a1a2e">${groupAvail}</text>
-                    <text x="60" y="88" text-anchor="middle" font-size="9" fill="#9ca3af">%</text>
+                    <text x="60" y="76" text-anchor="middle" font-size="24" font-weight="700" fill="#333333">${groupAvail}</text>
+                    <text x="60" y="88" text-anchor="middle" font-size="9" fill="#999999">%</text>
                 </svg>
-                <div style="font-size:9px;color:#9ca3af">Group Availability</div>
+                <div style="font-size:9px;color:#999999">Group Availability</div>
             </div>
         </div>
     </div>`;
 
     h+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:0 24px 16px" class="ani d2">`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:${gc}18;color:${gc};margin-bottom:6px"><i class="fas fa-chart-line"></i></div><div style="font-size:22px;font-weight:800;color:${gc}">${groupAvail}%</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Group Avail</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981;margin-bottom:6px"><i class="fas fa-cogs"></i></div><div style="font-size:22px;font-weight:800;color:#10b981">${totalRunH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Running</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6;margin-bottom:6px"><i class="fas fa-hourglass-half"></i></div><div style="font-size:22px;font-weight:800;color:#3b82f6">${totalReadyH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Ready</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444;margin-bottom:6px"><i class="fas fa-bolt"></i></div><div style="font-size:22px;font-weight:800;color:#ef4444">${totalFaultH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Faulted</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6;margin-bottom:6px"><i class="fas fa-exclamation-circle"></i></div><div style="font-size:22px;font-weight:800;color:#8b5cf6">${totalEvents}</div><div style="font-size:9px;color:#6b7280;margin-top:2px">Total Events</div></div>`;
-    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div style="display:flex;gap:6px;margin-bottom:6px"><span style="font-size:11px;font-weight:700;color:#10b981">${running}<i class="fas fa-check-circle" style="margin-left:2px;font-size:9px"></i></span><span style="font-size:11px;font-weight:700;color:#f59e0b">${warning}<i class="fas fa-exclamation-triangle" style="margin-left:2px;font-size:9px"></i></span><span style="font-size:11px;font-weight:700;color:#ef4444">${down}<i class="fas fa-times-circle" style="margin-left:2px;font-size:9px"></i></span></div><div style="font-size:9px;color:#6b7280">Status Split</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:${gc}18;color:${gc};margin-bottom:6px"><i class="fas fa-chart-line"></i></div><div style="font-size:22px;font-weight:700;color:${gc}">${groupAvail}%</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Group Avail</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981;margin-bottom:6px"><i class="fas fa-cogs"></i></div><div style="font-size:22px;font-weight:700;color:#10b981">${totalRunH.toLocaleString()}h</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Running</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3;margin-bottom:6px"><i class="fas fa-hourglass-half"></i></div><div style="font-size:22px;font-weight:700;color:#2196F3">${totalReadyH.toLocaleString()}h</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Ready</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444;margin-bottom:6px"><i class="fas fa-bolt"></i></div><div style="font-size:22px;font-weight:700;color:#ef4444">${totalFaultH.toLocaleString()}h</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Faulted</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6;margin-bottom:6px"><i class="fas fa-exclamation-circle"></i></div><div style="font-size:22px;font-weight:700;color:#8b5cf6">${totalEvents}</div><div style="font-size:9px;color:#6c757d;margin-top:2px">Total Events</div></div>`;
+    h+=`<div class="fleet-hour-card" style="flex-direction:column;align-items:center;text-align:center;padding:16px 12px"><div style="display:flex;gap:6px;margin-bottom:6px"><span style="font-size:11px;font-weight:700;color:#10b981">${running}<i class="fas fa-check-circle" style="margin-left:2px;font-size:9px"></i></span><span style="font-size:11px;font-weight:700;color:#f59e0b">${warning}<i class="fas fa-exclamation-triangle" style="margin-left:2px;font-size:9px"></i></span><span style="font-size:11px;font-weight:700;color:#ef4444">${down}<i class="fas fa-times-circle" style="margin-left:2px;font-size:9px"></i></span></div><div style="font-size:9px;color:#6c757d">Status Split</div></div>`;
     h+=`</div>`;
 
     h+=`<div class="charts-row ani d3" style="padding:0 24px 16px">
@@ -1708,7 +1707,7 @@ function renderGroupVru(c,units,cont){
         const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
         const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
         const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
-        h+=`<tr><td style="font-weight:600;color:#3b82f6">${u.id}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td><td style="font-weight:700;color:${ac}">${u.avail}%</td><td style="color:#10b981">${u.runH}h</td><td style="color:#3b82f6">${u.readyH}h</td><td style="color:#ef4444">${u.faultH}h</td><td>${u.events}</td><td>${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</td><td style="color:${u.trend>=0?'#10b981':'#ef4444'};font-weight:600">${u.trend>=0?'+':''}${u.trend}%</td></tr>`;
+        h+=`<tr><td style="font-weight:600;color:#2196F3">${u.id}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td><td style="font-weight:700;color:${ac}">${u.avail}%</td><td style="color:#10b981">${u.runH}h</td><td style="color:#2196F3">${u.readyH}h</td><td style="color:#ef4444">${u.faultH}h</td><td>${u.events}</td><td>${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</td><td style="color:${u.trend>=0?'#10b981':'#ef4444'};font-weight:600">${u.trend>=0?'+':''}${u.trend}%</td></tr>`;
     });
     h+=`</tbody></table></div></div></div></div>`;
 
@@ -1723,33 +1722,33 @@ function renderGroupVru(c,units,cont){
         const tH=u.runH+u.readyH+u.faultH;
         h+=`<div class="card" style="overflow:visible"><div style="padding:16px 20px">`;
         h+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">`;
-        h+=`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:800;color:#1a1a2e">${u.id}</span><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:16px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></div>`;
-        h+=`<div style="font-size:28px;font-weight:900;color:${ac}">${u.avail}%</div>`;
+        h+=`<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:700;color:#333333">${u.id}</span><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:16px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></div>`;
+        h+=`<div style="font-size:28px;font-weight:700;color:${ac}">${u.avail}%</div>`;
         h+=`</div>`;
         h+=`<div style="height:5px;background:#f3f4f6;border-radius:3px;margin-bottom:12px;overflow:hidden"><div style="width:${u.avail}%;height:100%;background:${ac};border-radius:3px"></div></div>`;
         h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">`;
-        h+=`<div style="text-align:center;padding:8px;background:#f9fafb;border-radius:8px"><div style="font-size:15px;font-weight:700;color:#10b981">${u.runH}h</div><div style="font-size:9px;color:#6b7280">Running</div></div>`;
-        h+=`<div style="text-align:center;padding:8px;background:#f9fafb;border-radius:8px"><div style="font-size:15px;font-weight:700;color:#3b82f6">${u.readyH}h</div><div style="font-size:9px;color:#6b7280">Ready</div></div>`;
-        h+=`<div style="text-align:center;padding:8px;background:#f9fafb;border-radius:8px"><div style="font-size:15px;font-weight:700;color:#ef4444">${u.faultH}h</div><div style="font-size:9px;color:#6b7280">Faulted</div></div>`;
+        h+=`<div style="text-align:center;padding:8px;background:#f8f9fa;border-radius:8px"><div style="font-size:15px;font-weight:700;color:#10b981">${u.runH}h</div><div style="font-size:9px;color:#6c757d">Running</div></div>`;
+        h+=`<div style="text-align:center;padding:8px;background:#f8f9fa;border-radius:8px"><div style="font-size:15px;font-weight:700;color:#2196F3">${u.readyH}h</div><div style="font-size:9px;color:#6c757d">Ready</div></div>`;
+        h+=`<div style="text-align:center;padding:8px;background:#f8f9fa;border-radius:8px"><div style="font-size:15px;font-weight:700;color:#ef4444">${u.faultH}h</div><div style="font-size:9px;color:#6c757d">Faulted</div></div>`;
         h+=`</div>`;
-        h+=`<div style="display:flex;justify-content:space-between;font-size:11px;color:#6b7280;margin-bottom:10px;padding:0 2px">`;
+        h+=`<div style="display:flex;justify-content:space-between;font-size:11px;color:#6c757d;margin-bottom:10px;padding:0 2px">`;
         h+=`<span><strong>${u.events}</strong> events</span>`;
         h+=`<span>MTBF: <strong>${u.events>0?Math.round(u.runH/u.events)+'h':'N/A'}</strong></span>`;
         h+=`<span style="color:${u.trend>=0?'#10b981':'#ef4444'};font-weight:600"><i class="fas fa-arrow-${u.trend>=0?'up':'down'}" style="margin-right:2px"></i>${Math.abs(u.trend)}%</span>`;
         h+=`</div>`;
         if(u.events>0){
-            h+=`<div style="border-top:1px solid #f3f4f6;padding-top:8px"><div style="font-size:10px;font-weight:600;color:#6b7280;margin-bottom:6px">Recent Events</div>`;
+            h+=`<div style="border-top:1px solid #f3f4f6;padding-top:8px"><div style="font-size:10px;font-weight:600;color:#6c757d;margin-bottom:6px">Recent Events</div>`;
             for(let i=0;i<Math.min(u.events,3);i++){
                 const day=Math.floor(Math.random()*28)+1;const hr=Math.floor(Math.random()*24);
                 const dur=Math.round((Math.random()*12+0.5)*10)/10;
                 const type=eventTypes[Math.floor(Math.random()*eventTypes.length)];
-                const dc=type.includes('Mechanical')?'#ef4444':type.includes('Electrical')?'#f59e0b':type.includes('Comm')?'#8b5cf6':type.includes('Temp')?'#ef4444':type.includes('Operator')?'#06b6d4':'#6b7280';
-                h+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px"><span style="width:6px;height:6px;border-radius:50%;background:${dc};flex-shrink:0"></span><span style="color:#9ca3af;min-width:70px">Apr ${day}, ${String(hr).padStart(2,'0')}:00</span><span style="color:#374151;flex:1">${type}</span><span style="font-weight:600;color:#6b7280">${dur}h</span></div>`;
+                const dc=type.includes('Mechanical')?'#ef4444':type.includes('Electrical')?'#f59e0b':type.includes('Comm')?'#8b5cf6':type.includes('Temp')?'#ef4444':type.includes('Operator')?'#06b6d4':'#6c757d';
+                h+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px"><span style="width:6px;height:6px;border-radius:50%;background:${dc};flex-shrink:0"></span><span style="color:#999999;min-width:70px">Apr ${day}, ${String(hr).padStart(2,'0')}:00</span><span style="color:#374151;flex:1">${type}</span><span style="font-weight:600;color:#6c757d">${dur}h</span></div>`;
             }
-            if(u.events>3) h+=`<div style="font-size:10px;color:#9ca3af;margin-top:4px">+${u.events-3} more events</div>`;
+            if(u.events>3) h+=`<div style="font-size:10px;color:#999999;margin-top:4px">+${u.events-3} more events</div>`;
             h+=`</div>`;
         } else {
-            h+=`<div style="border-top:1px solid #f3f4f6;padding-top:8px;text-align:center;font-size:11px;color:#9ca3af"><i class="fas fa-check-circle" style="color:#10b981;margin-right:4px"></i>No events</div>`;
+            h+=`<div style="border-top:1px solid #f3f4f6;padding-top:8px;text-align:center;font-size:11px;color:#999999"><i class="fas fa-check-circle" style="color:#10b981;margin-right:4px"></i>No events</div>`;
         }
         h+=`</div></div>`;
     });
@@ -1813,7 +1812,7 @@ function renderAttentionCards(){
             <div class="attn-avail ${cls}">${u.avail}%</div>
             <div class="attn-bar"><div class="attn-bar-fill" style="width:${u.avail}%;background:${fc}"></div></div>
             <div class="attn-detail">${detail}</div>
-            <div style="font-size:9px;color:#6b7280;margin-top:4px;border-top:1px solid #f3f4f6;padding-top:4px"><i class="fas fa-wrench" style="margin-right:3px;color:#9ca3af"></i>${u.issue}</div>
+            <div style="font-size:9px;color:#6c757d;margin-top:4px;border-top:1px solid #f3f4f6;padding-top:4px"><i class="fas fa-wrench" style="margin-right:3px;color:#999999"></i>${u.issue}</div>
         </div>`;
     }).join('');
 }
@@ -1833,16 +1832,16 @@ function renderDowntimeView(){
     h+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-power-off"></i></div><div><div class="fleet-hour-value" style="color:#ef4444">${totalDown.toLocaleString()}h</div><div class="fleet-hour-label">Total Downtime</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fff7ed;color:#f59e0b"><i class="fas fa-bolt"></i></div><div><div class="fleet-hour-value" style="color:#f59e0b">${totalEvents}</div><div class="fleet-hour-label">Downtime Events</div></div></div>`;
-    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-stopwatch"></i></div><div><div class="fleet-hour-value" style="color:#3b82f6">${avgMTTR}h</div><div class="fleet-hour-label">Avg MTTR</div></div></div>`;
+    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-stopwatch"></i></div><div><div class="fleet-hour-value" style="color:#2196F3">${avgMTTR}h</div><div class="fleet-hour-label">Avg MTTR</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fdf2f8;color:#ec4899"><i class="fas fa-redo"></i></div><div><div class="fleet-hour-value" style="color:#ec4899">${Math.round(totalEvents/30)}/day</div><div class="fleet-hour-label">Avg Events/Day</div></div></div>`;
     h+=`</div>`;
     h+=`<div class="charts-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">`;
     h+=`<div class="card"><div class="card-header"><h3>Downtime Trend</h3></div><div class="card-body" style="height:280px"><canvas id="dtTrendChart"></canvas></div></div>`;
-    h+=`<div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="dtDrillTitle">Downtime by Cause</h3><button id="dtDrillBack" onclick="dtDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="height:280px;position:relative"><div id="dtDrillHint" style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#9ca3af"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><canvas id="dtCauseChart"></canvas></div></div>`;
+    h+=`<div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="dtDrillTitle">Downtime by Cause</h3><button id="dtDrillBack" onclick="dtDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #dee2e6;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="height:280px;position:relative"><div id="dtDrillHint" style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#999999"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><canvas id="dtCauseChart"></canvas></div></div>`;
     h+=`</div>`;
     h+=`<div class="card" style="margin-bottom:20px"><div class="card-header"><h3>Top Causes Breakdown</h3></div><div class="card-body" style="padding:16px">`;
     causes.forEach(c=>{
-        h+=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="width:140px;font-size:12px;font-weight:600;color:#374151">${c.name}</div><div style="flex:1;height:24px;background:#f3f4f6;border-radius:6px;overflow:hidden;position:relative"><div style="width:${c.pct}%;height:100%;background:${c.color};border-radius:6px;transition:width .6s"></div></div><div style="min-width:50px;text-align:right;font-size:13px;font-weight:700;color:${c.color}">${c.pct}%</div><div style="min-width:60px;text-align:right;font-size:11px;color:#6b7280">${c.hours}h</div></div>`;
+        h+=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="width:140px;font-size:12px;font-weight:600;color:#374151">${c.name}</div><div style="flex:1;height:24px;background:#f3f4f6;border-radius:6px;overflow:hidden;position:relative"><div style="width:${c.pct}%;height:100%;background:${c.color};border-radius:6px;transition:width .6s"></div></div><div style="min-width:50px;text-align:right;font-size:13px;font-weight:700;color:${c.color}">${c.pct}%</div><div style="min-width:60px;text-align:right;font-size:11px;color:#6c757d">${c.hours}h</div></div>`;
     });
     h+=`</div></div>`;
     h+=`<div class="card"><div class="card-header"><h3>Downtime Events Log</h3></div><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>Date</th><th>VRU Unit</th><th>Customer</th><th>State</th><th>Cause</th><th>Duration</th><th>Status</th></tr></thead><tbody>`;
@@ -1853,7 +1852,7 @@ function renderDowntimeView(){
         const day=Math.floor(Math.random()*30)+1;
         const resolved=Math.random()>.15;
         const sc=resolved?'#10b981':'#ef4444';const sbg=resolved?'#ecfdf5':'#fef2f2';const sl=resolved?'Resolved':'Active';
-        h+=`<tr><td>Apr ${day}, 2026</td><td style="font-weight:600;color:#3b82f6">PVR${2000+Math.floor(Math.random()*2000)}</td><td>${c.name}</td><td>${c.state}</td><td>${cause.name}</td><td>${dur}h</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${sl}</span></td></tr>`;
+        h+=`<tr><td>Apr ${day}, 2026</td><td style="font-weight:600;color:#2196F3">PVR${2000+Math.floor(Math.random()*2000)}</td><td>${c.name}</td><td>${c.state}</td><td>${cause.name}</td><td>${dur}h</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${sl}</span></td></tr>`;
     }
     h+=`</tbody></table></div></div></div></div>`;
     cont.innerHTML=h;
@@ -1924,7 +1923,7 @@ function renderAlarmView(){
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-bell"></i></div><div><div class="fleet-hour-value">${totalAlarms}</div><div class="fleet-hour-label">Total Alarms</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-times-circle"></i></div><div><div class="fleet-hour-value" style="color:#ef4444">${critCount}</div><div class="fleet-hour-label">Critical</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-exclamation-triangle"></i></div><div><div class="fleet-hour-value" style="color:#f59e0b">${warnCount}</div><div class="fleet-hour-label">Warning</div></div></div>`;
-    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-info-circle"></i></div><div><div class="fleet-hour-value" style="color:#3b82f6">${infoCount}</div><div class="fleet-hour-label">Informational</div></div></div>`;
+    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-info-circle"></i></div><div><div class="fleet-hour-value" style="color:#2196F3">${infoCount}</div><div class="fleet-hour-label">Informational</div></div></div>`;
     h+=`</div>`;
     h+=`<div class="charts-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">`;
     h+=`<div class="card"><div class="card-header"><h3>Alarm Trend (Daily)</h3></div><div class="card-body" style="height:280px"><canvas id="alarmTrendChart"></canvas></div></div>`;
@@ -1934,8 +1933,8 @@ function renderAlarmView(){
     h+=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px">`;
     alarmTypes.forEach(a=>{
         const sevBg=a.severity==='Critical'?'#fef2f2':a.severity==='Warning'?'#fffbeb':'#eff6ff';
-        const sevC=a.severity==='Critical'?'#ef4444':a.severity==='Warning'?'#f59e0b':'#3b82f6';
-        h+=`<div style="background:#fafafa;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;border:1px solid #f3f4f6"><div style="width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:${sevBg};color:${sevC};font-size:14px"><i class="fas ${a.icon}"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e">${a.name}</div><div style="font-size:11px;color:#6b7280;margin-top:2px"><span style="display:inline-block;padding:1px 6px;border-radius:10px;font-size:9px;font-weight:600;background:${sevBg};color:${sevC}">${a.severity}</span></div></div><div style="font-size:20px;font-weight:800;color:#1a1a2e">${a.count}</div></div>`;
+        const sevC=a.severity==='Critical'?'#ef4444':a.severity==='Warning'?'#f59e0b':'#2196F3';
+        h+=`<div style="background:#fafafa;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px;border:1px solid #f3f4f6"><div style="width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:${sevBg};color:${sevC};font-size:14px"><i class="fas ${a.icon}"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#333333">${a.name}</div><div style="font-size:11px;color:#6c757d;margin-top:2px"><span style="display:inline-block;padding:1px 6px;border-radius:10px;font-size:9px;font-weight:600;background:${sevBg};color:${sevC}">${a.severity}</span></div></div><div style="font-size:20px;font-weight:700;color:#333333">${a.count}</div></div>`;
     });
     h+=`</div></div></div>`;
     h+=`<div class="card"><div class="card-header"><h3>Recent Alarms</h3></div><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>Timestamp</th><th>VRU Unit</th><th>Customer</th><th>Alarm Type</th><th>Severity</th><th>Duration</th><th>Status</th></tr></thead><tbody>`;
@@ -1945,7 +1944,7 @@ function renderAlarmView(){
         const hr=Math.floor(Math.random()*24);const mn=Math.floor(Math.random()*60);
         const day=Math.floor(Math.random()*28)+1;const dur=Math.round((.1+Math.random()*12)*10)/10;
         const ack=Math.random()>.2;const sc=ack?'#10b981':'#f59e0b';const sbg=ack?'#ecfdf5':'#fffbeb';
-        h+=`<tr><td>Apr ${day} ${hr.toString().padStart(2,'0')}:${mn.toString().padStart(2,'0')}</td><td style="font-weight:600;color:#3b82f6">PVR${2000+Math.floor(Math.random()*2000)}</td><td>${c.name}</td><td>${a.name}</td><td><span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;background:${a.severity==='Critical'?'#fef2f2':a.severity==='Warning'?'#fffbeb':'#eff6ff'};color:${a.color}">${a.severity}</span></td><td>${dur}h</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${ack?'Acknowledged':'Pending'}</span></td></tr>`;
+        h+=`<tr><td>Apr ${day} ${hr.toString().padStart(2,'0')}:${mn.toString().padStart(2,'0')}</td><td style="font-weight:600;color:#2196F3">PVR${2000+Math.floor(Math.random()*2000)}</td><td>${c.name}</td><td>${a.name}</td><td><span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;background:${a.severity==='Critical'?'#fef2f2':a.severity==='Warning'?'#fffbeb':'#eff6ff'};color:${a.color}">${a.severity}</span></td><td>${dur}h</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${ack?'Acknowledged':'Pending'}</span></td></tr>`;
     }
     h+=`</tbody></table></div></div></div></div>`;
     cont.innerHTML=h;
@@ -1964,7 +1963,7 @@ function renderRuntimeView(){
     h+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-clock"></i></div><div><div class="fleet-hour-value">${totalH.toLocaleString()}h</div><div class="fleet-hour-label">Total Hours</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-cogs"></i></div><div><div class="fleet-hour-value" style="color:#10b981">${totalRunH.toLocaleString()}h</div><div class="fleet-hour-label">Running</div><div class="fleet-hour-pct" style="color:#10b981">${(totalRunH/totalH*100).toFixed(1)}%</div></div></div>`;
-    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-hourglass-half"></i></div><div><div class="fleet-hour-value" style="color:#3b82f6">${totalReadyH.toLocaleString()}h</div><div class="fleet-hour-label">Ready</div><div class="fleet-hour-pct" style="color:#3b82f6">${(totalReadyH/totalH*100).toFixed(1)}%</div></div></div>`;
+    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-hourglass-half"></i></div><div><div class="fleet-hour-value" style="color:#2196F3">${totalReadyH.toLocaleString()}h</div><div class="fleet-hour-label">Ready</div><div class="fleet-hour-pct" style="color:#2196F3">${(totalReadyH/totalH*100).toFixed(1)}%</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-bolt"></i></div><div><div class="fleet-hour-value" style="color:#ef4444">${totalFaultH.toLocaleString()}h</div><div class="fleet-hour-label">Faulted</div><div class="fleet-hour-pct" style="color:#ef4444">${(totalFaultH/totalH*100).toFixed(1)}%</div></div></div>`;
     h+=`</div>`;
     h+=`<div class="charts-row" style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px">`;
@@ -1974,8 +1973,8 @@ function renderRuntimeView(){
     h+=`<div class="card"><div class="card-header"><h3>Runtime by Customer</h3></div><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>Customer</th><th>State</th><th>Units</th><th>Running Hours</th><th>Ready Hours</th><th>Faulted Hours</th><th>Utilization</th></tr></thead><tbody>`;
     [...CUSTOMERS].sort((a,b)=>b.units-a.units).forEach(c=>{
         const tH=c.units*720;const rH=Math.round(c.avail/100*tH);const rdH=Math.round(Math.random()*c.units*15);const fH=tH-rH-rdH;const util=(rH/tH*100).toFixed(1);
-        const uc=util>=95?'#10b981':util>=90?'#3b82f6':util>=85?'#f59e0b':'#ef4444';
-        h+=`<tr><td style="font-weight:600">${c.name}</td><td>${c.state}</td><td>${c.units}</td><td style="color:#10b981;font-weight:600">${rH.toLocaleString()}h</td><td style="color:#3b82f6">${rdH.toLocaleString()}h</td><td style="color:#ef4444">${Math.max(0,fH).toLocaleString()}h</td><td style="font-weight:700;color:${uc}">${util}%</td></tr>`;
+        const uc=util>=95?'#10b981':util>=90?'#2196F3':util>=85?'#f59e0b':'#ef4444';
+        h+=`<tr><td style="font-weight:600">${c.name}</td><td>${c.state}</td><td>${c.units}</td><td style="color:#10b981;font-weight:600">${rH.toLocaleString()}h</td><td style="color:#2196F3">${rdH.toLocaleString()}h</td><td style="color:#ef4444">${Math.max(0,fH).toLocaleString()}h</td><td style="font-weight:700;color:${uc}">${util}%</td></tr>`;
     });
     h+=`</tbody></table></div></div></div></div>`;
     cont.innerHTML=h;
@@ -1991,7 +1990,7 @@ function renderMaintenanceView(){
     const cont=document.getElementById('maintenanceContent');
     const mTypes=['Scheduled PM','Emergency Repair','Inspection','Parts Replacement','Compressor Overhaul','Valve Service','Oil Change','Filter Replacement'];
     const mStatus=['Completed','In Progress','Scheduled','Overdue'];
-    const mStatusColors={'Completed':'#10b981','In Progress':'#3b82f6','Scheduled':'#f59e0b','Overdue':'#ef4444'};
+    const mStatusColors={'Completed':'#10b981','In Progress':'#2196F3','Scheduled':'#f59e0b','Overdue':'#ef4444'};
     const mStatusBg={'Completed':'#ecfdf5','In Progress':'#eff6ff','Scheduled':'#fffbeb','Overdue':'#fef2f2'};
     let logs=[];
     for(let i=0;i<40;i++){
@@ -2012,7 +2011,7 @@ function renderMaintenanceView(){
     h+=`<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-clipboard-check"></i></div><div><div class="fleet-hour-value">${logs.length}</div><div class="fleet-hour-label">Total Work Orders</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-check-circle"></i></div><div><div class="fleet-hour-value" style="color:#10b981">${completed}</div><div class="fleet-hour-label">Completed</div></div></div>`;
-    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-spinner"></i></div><div><div class="fleet-hour-value" style="color:#3b82f6">${inProg}</div><div class="fleet-hour-label">In Progress</div></div></div>`;
+    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-spinner"></i></div><div><div class="fleet-hour-value" style="color:#2196F3">${inProg}</div><div class="fleet-hour-label">In Progress</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-exclamation-circle"></i></div><div><div class="fleet-hour-value" style="color:#ef4444">${overdue}</div><div class="fleet-hour-label">Overdue</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#f5f3ff;color:#8b5cf6"><i class="fas fa-dollar-sign"></i></div><div><div class="fleet-hour-value" style="color:#8b5cf6">$${(totalCost/1000).toFixed(0)}k</div><div class="fleet-hour-label">Total Cost</div></div></div>`;
     h+=`</div>`;
@@ -2022,7 +2021,7 @@ function renderMaintenanceView(){
     h+=`</div>`;
     h+=`<div class="card"><div class="card-header"><h3>Maintenance Records</h3></div><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>Date</th><th>VRU Unit</th><th>Customer</th><th>Type</th><th>Technician</th><th>Cost</th><th>Status</th></tr></thead><tbody>`;
     logs.forEach(l=>{
-        h+=`<tr><td>${l.date}, 2026</td><td style="font-weight:600;color:#3b82f6">${l.unit}</td><td>${l.customer}</td><td>${l.type}</td><td>${l.tech}</td><td style="font-weight:600">$${l.cost.toLocaleString()}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${mStatusBg[l.status]};color:${mStatusColors[l.status]}"><span style="width:5px;height:5px;border-radius:50%;background:${mStatusColors[l.status]}"></span>${l.status}</span></td></tr>`;
+        h+=`<tr><td>${l.date}, 2026</td><td style="font-weight:600;color:#2196F3">${l.unit}</td><td>${l.customer}</td><td>${l.type}</td><td>${l.tech}</td><td style="font-weight:600">$${l.cost.toLocaleString()}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;background:${mStatusBg[l.status]};color:${mStatusColors[l.status]}"><span style="width:5px;height:5px;border-radius:50%;background:${mStatusColors[l.status]}"></span>${l.status}</span></td></tr>`;
     });
     h+=`</tbody></table></div></div></div></div>`;
     cont.innerHTML=h;
@@ -2041,32 +2040,32 @@ function renderStateSummaryView(){
     let h=`<div style="padding:20px 24px"><div class="cv-section-title"><i class="fas fa-map-marked-alt"></i> State Summary <span>6 States · Last 30 Days</span></div>`;
     h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">`;
     STATES_DATA.forEach(s=>{
-        const fc=s.avail>=95?'#10b981':s.avail>=92?'#3b82f6':s.avail>=88?'#f59e0b':'#ef4444';
+        const fc=s.avail>=95?'#10b981':s.avail>=92?'#2196F3':s.avail>=88?'#f59e0b':'#ef4444';
         const tDir=s.trend>=0?'+':'';const tc=s.trend>=0?'#10b981':'#ef4444';
         const custs=CUSTOMERS.filter(c=>c.state===s.name);
         const totalH=s.units*720;const runH=Math.round(s.avail/100*totalH);const faultH=totalH-runH;
-        h+=`<div class="card" style="padding:20px"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div><div style="font-size:16px;font-weight:700;color:#1a1a2e">${s.name}</div><div style="font-size:11px;color:#6b7280;margin-top:2px">${s.units} units · ${s.custs} customers</div></div><div style="font-size:24px;font-weight:800;color:${fc}">${s.avail}%</div></div>`;
+        h+=`<div class="card" style="padding:20px"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div><div style="font-size:16px;font-weight:700;color:#333333">${s.name}</div><div style="font-size:11px;color:#6c757d;margin-top:2px">${s.units} units · ${s.custs} customers</div></div><div style="font-size:24px;font-weight:700;color:${fc}">${s.avail}%</div></div>`;
         h+=`<div style="height:6px;background:#f3f4f6;border-radius:3px;margin-bottom:12px;overflow:hidden"><div style="width:${s.avail}%;height:100%;background:${fc};border-radius:3px"></div></div>`;
         h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">`;
-        h+=`<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#10b981">${runH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280">Running</div></div>`;
-        h+=`<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#ef4444">${faultH.toLocaleString()}h</div><div style="font-size:9px;color:#6b7280">Faulted</div></div>`;
-        h+=`<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:${tc}">${tDir}${s.trend}%</div><div style="font-size:9px;color:#6b7280">Trend</div></div>`;
-        h+=`</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#6b7280;border-top:1px solid #f3f4f6;padding-top:8px"><span><i class="fas fa-arrow-down" style="color:#ef4444;margin-right:3px"></i>${s.down} down</span><span>${s.avail>=95?'<span style="color:#10b981">Above</span>':'<span style="color:#ef4444">Below</span>'} target</span></div></div>`;
+        h+=`<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#10b981">${runH.toLocaleString()}h</div><div style="font-size:9px;color:#6c757d">Running</div></div>`;
+        h+=`<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#ef4444">${faultH.toLocaleString()}h</div><div style="font-size:9px;color:#6c757d">Faulted</div></div>`;
+        h+=`<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:${tc}">${tDir}${s.trend}%</div><div style="font-size:9px;color:#6c757d">Trend</div></div>`;
+        h+=`</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#6c757d;border-top:1px solid #f3f4f6;padding-top:8px"><span><i class="fas fa-arrow-down" style="color:#ef4444;margin-right:3px"></i>${s.down} down</span><span>${s.avail>=95?'<span style="color:#10b981">Above</span>':'<span style="color:#ef4444">Below</span>'} target</span></div></div>`;
     });
     h+=`</div>`;
     h+=`<div class="charts-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">`;
     h+=`<div class="card"><div class="card-header"><h3>Availability by State</h3></div><div class="card-body" style="height:280px"><canvas id="ssBarChart"></canvas></div></div>`;
-    h+=`<div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="ssDrillTitle">Units Distribution</h3><button id="ssDrillBack" onclick="ssDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="height:280px;position:relative"><div id="ssDrillHint" style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#9ca3af"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><canvas id="ssUnitChart"></canvas></div></div>`;
+    h+=`<div class="card"><div class="card-header" style="display:flex;justify-content:space-between;align-items:center"><h3 id="ssDrillTitle">Units Distribution</h3><button id="ssDrillBack" onclick="ssDrillUp()" style="display:none;background:#f3f4f6;border:1px solid #dee2e6;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:#374151;cursor:pointer"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back</button></div><div class="card-body" style="height:280px;position:relative"><div id="ssDrillHint" style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#999999"><i class="fas fa-mouse-pointer" style="margin-right:3px"></i>Click a slice to drill down</div><canvas id="ssUnitChart"></canvas></div></div>`;
     h+=`</div>`;
     h+=`<div class="card"><div class="card-header"><h3>State Comparison Table</h3></div><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>State</th><th>Units</th><th>Customers</th><th>Availability</th><th>Down</th><th>Running Hours</th><th>Faulted Hours</th><th>Trend</th></tr></thead><tbody>`;
     STATES_DATA.forEach(s=>{
-        const fc=s.avail>=95?'#10b981':s.avail>=92?'#3b82f6':s.avail>=88?'#f59e0b':'#ef4444';
+        const fc=s.avail>=95?'#10b981':s.avail>=92?'#2196F3':s.avail>=88?'#f59e0b':'#ef4444';
         const totalH=s.units*720;const runH=Math.round(s.avail/100*totalH);const faultH=totalH-runH;
         h+=`<tr><td style="font-weight:600">${s.name}</td><td>${s.units}</td><td>${s.custs}</td><td style="font-weight:700;color:${fc}">${s.avail}%</td><td style="color:#ef4444;font-weight:600">${s.down}</td><td style="color:#10b981">${runH.toLocaleString()}h</td><td style="color:#ef4444">${faultH.toLocaleString()}h</td><td style="font-weight:600;color:${s.trend>=0?'#10b981':'#ef4444'}">${s.trend>=0?'+':''}${s.trend}%</td></tr>`;
     });
     h+=`</tbody></table></div></div></div></div>`;
     cont.innerHTML=h;
-    const stColors=STATES_DATA.map(s=>s.avail>=95?'#10b981':s.avail>=92?'#3b82f6':s.avail>=88?'#f59e0b':'#ef4444');
+    const stColors=STATES_DATA.map(s=>s.avail>=95?'#10b981':s.avail>=92?'#2196F3':s.avail>=88?'#f59e0b':'#ef4444');
     tabChartInstances.ssBar=new Chart(document.getElementById('ssBarChart').getContext('2d'),{type:'bar',data:{labels:STATES_DATA.map(s=>s.name),datasets:[{data:STATES_DATA.map(s=>s.avail),backgroundColor:stColors,borderRadius:6,barPercentage:.6},{type:'line',label:'Target',data:STATES_DATA.map(()=>95),borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{min:80,max:100,grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'%'}}}}});
     window._ssDrillStack=[];
     ssDrillRender(STATES_DATA.map(s=>s.name),STATES_DATA.map(s=>s.units),['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4'],'Units Distribution');
@@ -2107,10 +2106,10 @@ function renderFleetHealthView(){ // VRU Health tab
     const healthScore=Math.round(((running+idle)/totalUnits*100+STATES_DATA.reduce((s,st)=>s+st.avail,0)/STATES_DATA.length)/2*10)/10;
     let h=`<div style="padding:20px 24px"><div class="cv-section-title"><i class="fas fa-heartbeat"></i> VRU Health <span>Real-time Overview</span></div>`;
     h+=`<div style="display:flex;gap:16px;margin-bottom:20px;align-items:stretch">`;
-    h+=`<div class="card" style="flex:1;padding:24px;text-align:center"><div style="font-size:48px;font-weight:900;color:${healthScore>=90?'#10b981':healthScore>=80?'#f59e0b':'#ef4444'}">${healthScore}</div><div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-top:4px">VRU Health Score</div><div style="height:8px;background:#f3f4f6;border-radius:4px;margin-top:12px;overflow:hidden"><div style="width:${healthScore}%;height:100%;background:${healthScore>=90?'#10b981':healthScore>=80?'#f59e0b':'#ef4444'};border-radius:4px"></div></div></div>`;
+    h+=`<div class="card" style="flex:1;padding:24px;text-align:center"><div style="font-size:48px;font-weight:700;color:${healthScore>=90?'#10b981':healthScore>=80?'#f59e0b':'#ef4444'}">${healthScore}</div><div style="font-size:11px;color:#6c757d;text-transform:uppercase;letter-spacing:.5px;margin-top:4px">VRU Health Score</div><div style="height:8px;background:#f3f4f6;border-radius:4px;margin-top:12px;overflow:hidden"><div style="width:${healthScore}%;height:100%;background:${healthScore>=90?'#10b981':healthScore>=80?'#f59e0b':'#ef4444'};border-radius:4px"></div></div></div>`;
     h+=`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;flex:2">`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-cogs"></i></div><div><div class="fleet-hour-value" style="color:#10b981">${running}</div><div class="fleet-hour-label">Running (${(running/totalUnits*100).toFixed(1)}%)</div></div></div>`;
-    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-hourglass-half"></i></div><div><div class="fleet-hour-value" style="color:#3b82f6">${idle}</div><div class="fleet-hour-label">Idle (${(idle/totalUnits*100).toFixed(1)}%)</div></div></div>`;
+    h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-hourglass-half"></i></div><div><div class="fleet-hour-value" style="color:#2196F3">${idle}</div><div class="fleet-hour-label">Idle (${(idle/totalUnits*100).toFixed(1)}%)</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-exclamation-triangle"></i></div><div><div class="fleet-hour-value" style="color:#f59e0b">${warning}</div><div class="fleet-hour-label">Warning (${(warning/totalUnits*100).toFixed(1)}%)</div></div></div>`;
     h+=`<div class="fleet-hour-card"><div class="fleet-hour-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-times-circle"></i></div><div><div class="fleet-hour-value" style="color:#ef4444">${down}</div><div class="fleet-hour-label">Down (${(down/totalUnits*100).toFixed(1)}%)</div></div></div>`;
     h+=`</div></div>`;
@@ -2119,19 +2118,19 @@ function renderFleetHealthView(){ // VRU Health tab
     h+=`<div class="card"><div class="card-header"><h3>Status Distribution</h3></div><div class="card-body" style="height:280px"><canvas id="fhStatusChart"></canvas></div></div>`;
     h+=`</div>`;
     h+=`<div class="card" style="margin-bottom:20px"><div class="card-header"><h3>Unit Age & Reliability</h3></div><div class="card-body" style="padding:16px"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">`;
-    const ageGroups=[{label:'< 1 Year',count:68,mtbf:'340h',health:97.2,color:'#10b981'},{label:'1-2 Years',count:124,mtbf:'290h',health:95.8,color:'#3b82f6'},{label:'2-3 Years',count:148,mtbf:'220h',health:93.4,color:'#f59e0b'},{label:'3-5 Years',count:102,mtbf:'160h',health:90.1,color:'#f97316'},{label:'5+ Years',count:45,mtbf:'95h',health:86.5,color:'#ef4444'}];
+    const ageGroups=[{label:'< 1 Year',count:68,mtbf:'340h',health:97.2,color:'#10b981'},{label:'1-2 Years',count:124,mtbf:'290h',health:95.8,color:'#2196F3'},{label:'2-3 Years',count:148,mtbf:'220h',health:93.4,color:'#f59e0b'},{label:'3-5 Years',count:102,mtbf:'160h',health:90.1,color:'#f97316'},{label:'5+ Years',count:45,mtbf:'95h',health:86.5,color:'#ef4444'}];
     ageGroups.forEach(g=>{
-        h+=`<div style="background:#fafafa;border-radius:10px;padding:14px;border:1px solid #f3f4f6"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;font-weight:600;color:#1a1a2e">${g.label}</span><span style="font-size:13px;font-weight:700;color:${g.color}">${g.health}%</span></div><div style="height:5px;background:#f3f4f6;border-radius:3px;margin-bottom:8px;overflow:hidden"><div style="width:${g.health}%;height:100%;background:${g.color};border-radius:3px"></div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:#6b7280"><span>${g.count} units</span><span>MTBF: ${g.mtbf}</span></div></div>`;
+        h+=`<div style="background:#fafafa;border-radius:6px;padding:14px;border:1px solid #f3f4f6"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;font-weight:600;color:#333333">${g.label}</span><span style="font-size:13px;font-weight:700;color:${g.color}">${g.health}%</span></div><div style="height:5px;background:#f3f4f6;border-radius:3px;margin-bottom:8px;overflow:hidden"><div style="width:${g.health}%;height:100%;background:${g.color};border-radius:3px"></div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:#6c757d"><span>${g.count} units</span><span>MTBF: ${g.mtbf}</span></div></div>`;
     });
     h+=`</div></div></div>`;
     h+=`<div class="card"><div class="card-header"><h3>VRU Health by Customer</h3></div><div class="card-body"><div class="scroll-y"><table class="data-table"><thead><tr><th>Customer</th><th>State</th><th>Units</th><th>Availability</th><th>Health Score</th><th>Down</th><th>Trend</th><th>Risk</th></tr></thead><tbody>`;
     [...CUSTOMERS].sort((a,b)=>a.avail-b.avail).forEach(c=>{
         const hs=Math.round((c.avail*.7+(c.trend>=0?100:90)*.3)*10)/10;
-        const hc=hs>=95?'#10b981':hs>=90?'#3b82f6':hs>=85?'#f59e0b':'#ef4444';
+        const hc=hs>=95?'#10b981':hs>=90?'#2196F3':hs>=85?'#f59e0b':'#ef4444';
         const risk=c.avail<90?'High':c.avail<95?'Medium':'Low';
         const rc=risk==='High'?'#ef4444':risk==='Medium'?'#f59e0b':'#10b981';
         const rbg=risk==='High'?'#fef2f2':risk==='Medium'?'#fffbeb':'#ecfdf5';
-        h+=`<tr><td style="font-weight:600">${c.name}</td><td>${c.state}</td><td>${c.units}</td><td style="font-weight:700;color:${c.avail>=95?'#10b981':c.avail>=90?'#3b82f6':c.avail>=85?'#f59e0b':'#ef4444'}">${c.avail}%</td><td style="font-weight:700;color:${hc}">${hs}</td><td style="color:#ef4444;font-weight:600">${c.down}</td><td style="font-weight:600;color:${c.trend>=0?'#10b981':'#ef4444'}">${c.trend>=0?'+':''}${c.trend}%</td><td><span style="padding:2px 10px;border-radius:10px;font-size:10px;font-weight:600;background:${rbg};color:${rc}">${risk}</span></td></tr>`;
+        h+=`<tr><td style="font-weight:600">${c.name}</td><td>${c.state}</td><td>${c.units}</td><td style="font-weight:700;color:${c.avail>=95?'#10b981':c.avail>=90?'#2196F3':c.avail>=85?'#f59e0b':'#ef4444'}">${c.avail}%</td><td style="font-weight:700;color:${hc}">${hs}</td><td style="color:#ef4444;font-weight:600">${c.down}</td><td style="font-weight:600;color:${c.trend>=0?'#10b981':'#ef4444'}">${c.trend>=0?'+':''}${c.trend}%</td><td><span style="padding:2px 10px;border-radius:10px;font-size:10px;font-weight:600;background:${rbg};color:${rc}">${risk}</span></td></tr>`;
     });
     h+=`</tbody></table></div></div></div></div>`;
     cont.innerHTML=h;
@@ -2149,12 +2148,12 @@ function renderMonthlyView(){
     let h=`<div style="padding:20px 24px"><div class="cv-section-title"><i class="fas fa-calendar-alt"></i> Monthly Report <span>2026 Year-to-Date</span></div>`;
     h+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">`;
     months.forEach(m=>{
-        const fc=m.avail>=95?'#10b981':m.avail>=92?'#3b82f6':m.avail>=88?'#f59e0b':'#ef4444';
+        const fc=m.avail>=95?'#10b981':m.avail>=92?'#2196F3':m.avail>=88?'#f59e0b':'#ef4444';
         const isCurrent=m.name.includes('MTD');
-        h+=`<div class="card" style="padding:18px;${isCurrent?'border:2px solid #3b82f6;':''}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:14px;font-weight:700;color:#1a1a2e">${m.name}</span>${isCurrent?'<span style="font-size:9px;font-weight:600;color:#3b82f6;background:#eff6ff;padding:2px 8px;border-radius:10px">CURRENT</span>':''}</div>`;
-        h+=`<div style="font-size:28px;font-weight:900;color:${fc};margin-bottom:6px">${m.avail}%</div>`;
+        h+=`<div class="card" style="padding:18px;${isCurrent?'border:2px solid #2196F3;':''}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:14px;font-weight:700;color:#333333">${m.name}</span>${isCurrent?'<span style="font-size:9px;font-weight:600;color:#2196F3;background:#eff6ff;padding:2px 8px;border-radius:10px">CURRENT</span>':''}</div>`;
+        h+=`<div style="font-size:28px;font-weight:700;color:${fc};margin-bottom:6px">${m.avail}%</div>`;
         h+=`<div style="height:5px;background:#f3f4f6;border-radius:3px;margin-bottom:10px;overflow:hidden"><div style="width:${m.avail}%;height:100%;background:${fc};border-radius:3px"></div></div>`;
-        h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:10px;color:#6b7280">`;
+        h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:10px;color:#6c757d">`;
         h+=`<div><strong style="color:#10b981">${(m.run/1000).toFixed(0)}k</strong> run hrs</div>`;
         h+=`<div><strong style="color:#ef4444">${(m.fault/1000).toFixed(0)}k</strong> fault hrs</div>`;
         h+=`<div><strong>${m.events}</strong> events</div>`;
@@ -2171,7 +2170,7 @@ function renderMonthlyView(){
         const m1=Math.round((c.avail-1.5+Math.random()*1)*10)/10;
         const m2=Math.round((c.avail-1+Math.random()*.8)*10)/10;
         const m3=Math.round((c.avail-.5+Math.random()*.5)*10)/10;
-        const colF=v=>v>=95?'#10b981':v>=92?'#3b82f6':v>=88?'#f59e0b':'#ef4444';
+        const colF=v=>v>=95?'#10b981':v>=92?'#2196F3':v>=88?'#f59e0b':'#ef4444';
         const improving=c.avail>m3;
         h+=`<tr><td style="font-weight:600">${c.name}</td><td>${c.state}</td><td style="color:${colF(m1)}">${m1}%</td><td style="color:${colF(m2)}">${m2}%</td><td style="color:${colF(m3)}">${m3}%</td><td style="font-weight:700;color:${colF(c.avail)}">${c.avail}%</td><td style="color:${improving?'#10b981':'#ef4444'}"><i class="fas fa-arrow-${improving?'up':'down'}"></i> ${Math.abs(Math.round((c.avail-m1)*10)/10)}%</td><td><span style="padding:2px 10px;border-radius:10px;font-size:10px;font-weight:600;background:${improving?'#ecfdf5':'#fef2f2'};color:${improving?'#10b981':'#ef4444'}">${improving?'Improving':'Declining'}</span></td></tr>`;
     });
@@ -2234,14 +2233,14 @@ function renderOvTab0(){
             <th style="text-align:center;color:#f59e0b">Warn</th><th style="min-width:160px">Availability</th><th style="text-align:center">Trend</th>
         </tr></thead><tbody>`;
         sorted.forEach((c,i)=>{
-            const fc=c.avail>=95?'#10b981':c.avail>=92?'#3b82f6':c.avail>=88?'#f59e0b':'#ef4444';
+            const fc=c.avail>=95?'#10b981':c.avail>=92?'#2196F3':c.avail>=88?'#f59e0b':'#ef4444';
             const warn=Math.round(c.units*0.10);
             const running=c.units-c.down-warn;
             const tDir=c.trend>=0?'up':'down';const tColor=c.trend>=0?'#10b981':'#ef4444';
             h+=`<tr style="cursor:pointer" onclick="navigateTo('customerView',{customer:'${c.name.replace(/'/g,"\\'")}'})" title="View ${c.name} →">
-                <td style="color:#9ca3af;font-size:10px">${i+1}</td>
-                <td style="font-weight:600;color:#3b82f6">${c.name} <i class="fas fa-external-link-alt" style="font-size:7px;color:#d1d5db"></i></td>
-                <td style="color:#6b7280">${c.state}</td>
+                <td style="color:#999999;font-size:10px">${i+1}</td>
+                <td style="font-weight:600;color:#2196F3">${c.name} <i class="fas fa-external-link-alt" style="font-size:7px;color:#d1d5db"></i></td>
+                <td style="color:#6c757d">${c.state}</td>
                 <td style="text-align:center;font-weight:600">${c.units}</td>
                 <td style="text-align:center;color:#10b981;font-weight:500">${running}</td>
                 <td style="text-align:center;color:${c.down>0?'#ef4444':'#d1d5db'};font-weight:${c.down>0?'600':'400'}">${c.down}</td>
@@ -2265,7 +2264,7 @@ function renderOvTab0(){
     if(gridEl){
         let html='';
         CUSTOMERS.forEach(c=>{
-            html+=`<div class="ov-comp-group"><div class="ov-comp-group-label" style="cursor:pointer" onclick="navigateTo('customerView',{customer:'${c.name.replace(/'/g,"\\'")}'})" title="View ${c.name} →"><span style="color:#3b82f6;text-decoration:underline">${c.name}</span> <span style="color:#d1d5db">· ${c.units}</span> <i class="fas fa-external-link-alt" style="font-size:7px;color:#d1d5db"></i></div><div>`;
+            html+=`<div class="ov-comp-group"><div class="ov-comp-group-label" style="cursor:pointer" onclick="navigateTo('customerView',{customer:'${c.name.replace(/'/g,"\\'")}'})" title="View ${c.name} →"><span style="color:#2196F3;text-decoration:underline">${c.name}</span> <span style="color:#d1d5db">· ${c.units}</span> <i class="fas fa-external-link-alt" style="font-size:7px;color:#d1d5db"></i></div><div>`;
             for(let i=1;i<=c.units;i++){
                 let color;
                 if(i<=c.down) color='#ef4444';
@@ -2309,12 +2308,12 @@ function renderOvTab1(){
                 const f=faults[idx%faults.length];
                 const hrs=Math.floor(Math.random()*72+2);
                 const sev=hrs>48?'Critical':hrs>24?'High':'Medium';
-                const sevC=sev==='Critical'?'#ef4444':sev==='High'?'#f59e0b':'#3b82f6';
-                h+=`<tr><td style="color:#9ca3af;font-size:10px">${idx}</td>
-                    <td style="font-weight:600;color:#3b82f6">${c.name.split(' ')[0]}-VRU-${String(i+1).padStart(3,'0')}</td>
-                    <td>${c.name}</td><td style="color:#6b7280">${c.state}</td>
+                const sevC=sev==='Critical'?'#ef4444':sev==='High'?'#f59e0b':'#2196F3';
+                h+=`<tr><td style="color:#999999;font-size:10px">${idx}</td>
+                    <td style="font-weight:600;color:#2196F3">${c.name.split(' ')[0]}-VRU-${String(i+1).padStart(3,'0')}</td>
+                    <td>${c.name}</td><td style="color:#6c757d">${c.state}</td>
                     <td style="font-weight:500">${f}</td>
-                    <td style="color:#6b7280">${hrs}h</td>
+                    <td style="color:#6c757d">${hrs}h</td>
                     <td><span style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600;background:${sevC}12;color:${sevC}">${sev}</span></td></tr>`;
             }
         });
@@ -2361,11 +2360,11 @@ function renderOvTab2(){
             {id:'Cimarex-VRU-014',cust:'Cimarex Energy',cause:'Motor Issue',risk:60,eta:'7 days'},
         ];
         riskUnits.forEach(u=>{
-            const rc=u.risk>=85?'#ef4444':u.risk>=70?'#f59e0b':'#3b82f6';
+            const rc=u.risk>=85?'#ef4444':u.risk>=70?'#f59e0b':'#2196F3';
             h+=`<tr>
-                <td style="font-weight:600;color:#3b82f6">${u.id}</td><td>${u.cust}</td><td style="font-weight:500">${u.cause}</td>
+                <td style="font-weight:600;color:#2196F3">${u.id}</td><td>${u.cust}</td><td style="font-weight:500">${u.cause}</td>
                 <td><div style="display:flex;align-items:center;gap:6px"><div style="width:50px;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden"><div style="width:${u.risk}%;height:100%;background:${rc};border-radius:2px"></div></div><span style="font-weight:600;color:${rc};font-size:10px">${u.risk}%</span></div></td>
-                <td style="color:#6b7280">${u.eta}</td></tr>`;
+                <td style="color:#6c757d">${u.eta}</td></tr>`;
         });
         h+=`</tbody></table>`;
         tEl.innerHTML=h;
@@ -2400,12 +2399,12 @@ function renderOvTab3(){
             const lost=Math.round(c.down*11+Math.random()*15);
             const net=rev-maint-lost;
             const margin=((net/rev)*100).toFixed(1);
-            const mc=margin>=90?'#10b981':margin>=80?'#3b82f6':'#f59e0b';
-            h+=`<tr><td style="font-weight:600;color:#1a1a2e">${c.name}</td>
+            const mc=margin>=90?'#10b981':margin>=80?'#2196F3':'#f59e0b';
+            h+=`<tr><td style="font-weight:600;color:#333333">${c.name}</td>
                 <td style="text-align:right;color:#10b981;font-weight:500">$${rev}K</td>
                 <td style="text-align:right;color:#f59e0b">$${maint}K</td>
                 <td style="text-align:right;color:#ef4444">$${lost}K</td>
-                <td style="text-align:right;font-weight:600;color:#1a1a2e">$${net}K</td>
+                <td style="text-align:right;font-weight:600;color:#333333">$${net}K</td>
                 <td><div style="display:flex;align-items:center;gap:4px"><div style="width:40px;height:3px;background:#f3f4f6;border-radius:2px;overflow:hidden"><div style="width:${margin}%;height:100%;background:${mc};border-radius:2px"></div></div><span style="font-size:10px;font-weight:600;color:${mc}">${margin}%</span></div></td></tr>`;
         });
         h+=`</tbody></table>`;
