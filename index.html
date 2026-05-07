@@ -3949,31 +3949,183 @@ function renderVruTrends(unit,body){
         ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true}},datalabels:{display:false}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:10}}},y:{position:'left',grid:{color:'#f3f4f6'},ticks:{font:{size:9}},title:{display:true,text:'Status',font:{size:9}}},y1:{position:'right',grid:{display:false},ticks:{font:{size:9}},title:{display:true,text:'Valve %',font:{size:9}}}},interaction:{mode:'index',intersect:false}}});
     },100);
 }
+let evtChart=null,evtFilter='all';
 function renderVruEvents(unit,body){
+    if(evtChart){evtChart.destroy();evtChart=null}
     const evts=[
-        {t:'May 06, 00:00',tp:'PM',title:'Preventive Maintenance',desc:'PM Performed on unit. Unit is BOL. Oil PG-180 replaced. All 11/11 checklist items passed.',wo:'PVC037996',tech:'Sanchez, Bryant',hasPdf:true},
-        {t:'May 02, 14:20',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 230°F — auto shutdown triggered. Auto resolved after cooldown.',wo:'',tech:'',hasPdf:false},
-        {t:'Apr 27, 01:45',tp:'Alarm',title:'Compressor Run Command',desc:'Compressor Run Command EQUAL TO 1. Warning level. Auto Resolved by API Client.',wo:'',tech:'',hasPdf:false},
-        {t:'Apr 23, 10:13',tp:'Alarm',title:'Compressor Hoa In Auto',desc:'Compressor Hoa In Auto EQUAL TO 1. Warning level. Active alarm.',wo:'',tech:'',hasPdf:false},
-        {t:'Apr 15, 08:00',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly inspection completed. Belt tension checked, oil condition inspected. All items passed.',wo:'PVC037812',tech:'Martinez, Carlos',hasPdf:true},
-        {t:'Apr 10, 16:30',tp:'Callout',title:'Field Service Callout',desc:'Unit not starting — investigated HOA switch. Found in HAND position. Switched to AUTO. Unit restarted.',wo:'PVC037790',tech:'Johnson, Mike',hasPdf:false},
-        {t:'Mar 28, 09:00',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. Oil filter replaced. Compressor lovejoy inspected. All items passed.',wo:'PVC037650',tech:'Sanchez, Bryant',hasPdf:true},
+        {t:'May 06, 2026',ts:'May 06, 00:00',tp:'PM',title:'Preventive Maintenance',desc:'PM Performed on unit. Unit is BOL. Oil PG-180 replaced. All 11/11 checklist items passed.',wo:'PVC037996',tech:'Sanchez, Bryant',hasPdf:true,dtH:0},
+        {t:'May 02, 2026',ts:'May 02, 14:20',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 230°F — auto shutdown triggered. Auto resolved after cooldown.',wo:'',tech:'',hasPdf:false,dtH:4.2},
+        {t:'Apr 27, 2026',ts:'Apr 27, 01:45',tp:'Alarm',title:'Compressor Run Command',desc:'Compressor Run Command EQUAL TO 1. Warning level. Auto Resolved by API Client.',wo:'',tech:'',hasPdf:false,dtH:0},
+        {t:'Apr 23, 2026',ts:'Apr 23, 10:13',tp:'Alarm',title:'Compressor Hoa In Auto',desc:'Compressor Hoa In Auto EQUAL TO 1. Warning level. Active alarm.',wo:'',tech:'',hasPdf:false,dtH:0},
+        {t:'Apr 15, 2026',ts:'Apr 15, 08:00',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly inspection completed. Belt tension checked, oil condition inspected. All items passed.',wo:'PVC037812',tech:'Martinez, Carlos',hasPdf:true,dtH:2},
+        {t:'Apr 10, 2026',ts:'Apr 10, 16:30',tp:'Callout',title:'Field Service Callout',desc:'Unit not starting — investigated HOA switch. Found in HAND position. Switched to AUTO. Unit restarted.',wo:'PVC037790',tech:'Johnson, Mike',hasPdf:false,dtH:6.5},
+        {t:'Mar 28, 2026',ts:'Mar 28, 09:00',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. Oil filter replaced. Compressor lovejoy inspected. All items passed.',wo:'PVC037650',tech:'Sanchez, Bryant',hasPdf:true,dtH:1.5},
+        {t:'Mar 18, 2026',ts:'Mar 18, 22:10',tp:'Alarm',title:'Low Suction Pressure',desc:'Suction pressure dropped below 2 oz/sq in. Auto shutdown. Pressure restored after well opened.',wo:'',tech:'',hasPdf:false,dtH:8},
+        {t:'Mar 10, 2026',ts:'Mar 10, 11:00',tp:'Callout',title:'Belt Replacement',desc:'Drive belt found worn during inspection. Replaced with new belt. Unit restarted successfully.',wo:'PVC037401',tech:'Williams, Derek',hasPdf:false,dtH:3},
+        {t:'Feb 26, 2026',ts:'Feb 26, 08:00',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. All readings within spec. Oil condition good. No parts replaced.',wo:'PVC037205',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Feb 14, 2026',ts:'Feb 14, 04:30',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 228°F. Auto shutdown. Oil cooler fan issue identified.',wo:'',tech:'',hasPdf:false,dtH:12},
+        {t:'Feb 02, 2026',ts:'Feb 02, 13:15',tp:'Callout',title:'Oil Leak Repair',desc:'Oil leak found at compressor front seal. Seal replaced, oil topped off. Unit restarted.',wo:'PVC037050',tech:'Martinez, Carlos',hasPdf:false,dtH:5},
     ];
+    const pmCt=evts.filter(e=>e.tp==='PM').length;
+    const alarmCt=evts.filter(e=>e.tp==='Alarm').length;
+    const calloutCt=evts.filter(e=>e.tp==='Callout').length;
+    const totalDt=evts.reduce((s,e)=>s+e.dtH,0);
+    const filtered=evtFilter==='all'?evts:evts.filter(e=>e.tp===evtFilter);
     const tc={'PM':'#2196F3','Alarm':'#f59e0b','Callout':'#8b5cf6'};
     const tbg={'PM':'#eff6ff','Alarm':'#fffbeb','Callout':'#f5f3ff'};
+
+    // Calendar heatmap data — last 90 days
+    const calDays=[];const today=new Date(2026,4,7);
+    for(let i=89;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);calDays.push({d,ct:0,types:[]})}
+    evts.forEach(e=>{calDays.forEach(cd=>{const ds=cd.d.toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'});if(e.t===ds){cd.ct++;cd.types.push(e.tp)}})});
+
+    const weeks=[];let wk=[];
+    const startDow=calDays[0].d.getDay();
+    for(let i=0;i<startDow;i++)wk.push(null);
+    calDays.forEach(cd=>{wk.push(cd);if(wk.length===7){weeks.push(wk);wk=[]}});
+    if(wk.length)weeks.push(wk);
+
+    const monthLabels=[];let prevM='';
+    weeks.forEach((w,wi)=>{const fd=w.find(d=>d);if(fd){const m=fd.d.toLocaleDateString('en-US',{month:'short'});if(m!==prevM){monthLabels.push({idx:wi,m});prevM=m}}});
+
     body.innerHTML=`
-    <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:15px;font-weight:600">Events &amp; Service History</h3><span style="font-size:11px;color:#999">${evts.length} records</span></div>
-    <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8f9fa;border-bottom:2px solid #eee"><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:130px">Date</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Type</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666">Description</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:100px">WO #</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:60px">Report</th></tr></thead>
-    <tbody>${evts.map((e,i)=>{
+    <!-- KPI Summary -->
+    <div style="display:flex;gap:12px;margin-bottom:16px">
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:6px;background:#eff6ff;color:#2196F3;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-calendar-check"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:#333">${evts.length}</div><div style="font-size:10px;color:#999">Total Events</div></div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:6px;background:#eff6ff;color:#2196F3;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-wrench"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:#333">${pmCt}</div><div style="font-size:10px;color:#999">PMs Completed</div></div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:6px;background:#fffbeb;color:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-bell"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:#333">${alarmCt}</div><div style="font-size:10px;color:#999">Alarms Triggered</div></div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:6px;background:#f5f3ff;color:#8b5cf6;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-truck"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:#333">${calloutCt}</div><div style="font-size:10px;color:#999">Field Callouts</div></div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:6px;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-clock"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:#333">${totalDt.toFixed(1)}h</div><div style="font-size:10px;color:#999">Total Downtime</div></div>
+        </div>
+    </div>
+
+    <!-- Charts Row: Downtime Trend + Calendar Heatmap -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333"><i class="fas fa-chart-bar" style="color:#2196F3;margin-right:6px"></i>Downtime Trend (Last 90 Days)</h4>
+                <span style="font-size:10px;color:#999">hours per week</span>
+            </div>
+            <div style="height:180px"><canvas id="evtDtChart"></canvas></div>
+        </div>
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333"><i class="far fa-calendar-alt" style="color:#2196F3;margin-right:6px"></i>Event Calendar (Last 90 Days)</h4>
+                <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:#999">
+                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#e3f2fd;vertical-align:middle;margin-right:2px"></span>0</span>
+                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#90caf9;vertical-align:middle;margin-right:2px"></span>1</span>
+                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#2196F3;vertical-align:middle;margin-right:2px"></span>2</span>
+                    <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#1565c0;vertical-align:middle;margin-right:2px"></span>3+</span>
+                </div>
+            </div>
+            <div style="overflow-x:auto">
+                <svg width="${weeks.length*14+30}" height="115" style="display:block">
+                    <g transform="translate(0,18)">
+                        <text x="0" y="10" style="font-size:8px;fill:#999">M</text>
+                        <text x="0" y="24" style="font-size:8px;fill:#999">W</text>
+                        <text x="0" y="38" style="font-size:8px;fill:#999">F</text>
+                        <text x="0" y="52" style="font-size:8px;fill:#999">S</text>
+                    </g>
+                    ${monthLabels.map(ml=>'<text x="'+(14+ml.idx*14)+'" y="12" style="font-size:8px;fill:#999">'+ml.m+'</text>').join('')}
+                    ${weeks.map((w,wi)=>w.map((cd,di)=>{
+                        if(!cd)return '';
+                        const fill=cd.ct===0?'#f0f4f8':cd.ct===1?'#90caf9':cd.ct===2?'#2196F3':'#1565c0';
+                        const title=cd.d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+': '+cd.ct+' event'+(cd.ct!==1?'s':'');
+                        return '<rect x="'+(14+wi*14)+'" y="'+(18+di*14)+'" width="11" height="11" rx="2" fill="'+fill+'"><title>'+title+'</title></rect>';
+                    }).join('')).join('')}
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Type Distribution + Downtime by Type -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <h4 style="margin:0 0 10px;font-size:13px;font-weight:600;color:#333"><i class="fas fa-chart-pie" style="color:#2196F3;margin-right:6px"></i>Event Distribution</h4>
+            <div style="height:160px"><canvas id="evtDistChart"></canvas></div>
+        </div>
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <h4 style="margin:0 0 10px;font-size:13px;font-weight:600;color:#333"><i class="fas fa-stopwatch" style="color:#ef4444;margin-right:6px"></i>Downtime by Cause</h4>
+            <div style="height:160px"><canvas id="evtDtCauseChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Filter Bar + Table -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <h3 style="margin:0;font-size:14px;font-weight:600;color:#333">Events &amp; Service History</h3>
+        <div style="display:flex;gap:0;border:1px solid #dee2e6;border-radius:6px;overflow:hidden;margin-left:12px">
+            <span class="evt-fp ${evtFilter==='all'?'active':''}" onclick="evtFilter='all';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='all'?'#e3f2fd':'#fff'};color:${evtFilter==='all'?'#1976d2':'#666'};font-weight:${evtFilter==='all'?'600':'400'};border-right:1px solid #dee2e6">All <b>${evts.length}</b></span>
+            <span class="evt-fp ${evtFilter==='PM'?'active':''}" onclick="evtFilter='PM';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='PM'?'#eff6ff':'#fff'};color:${evtFilter==='PM'?'#2196F3':'#666'};font-weight:${evtFilter==='PM'?'600':'400'};border-right:1px solid #dee2e6"><span style="width:6px;height:6px;border-radius:50%;background:#2196F3;display:inline-block;margin-right:3px"></span>PM <b>${pmCt}</b></span>
+            <span class="evt-fp ${evtFilter==='Alarm'?'active':''}" onclick="evtFilter='Alarm';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='Alarm'?'#fffbeb':'#fff'};color:${evtFilter==='Alarm'?'#f59e0b':'#666'};font-weight:${evtFilter==='Alarm'?'600':'400'};border-right:1px solid #dee2e6"><span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:3px"></span>Alarm <b>${alarmCt}</b></span>
+            <span class="evt-fp ${evtFilter==='Callout'?'active':''}" onclick="evtFilter='Callout';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='Callout'?'#f5f3ff':'#fff'};color:${evtFilter==='Callout'?'#8b5cf6':'#666'};font-weight:${evtFilter==='Callout'?'600':'400'}"><span style="width:6px;height:6px;border-radius:50%;background:#8b5cf6;display:inline-block;margin-right:3px"></span>Callout <b>${calloutCt}</b></span>
+        </div>
+        <span style="margin-left:auto;font-size:11px;color:#999">${filtered.length} records</span>
+        <div style="display:flex;gap:6px">
+            <button style="padding:5px 12px;border:1px solid #dee2e6;border-radius:6px;background:#fff;cursor:pointer;font-size:11px;color:#666"><i class="fas fa-download" style="margin-right:4px"></i>Export</button>
+            <button style="padding:5px 12px;border:1px solid #dee2e6;border-radius:6px;background:#fff;cursor:pointer;font-size:11px;color:#666"><i class="fas fa-print" style="margin-right:4px"></i>Print</button>
+        </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8f9fa;border-bottom:2px solid #eee"><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:130px">Date</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Type</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666">Description</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Downtime</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:100px">WO #</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:60px">Report</th></tr></thead>
+    <tbody>${filtered.map((e,i)=>{
         const color=tc[e.tp]||'#999';const bg=tbg[e.tp]||'#f9fafb';
-        return '<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:10px 12px;color:#666;font-size:11px">'+e.t+'</td><td style="padding:10px 12px"><span style="color:'+color+';background:'+bg+';font-weight:600;font-size:10px;padding:2px 8px;border-radius:10px">'+e.tp+'</span></td><td style="padding:10px 12px"><div style="font-weight:600;color:#333;margin-bottom:2px">'+e.title+'</div><div style="font-size:11px;color:#666">'+e.desc+'</div>'+(e.tech?'<div style="font-size:10px;color:#999;margin-top:2px">Tech: '+e.tech+'</div>':'')+'</td><td style="padding:10px 12px;font-size:11px;color:#2196F3;font-weight:600">'+(e.wo||'—')+'</td><td style="padding:10px 12px;text-align:center">'+(e.hasPdf?'<span style="cursor:pointer;color:#ef4444;font-size:16px" title="View PM Report" onclick="showPmReport('+i+')"><i class="fas fa-file-pdf"></i></span>':'—')+'</td></tr>';
+        const origIdx=evts.indexOf(e);
+        return '<tr style="border-bottom:1px solid #f3f4f6;cursor:pointer" onmouseenter="this.style.background=\'#f8fafc\'" onmouseleave="this.style.background=\'\'"><td style="padding:10px 12px;color:#666;font-size:11px">'+e.ts+'</td><td style="padding:10px 12px"><span style="color:'+color+';background:'+bg+';font-weight:600;font-size:10px;padding:2px 8px;border-radius:10px">'+e.tp+'</span></td><td style="padding:10px 12px"><div style="font-weight:600;color:#333;margin-bottom:2px">'+e.title+'</div><div style="font-size:11px;color:#666">'+e.desc+'</div>'+(e.tech?'<div style="font-size:10px;color:#999;margin-top:2px"><i class="fas fa-user" style="margin-right:3px"></i>'+e.tech+'</div>':'')+'</td><td style="padding:10px 12px;font-size:11px;font-weight:600;color:'+(e.dtH>5?'#ef4444':e.dtH>0?'#f59e0b':'#10b981')+'">'+(e.dtH>0?e.dtH+'h':'—')+'</td><td style="padding:10px 12px;font-size:11px;color:#2196F3;font-weight:600">'+(e.wo||'—')+'</td><td style="padding:10px 12px;text-align:center">'+(e.hasPdf?'<span style="cursor:pointer;color:#ef4444;font-size:16px" title="View PM Report" onclick="showPmReport('+origIdx+')"><i class="fas fa-file-pdf"></i></span>':'—')+'</td></tr>';
     }).join('')}</tbody></table>
-    <div id="pmReportOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:9999;display:none;align-items:center;justify-content:center" onclick="this.style.display='none'">
-        <div style="background:#fff;border-radius:12px;width:700px;max-height:85vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2)" onclick="event.stopPropagation()">
+    </div>
+
+    <div id="pmReportOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center" onclick="this.style.display='none'">
+        <div style="background:#fff;border-radius:8px;width:700px;max-height:85vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2)" onclick="event.stopPropagation()">
             <div style="position:sticky;top:-32px;background:#fff;padding:16px 0 8px;border-bottom:1px solid #eee;margin:-32px -32px 20px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;z-index:1"><span style="font-size:18px;font-weight:700;color:#333">Report</span><span style="background:#10b981;color:#fff;padding:4px 16px;border-radius:4px;font-size:12px;font-weight:600">Preventive Maintenance</span><i class="fas fa-times" style="cursor:pointer;color:#999;font-size:18px;position:absolute;right:16px;top:16px" onclick="document.getElementById('pmReportOverlay').style.display='none'"></i></div>
             <div id="pmReportBody"></div>
         </div>
     </div>`;
+
+    // Charts
+    setTimeout(()=>{
+        // Downtime Trend - weekly bars for last 13 weeks
+        const wkLabels=[];const wkDt=[];
+        for(let w=12;w>=0;w--){
+            const wEnd=new Date(today);wEnd.setDate(wEnd.getDate()-w*7);
+            const wStart=new Date(wEnd);wStart.setDate(wStart.getDate()-6);
+            wkLabels.push(wStart.toLocaleDateString('en-US',{month:'short',day:'numeric'}));
+            let wdt=0;
+            evts.forEach(e=>{
+                const parts=e.t.split(', ');const ed=new Date(parts[0]+', '+parts[1]);
+                if(ed>=wStart&&ed<=wEnd)wdt+=e.dtH;
+            });
+            wkDt.push(+wdt.toFixed(1));
+        }
+        const cv1=document.getElementById('evtDtChart');
+        if(cv1)evtChart=new Chart(cv1.getContext('2d'),{type:'bar',data:{labels:wkLabels,datasets:[
+            {label:'Downtime (hours)',data:wkDt,backgroundColor:wkDt.map(v=>v>6?'rgba(239,68,68,.7)':v>2?'rgba(245,158,11,.5)':'rgba(33,150,243,.4)'),borderRadius:3,barPercentage:.65}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'top',color:'#666',font:{size:9,weight:'600'},formatter:v=>v>0?v+'h':''}},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'},beginAtZero:true}}}});
+
+        // Event distribution doughnut
+        const cv2=document.getElementById('evtDistChart');
+        if(cv2)new Chart(cv2.getContext('2d'),{type:'doughnut',data:{labels:['PM','Alarm','Callout'],datasets:[{data:[pmCt,alarmCt,calloutCt],backgroundColor:['#2196F3','#f59e0b','#8b5cf6'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true,padding:12}},datalabels:{display:true,color:'#fff',font:{size:11,weight:'700'},formatter:(v,ctx)=>v}}}});
+
+        // Downtime by cause horizontal bar
+        const causes=['High Discharge Temp','Low Suction Pressure','Field Service','PM Downtime','Belt/Mechanical','Oil Leak'];
+        const causeH=[16.2,8,9.5,4.5,3,5];
+        const cv3=document.getElementById('evtDtCauseChart');
+        if(cv3)new Chart(cv3.getContext('2d'),{type:'bar',data:{labels:causes,datasets:[{label:'Hours',data:causeH,backgroundColor:['#ef4444','#f59e0b','#8b5cf6','#2196F3','#6b7280','#f59e0b'],borderRadius:3,barPercentage:.6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'right',color:'#666',font:{size:9,weight:'600'},formatter:v=>v+'h'}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+    },100);
 }
 function showPmReport(idx){
     const unit=VRU_UNITS[vruSelectedCust][vruSelectedIdx];
