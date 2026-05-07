@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sotaog — Compressor IQ</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{font-size:14px}
@@ -857,15 +859,26 @@
 
     <!-- ===== NETWORK PAGE ===== -->
     <div id="networkPage" style="display:none">
-        <div class="page-header"><div><div class="page-title">Network</div><div class="page-subtitle">Device connectivity and communication status</div></div></div>
-        <div class="page-content">
+        <div class="page-header"><div><div class="page-title">Network</div><div class="page-subtitle">Asset geo-location and connectivity status</div></div>
+            <div style="display:flex;gap:8px">
+                <button class="btn-secondary" id="netFilterAll" onclick="filterNetMap('all')" style="background:#2196F3;color:#fff;border-color:#2196F3"><i class="fas fa-globe" style="margin-right:4px"></i>All (487)</button>
+                <button class="btn-secondary" id="netFilterOnline" onclick="filterNetMap('online')"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block;margin-right:4px"></span>Online (461)</button>
+                <button class="btn-secondary" id="netFilterOffline" onclick="filterNetMap('offline')"><span style="width:6px;height:6px;border-radius:50%;background:#ef4444;display:inline-block;margin-right:4px"></span>Offline (26)</button>
+            </div>
+        </div>
+        <div class="page-content" style="padding-bottom:0">
             <div class="page-kpi-strip" id="networkKpis"></div>
-            <div class="card" style="margin-bottom:20px"><div class="card-header"><h3><i class="fas fa-project-diagram" style="color:#2196F3;margin-right:6px"></i>Network Topology</h3></div><div class="card-body">
-                <div class="network-hub"><div class="network-hub-circle"><i class="fas fa-cloud"></i><span>Sotaog Cloud</span></div></div>
-                <div class="network-line"></div>
-                <div class="network-nodes" id="networkNodes"></div>
-            </div></div>
-            <div class="card"><div class="card-header"><h3><i class="fas fa-list" style="color:#6c757d;margin-right:6px"></i>Device Connectivity Log</h3></div><div class="card-body"><div class="scroll-y" style="max-height:400px"><table class="data-table" id="networkTable"></table></div></div></div>
+            <div class="card" style="margin-bottom:16px;overflow:hidden">
+                <div class="card-header" style="padding:10px 18px"><h3><i class="fas fa-map-marked-alt" style="color:#2196F3;margin-right:6px"></i>Asset Locations</h3>
+                    <div style="display:flex;align-items:center;gap:16px;font-size:10px">
+                        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#10b981;vertical-align:middle;margin-right:3px"></span>Online</span>
+                        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b;vertical-align:middle;margin-right:3px"></span>Warning</span>
+                        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;vertical-align:middle;margin-right:3px"></span>Offline</span>
+                    </div>
+                </div>
+                <div id="networkMap" style="height:500px;width:100%;background:#e8f4f8"></div>
+            </div>
+            <div class="card"><div class="card-header"><h3><i class="fas fa-list" style="color:#6c757d;margin-right:6px"></i>Asset Details</h3><span style="font-size:11px;color:#999" id="netTableCount"></span></div><div class="card-body" style="padding:0"><div class="scroll-y" style="max-height:360px"><table class="data-table" id="networkTable"></table></div></div></div>
         </div>
     </div>
 
@@ -2896,36 +2909,103 @@ function renderVrusFleetCards(filter){
 }
 
 // ===== NETWORK PAGE =====
+const CUSTOMER_COORDS={
+    'Diamondback Energy':{lat:31.99,lng:-102.08},'Callon Petroleum':{lat:31.75,lng:-102.52},'XTO Energy':{lat:32.75,lng:-97.33},
+    'Jagged Peak':{lat:31.85,lng:-103.95},'Pioneer Natural':{lat:32.03,lng:-102.11},'SM Energy':{lat:31.88,lng:-102.30},
+    'Cimarex Energy':{lat:32.45,lng:-103.20},'Sandridge Energy':{lat:35.47,lng:-97.52},'Devon Energy':{lat:35.46,lng:-97.60},
+    'Continental Resources':{lat:36.43,lng:-99.39},'Mewbourne Oil':{lat:32.70,lng:-103.13},'Concho Resources':{lat:32.84,lng:-104.40},
+    'Laramie Resources':{lat:41.31,lng:-105.59},'Centennial Dev':{lat:39.74,lng:-104.99},'Extraction Oil':{lat:40.42,lng:-104.71},
+    'Oasis Petroleum':{lat:48.15,lng:-103.62},'Whiting Petroleum':{lat:46.88,lng:-102.79},'Enerplus':{lat:47.81,lng:-103.28}
+};
+let netMap=null,netMarkers=[],netAllAssets=[],netCurrentFilter='all';
 function initNetworkPage(){
     const online=461,offline=26,total=487;
     document.getElementById('networkKpis').innerHTML=`
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-server"></i></div><div><div class="kpi-val">${total}</div><div class="kpi-label">Total Devices</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-map-marked-alt"></i></div><div><div class="kpi-val">${total}</div><div class="kpi-label">Total Assets</div></div></div>
         <div class="page-kpi"><div class="page-kpi-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-wifi"></i></div><div><div class="kpi-val" style="color:#10b981">${online}</div><div class="kpi-label">Online</div></div></div>
         <div class="page-kpi"><div class="page-kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-exclamation-circle"></i></div><div><div class="kpi-val" style="color:#ef4444">${offline}</div><div class="kpi-label">Offline</div></div></div>
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-signal"></i></div><div><div class="kpi-val" style="color:#10b981">${(online/total*100).toFixed(1)}%</div><div class="kpi-label">Connection Rate</div></div></div>`;
-    const nodes=document.getElementById('networkNodes');
-    nodes.innerHTML=STATES_DATA.map(s=>{
-        const on=s.units-s.down;
-        const statusColor=s.down>3?'#ef4444':s.down>0?'#f59e0b':'#10b981';
-        return `<div class="network-node"><div class="nn-status" style="background:${statusColor}"></div><div class="nn-name">${s.name}</div><div style="font-size:22px;font-weight:700;color:#333">${s.units}</div><div style="font-size:10px;color:#6c757d">devices</div><div class="nn-stats"><span class="nn-online"><i class="fas fa-check-circle" style="margin-right:3px"></i>${on}</span><span class="nn-offline"><i class="fas fa-times-circle" style="margin-right:3px"></i>${s.down}</span></div></div>`;
-    }).join('');
-    renderNetworkTable();
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-signal"></i></div><div><div class="kpi-val" style="color:#10b981">${(online/total*100).toFixed(1)}%</div><div class="kpi-label">Connection Rate</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-building"></i></div><div><div class="kpi-val">18</div><div class="kpi-label">Locations</div></div></div>`;
+    buildNetAssets();
+    initNetMap();
+    renderNetworkTable('all');
 }
-function renderNetworkTable(){
-    const tbl=document.getElementById('networkTable');
-    let h='<thead><tr><th>Device ID</th><th>Customer</th><th>State</th><th>Status</th><th>Last Seen</th><th>Signal</th><th>Latency</th></tr></thead><tbody>';
+function buildNetAssets(){
+    netAllAssets=[];
     CUSTOMERS.forEach(c=>{
-        const units=(VRU_UNITS[c.name]||[]).slice(0,3);
-        units.forEach(u=>{
+        const base=CUSTOMER_COORDS[c.name];if(!base)return;
+        const units=(VRU_UNITS[c.name]||[]);
+        units.forEach((u,i)=>{
+            const jitterLat=(Math.random()-.5)*0.15;
+            const jitterLng=(Math.random()-.5)*0.15;
             const isOnline=u.status!=='Down';
-            const sc=isOnline?'#10b981':'#ef4444';
-            const sbg=isOnline?'#ecfdf5':'#fef2f2';
-            const sl=isOnline?'Online':'Offline';
-            const signal=isOnline?Math.floor(70+Math.random()*28)+'%':'-';
-            const latency=isOnline?Math.floor(20+Math.random()*80)+'ms':'-';
-            const lastSeen=isOnline?'Just now':'Apr '+Math.floor(Math.random()*28+1)+', 2026';
-            h+=`<tr><td style="font-weight:600;color:#2196F3">${u.id}</td><td>${c.name}</td><td>${c.state}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${sl}</span></td><td style="color:#6c757d;font-size:11px">${lastSeen}</td><td style="font-weight:600;color:${isOnline?'#10b981':'#999'}">${signal}</td><td style="color:${isOnline?(parseInt(latency)<50?'#10b981':'#f59e0b'):'#999'}">${latency}</td></tr>`;
+            const isWarning=u.status==='Warning';
+            netAllAssets.push({id:u.id,customer:c.name,state:c.state,lat:base.lat+jitterLat,lng:base.lng+jitterLng,
+                status:u.status,avail:u.avail,online:isOnline,warning:isWarning,
+                signal:isOnline?Math.floor(70+Math.random()*28):0,
+                latency:isOnline?Math.floor(20+Math.random()*80):0,
+                lastSeen:isOnline?'Just now':'Apr '+Math.floor(Math.random()*28+1)+', 2026'});
         });
+    });
+}
+function initNetMap(){
+    if(netMap){netMap.remove();netMap=null}
+    netMap=L.map('networkMap',{zoomControl:true,scrollWheelZoom:true}).setView([39,-101],4.5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        attribution:'&copy; OpenStreetMap contributors',maxZoom:18
+    }).addTo(netMap);
+    addNetMarkers('all');
+    CUSTOMERS.forEach(c=>{
+        const base=CUSTOMER_COORDS[c.name];if(!base)return;
+        const units=VRU_UNITS[c.name]||[];
+        const running=units.filter(u=>u.status==='Running').length;
+        const down=c.down;
+        const warning=units.filter(u=>u.status==='Warning').length;
+        const clr=down>2?'#ef4444':down>0?'#f59e0b':'#10b981';
+        const icon=L.divIcon({className:'',html:`<div style="background:${clr};color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)">${c.units}</div>`,iconSize:[28,28],iconAnchor:[14,14]});
+        L.marker([base.lat,base.lng],{icon}).addTo(netMap).bindPopup(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-width:200px"><div style="font-size:14px;font-weight:700;color:#333;margin-bottom:4px">${c.name}</div><div style="font-size:11px;color:#6c757d;margin-bottom:8px"><i class="fas fa-map-marker-alt" style="margin-right:3px"></i>${c.state}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px"><div><span style="color:#6c757d">Units:</span> <strong>${c.units}</strong></div><div><span style="color:#6c757d">Avail:</span> <strong style="color:${c.avail>=95?'#10b981':c.avail>=88?'#f59e0b':'#ef4444'}">${c.avail}%</strong></div><div><span style="color:#10b981"><i class="fas fa-check-circle"></i></span> ${running} Running</div><div><span style="color:#f59e0b"><i class="fas fa-exclamation-triangle"></i></span> ${warning} Warning</div><div><span style="color:#ef4444"><i class="fas fa-times-circle"></i></span> ${down} Down</div><div><span style="color:#6c757d">Trend:</span> <span style="color:${c.trend>=0?'#10b981':'#ef4444'}">${c.trend>=0?'+':''}${c.trend}%</span></div></div></div>`,{maxWidth:260});
+    });
+    setTimeout(()=>netMap.invalidateSize(),100);
+}
+function addNetMarkers(filter){
+    netMarkers.forEach(m=>netMap.removeLayer(m));netMarkers=[];
+    netAllAssets.forEach(a=>{
+        if(filter==='online'&&!a.online)return;
+        if(filter==='offline'&&a.online)return;
+        const clr=a.status==='Running'?'#10b981':a.status==='Warning'?'#f59e0b':'#ef4444';
+        const circle=L.circleMarker([a.lat,a.lng],{radius:4,fillColor:clr,color:'#fff',weight:1.5,fillOpacity:.9}).addTo(netMap);
+        circle.bindPopup(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"><div style="font-weight:700;color:#2196F3;font-size:13px">${a.id}</div><div style="font-size:11px;color:#6c757d">${a.customer} · ${a.state}</div><div style="margin-top:6px;font-size:11px"><span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-weight:600;background:${a.online?'#ecfdf5':'#fef2f2'};color:${clr}"><span style="width:5px;height:5px;border-radius:50%;background:${clr}"></span>${a.status}</span></div><div style="margin-top:4px;font-size:11px;color:#374151">Avail: <strong>${a.avail}%</strong></div>${a.online?`<div style="font-size:10px;color:#6c757d;margin-top:2px">Signal: ${a.signal}% · Latency: ${a.latency}ms</div>`:`<div style="font-size:10px;color:#999;margin-top:2px">Last seen: ${a.lastSeen}</div>`}</div>`,{maxWidth:220});
+        netMarkers.push(circle);
+    });
+}
+function filterNetMap(filter){
+    netCurrentFilter=filter;
+    ['all','online','offline'].forEach(f=>{
+        const btn=document.getElementById('netFilter'+f.charAt(0).toUpperCase()+f.slice(1));
+        if(!btn)return;
+        if(f===filter){btn.style.background='#2196F3';btn.style.color='#fff';btn.style.borderColor='#2196F3'}
+        else{btn.style.background='#fff';btn.style.color='#374151';btn.style.borderColor='#d1d5db'}
+    });
+    addNetMarkers(filter);
+    renderNetworkTable(filter);
+}
+function renderNetworkTable(filter){
+    filter=filter||netCurrentFilter||'all';
+    const tbl=document.getElementById('networkTable');
+    let assets=netAllAssets.length?netAllAssets:[];
+    if(filter==='online')assets=assets.filter(a=>a.online);
+    else if(filter==='offline')assets=assets.filter(a=>!a.online);
+    const show=assets.slice(0,60);
+    document.getElementById('netTableCount').textContent=`Showing ${show.length} of ${assets.length}`;
+    let h='<thead><tr><th>Device ID</th><th>Customer</th><th>State</th><th>Status</th><th>Availability</th><th>Last Seen</th><th>Signal</th><th>Latency</th><th>Coordinates</th></tr></thead><tbody>';
+    show.forEach(a=>{
+        const sc=a.online?'#10b981':'#ef4444';
+        const sbg=a.online?'#ecfdf5':'#fef2f2';
+        const sl=a.online?(a.warning?'Warning':'Online'):'Offline';
+        const slc=a.warning?'#f59e0b':sc;
+        const slbg=a.warning?'#fffbeb':sbg;
+        const ac=a.avail>=95?'#10b981':a.avail>=88?'#f59e0b':'#ef4444';
+        h+=`<tr style="cursor:pointer" onclick="netMap.setView([${a.lat},${a.lng}],10)"><td style="font-weight:600;color:#2196F3">${a.id}</td><td>${a.customer}</td><td>${a.state}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${slbg};color:${slc}"><span style="width:5px;height:5px;border-radius:50%;background:${slc}"></span>${sl}</span></td><td style="font-weight:700;color:${ac}">${a.avail}%</td><td style="color:#6c757d;font-size:11px">${a.lastSeen}</td><td style="font-weight:600;color:${a.online?'#10b981':'#999'}">${a.online?a.signal+'%':'-'}</td><td style="color:${a.online?(a.latency<50?'#10b981':'#f59e0b'):'#999'}">${a.online?a.latency+'ms':'-'}</td><td style="font-size:10px;color:#999">${a.lat.toFixed(2)}, ${a.lng.toFixed(2)}</td></tr>`;
     });
     h+='</tbody>';
     tbl.innerHTML=h;
