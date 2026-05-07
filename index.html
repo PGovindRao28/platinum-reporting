@@ -581,6 +581,75 @@
         .cust-page-search i{color:#999;font-size:12px;margin-right:8px}
         .cust-page-search input{border:none;background:none;outline:none;font-size:13px;flex:1;color:#333}
 
+        /* ===== VRU COMPRESSOR FLEET PAGE ===== */
+        .vc-layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
+        .vc-main{flex:1;overflow-y:auto}
+        .vc-pp-wrap{display:flex;gap:0;border:1px solid #dee2e6;border-radius:6px;overflow:hidden}
+        .vc-pp{padding:6px 14px;font-size:12px;cursor:pointer;background:#fff;border-right:1px solid #dee2e6;color:#666}
+        .vc-pp:last-child{border-right:none}
+        .vc-pp.active{background:#2196F3;color:#fff}
+        .vc-date-range{font-size:12px;color:#666;border:1px solid #dee2e6;border-radius:6px;padding:6px 12px;background:#fff}
+        .vc-charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+        .vc-chart-box{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:16px}
+        .vc-chart-label{font-size:10px;font-weight:700;color:#999;letter-spacing:.5px;text-transform:uppercase}
+        .vc-chart-title{font-size:16px;font-weight:600;margin:2px 0 12px;display:flex;align-items:center;gap:8px}
+        .vc-chart-badge{font-size:10px;color:#999;font-weight:400;margin-left:auto}
+        .vc-mon-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+        .vc-mon-header h3{font-size:16px;font-weight:600;margin:0}
+        .vc-live{font-size:11px;color:#999;border:1px solid #dee2e6;border-radius:4px;padding:3px 8px;background:#fff}
+        .vc-loading{font-size:11px;color:#f59e0b;font-weight:500}
+        .vc-mon-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+        .vc-search-box{display:flex;align-items:center;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:0 10px;height:34px;min-width:200px}
+        .vc-search-box i{color:#999;font-size:12px;margin-right:6px}
+        .vc-search-box input{border:none;background:none;outline:none;font-size:12px;flex:1;color:#333}
+        .vc-fpills{display:flex;gap:0;border:1px solid #dee2e6;border-radius:6px;overflow:hidden}
+        .vc-fp{padding:5px 12px;font-size:11px;cursor:pointer;background:#fff;border-right:1px solid #dee2e6;display:flex;align-items:center;gap:4px}
+        .vc-fp:last-child{border-right:none}
+        .vc-fp.active{background:#e3f2fd;color:#1976d2;font-weight:600}
+        .vc-fp .dot{width:6px;height:6px;border-radius:50%}
+        .vc-state-group{margin-bottom:16px}
+        .vc-state-hdr{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;user-select:none}
+        .vc-state-hdr .chevron{color:#999;font-size:10px;transition:transform .2s}
+        .vc-state-hdr .name{font-size:14px;font-weight:600;color:#333}
+        .vc-state-hdr .count{font-size:12px;color:#999;margin-left:auto}
+        .vc-cust-group{margin-left:12px;margin-bottom:8px}
+        .vc-cust-hdr{display:flex;align-items:center;gap:6px;padding:4px 0;cursor:pointer;user-select:none;font-size:13px;color:#555}
+        .vc-cust-hdr .ct{font-size:11px;color:#bbb;margin-left:auto}
+        .vc-cards{display:flex;gap:10px;padding:8px 0;overflow-x:auto;scroll-snap-type:x mandatory}
+        .vc-cards::-webkit-scrollbar{height:4px}
+        .vc-cards::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
+        .vc-card{min-width:180px;max-width:180px;background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:12px;cursor:pointer;scroll-snap-align:start;flex-shrink:0;transition:border-color .15s}
+        .vc-card:hover{border-color:#2196F3}
+        .vc-card.selected{border-color:#2196F3;box-shadow:0 0 0 1px #2196F3}
+        .vc-card-name{font-size:12px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+        .vc-card-status{font-size:10px;font-weight:600;display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:10px;margin-bottom:8px}
+        .vc-card-status.running{color:#10b981;background:#ecfdf5}
+        .vc-card-status.down{color:#ef4444;background:#fef2f2}
+        .vc-card-status.na{color:#9ca3af;background:#f3f4f6}
+        .vc-card-row{display:flex;justify-content:space-between;font-size:10px;color:#666;padding:2px 0}
+        .vc-card-row .val{font-weight:600;color:#333}
+        .vc-card-faults{font-size:10px;color:#999;margin-top:6px;padding-top:6px;border-top:1px solid #f3f4f6}
+        .vc-card-link{font-size:11px;color:#2196F3;font-weight:600;cursor:pointer;margin-top:6px;display:flex;align-items:center;gap:4px}
+        .vc-card-link:hover{text-decoration:underline}
+        .vc-scroll-btn{width:28px;height:28px;border-radius:50%;border:1px solid #dee2e6;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#666;font-size:12px;flex-shrink:0;align-self:center}
+        .vc-scroll-btn:hover{background:#f3f4f6}
+        /* Right detail panel */
+        .vc-detail{width:320px;min-width:320px;border-left:1px solid #dee2e6;background:#fff;overflow-y:auto;padding:16px}
+        .vc-det-name{font-size:15px;font-weight:600;color:#333}
+        .vc-det-badge{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;padding:1px 8px;border-radius:4px;margin-left:8px}
+        .vc-det-meta{font-size:10px;color:#999;margin:4px 0 12px}
+        .vc-det-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        .vc-det-nav i{cursor:pointer;color:#999;font-size:14px}
+        .vc-det-nav i:hover{color:#333}
+        .vc-det-chart{height:160px;margin-bottom:16px}
+        .vc-det-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+        .vc-det-kpi{text-align:center;padding:10px 8px;border:1px solid #eee;border-radius:6px}
+        .vc-det-kpi .dkv{font-size:18px;font-weight:700}
+        .vc-det-kpi .dkv small{font-size:10px;font-weight:400;color:#999}
+        .vc-det-kpi .dkl{font-size:10px;color:#999}
+        .vc-det-faults h4{font-size:13px;font-weight:600;margin:0 0 8px}
+        .vc-det-faults .no-faults{font-size:12px;color:#999}
+
         /* ===== VRU DETAIL PAGE ===== */
         .vru-layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
         .vru-lp{width:200px;min-width:200px;border-right:1px solid #dee2e6;background:#fff;display:flex;flex-direction:column;overflow:hidden}
@@ -936,8 +1005,28 @@
 
     <!-- ===== VRU COMPRESSORS PAGE ===== -->
     <div id="vruCompressorsPage" style="display:none">
-        <div class="page-header"><div><div class="page-title">VRU Compressors</div><div class="page-subtitle">All compressor units grouped by state and customer</div></div><div style="display:flex;gap:8px"><button class="btn-secondary" onclick="expandAllComp(true)"><i class="fas fa-plus" style="margin-right:4px"></i>Expand All</button><button class="btn-secondary" onclick="expandAllComp(false)"><i class="fas fa-minus" style="margin-right:4px"></i>Collapse All</button></div></div>
-        <div class="page-content"><div class="comp-table-wrap"><div class="scroll-y" style="max-height:700px" id="compTableBody"></div></div></div>
+        <div class="vc-layout">
+            <div class="vc-main" id="vcMain">
+                <div class="page-header"><div><div class="page-title">VRU Compressor</div></div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <div class="vc-pp-wrap"><span class="vc-pp" onclick="setVcPeriod(this,7)">Last 7d</span><span class="vc-pp active" onclick="setVcPeriod(this,30)">Last 30d</span><span class="vc-pp" onclick="setVcPeriod(this,90)">Last 90d</span></div>
+                        <div class="vc-date-range"><i class="far fa-calendar-alt" style="margin-right:6px"></i>Apr 07, 2026 - May 07, 2026</div>
+                    </div>
+                </div>
+                <div class="page-content" style="padding-top:0">
+                    <div class="vc-charts-row">
+                        <div class="vc-chart-box"><div class="vc-chart-label">FLEET OVERVIEW</div><div class="vc-chart-title">Downtime Distribution<span class="vc-chart-badge">30 days</span></div><div style="height:320px"><canvas id="vcDowntimeChart"></canvas></div></div>
+                        <div class="vc-chart-box"><div class="vc-chart-label">RELIABILITY METRICS</div><div class="vc-chart-title">MTBF &amp; MTTR<span id="vcMtbfBadges"></span></div><div style="height:320px"><canvas id="vcMtbfChart"></canvas></div></div>
+                    </div>
+                    <div class="vc-mon-header"><h3>Compressor Monitoring</h3><span class="vc-live">Live data as of: 07 May 26, 07:04</span><span class="vc-loading">&bull; Loading live data...</span></div>
+                    <div class="vc-mon-bar"><div class="vc-search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search for VRUs..." id="vcSearchInput" oninput="filterVcCards(this.value)"></div><div class="vc-fpills" id="vcFPills"></div><div style="margin-left:auto;display:flex;gap:8px;align-items:center"><span style="font-size:11px;color:#999">Uptime</span><i class="fas fa-list" style="color:#999;cursor:pointer;font-size:13px"></i><i class="fas fa-th-large" style="color:#2196F3;cursor:pointer;font-size:13px"></i></div></div>
+                    <div id="vcCardsWrap"></div>
+                </div>
+            </div>
+            <div class="vc-detail" id="vcDetail" style="display:none">
+                <div id="vcDetailInner"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ===== VRUS DETAIL PAGE ===== -->
@@ -2921,45 +3010,119 @@ function renderCustPageTable(){
 }
 
 // ===== VRU COMPRESSORS PAGE =====
+let vcCharts={},vcFilter='all',vcSelectedCard=null,vcDetailChart=null;
+function setVcPeriod(el,d){document.querySelectorAll('.vc-pp').forEach(e=>e.classList.remove('active'));el.classList.add('active')}
 function initVruCompressorsPage(){
-    const cont=document.getElementById('compTableBody');
-    let h='<table class="comp-table"><thead><tr><th style="width:50px">S No</th><th>VRU Compressors</th><th>Customer</th><th>Type</th><th>Status</th><th>Uptime %</th></tr></thead><tbody>';
-    let sno=1;
+    buildVcFilterPills();buildVcCharts();buildVcCards();
+}
+function buildVcFilterPills(){
+    let all=0,run=0,dn=0,na=0;
+    CUSTOMERS.forEach(c=>{(VRU_UNITS[c.name]||[]).forEach(u=>{all++;if(u.status==='Running')run++;else if(u.status==='Down')dn++;else na++})});
+    const pills=[{k:'all',l:'All',c:all,dot:''},{k:'Running',l:'Running',c:run,dot:'#10b981'},{k:'Down',l:'Down',c:dn,dot:'#ef4444'},{k:'NA',l:'N/A',c:na,dot:'#9ca3af'}];
+    document.getElementById('vcFPills').innerHTML=pills.map(p=>`<span class="vc-fp ${vcFilter===p.k?'active':''}" onclick="vcFilter='${p.k}';buildVcFilterPills();buildVcCards()">${p.dot?'<span class="dot" style="background:'+p.dot+'"></span>':''}${p.l} <b>${p.c}</b></span>`).join('');
+}
+function buildVcCharts(){
+    Object.values(vcCharts).forEach(c=>c.destroy());vcCharts={};
+    // Downtime Distribution - horizontal bar
+    const dtUnits=[];
+    CUSTOMERS.forEach(c=>{(VRU_UNITS[c.name]||[]).slice(0,3).forEach(u=>{if(u.faultH>5)dtUnits.push({name:(u.displayName||u.id).slice(0,30),hours:u.faultH})})});
+    dtUnits.sort((a,b)=>b.hours-a.hours);
+    const top12=dtUnits.slice(0,12);
+    vcCharts.dt=new Chart(document.getElementById('vcDowntimeChart').getContext('2d'),{type:'bar',data:{labels:top12.map(u=>u.name),datasets:[{label:'Downtime Hours',data:top12.map(u=>u.hours),backgroundColor:'rgba(33,150,243,.15)',borderColor:'#2196F3',borderWidth:1,borderRadius:3,barPercentage:.6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'right',color:'#666',font:{size:10,weight:'600'},formatter:v=>v+'h'}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'}},y:{grid:{display:false},ticks:{font:{size:10},color:'#444'}}}}});
+    // MTBF & MTTR line chart
+    const days=[];for(let i=30;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}))}
+    const mtbfData=days.map(()=>(Math.random()*.3+.05).toFixed(2));
+    const mttrData=days.map(()=>(Math.random()*.8+.3).toFixed(2));
+    document.getElementById('vcMtbfBadges').innerHTML='<span style="margin-left:auto;font-size:11px"><b style="color:#10b981">MTBF</b> <b>0.07h</b> <span style="color:#10b981;font-size:10px">↑75%</span></span><span style="font-size:11px;margin-left:12px"><b style="color:#ef4444">MTTR</b> <b>0.61h</b> <span style="color:#ef4444;font-size:10px">↓4%</span></span>';
+    vcCharts.mtbf=new Chart(document.getElementById('vcMtbfChart').getContext('2d'),{type:'line',data:{labels:days,datasets:[{label:'MTBF (AVG)',data:mtbfData,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.4,pointRadius:0,borderWidth:2},{label:'MTTR (AVG)',data:mttrData,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.4,pointRadius:0,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true}},datalabels:{display:false}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},maxRotation:45}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'}}},interaction:{mode:'index',intersect:false}}});
+}
+function buildVcCards(searchQ){
+    const q=(searchQ||'').toLowerCase();
     const byState={};
-    CUSTOMERS.forEach(c=>{if(!byState[c.state])byState[c.state]=[];byState[c.state].push(c)});
-    Object.keys(byState).sort().forEach(state=>{
-        const custs=byState[state];
-        const stateUnits=custs.reduce((s,c)=>s+c.units,0);
-        h+=`<tr class="comp-state-row" onclick="toggleCompGroup('state_${state.replace(/\s/g,'_')}')" style="cursor:pointer"><td colspan="6"><i class="fas fa-chevron-down" style="margin-right:8px;font-size:10px" id="icon_state_${state.replace(/\s/g,'_')}"></i><i class="fas fa-map-marker-alt" style="margin-right:6px;color:#2196F3"></i>${state} <span style="font-weight:400;color:#6c757d;margin-left:6px">${stateUnits} units</span></td></tr>`;
-        h+=`<tbody id="state_${state.replace(/\s/g,'_')}">`;
-        custs.sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
-            h+=`<tr class="comp-cust-row" onclick="toggleCompGroup('cust_${c.name.replace(/[^a-zA-Z0-9]/g,'_')}')" style="cursor:pointer"><td colspan="6"><i class="fas fa-chevron-down" style="margin-right:8px;font-size:9px" id="icon_cust_${c.name.replace(/[^a-zA-Z0-9]/g,'_')}"></i><i class="fas fa-building" style="margin-right:6px;color:#8b5cf6"></i>${c.name} <span style="font-weight:400;color:#6c757d;margin-left:6px">${c.units} units</span></td></tr>`;
-            h+=`<tbody id="cust_${c.name.replace(/[^a-zA-Z0-9]/g,'_')}">`;
-            const units=(VRU_UNITS[c.name]||[]).slice(0,8);
-            units.forEach(u=>{
-                const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
-                const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
-                const uc=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
-                h+=`<tr><td style="text-align:center;color:#999">${sno++}</td><td style="font-weight:600;color:#2196F3">${u.id}</td><td>${c.name}</td><td>VRU</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td><td style="font-weight:700;color:${uc}">${u.avail}%</td></tr>`;
-            });
-            h+='</tbody>';
+    CUSTOMERS.forEach(c=>{
+        if(!byState[c.state])byState[c.state]={custs:[],total:0};
+        const units=(VRU_UNITS[c.name]||[]).filter(u=>{
+            const mf=vcFilter==='all'||(vcFilter==='NA'?(u.status!=='Running'&&u.status!=='Down'):u.status===vcFilter);
+            const ms=!q||(u.displayName||u.id).toLowerCase().includes(q);
+            return mf&&ms;
         });
-        h+='</tbody>';
+        if(units.length){byState[c.state].custs.push({name:c.name,units});byState[c.state].total+=units.length}
     });
-    h+='</tbody></table>';
-    cont.innerHTML=h;
+    let h='';
+    Object.keys(byState).sort().forEach(state=>{
+        const s=byState[state];
+        h+=`<div class="vc-state-group"><div class="vc-state-hdr" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none';this.querySelector('.chevron').style.transform=this.nextElementSibling.style.display==='none'?'rotate(-90deg)':''"><i class="fas fa-chevron-down chevron"></i><span class="name">${state}</span><span class="count">${s.total} units</span></div><div>`;
+        s.custs.forEach(cust=>{
+            const allU=VRU_UNITS[cust.name]||[];
+            h+=`<div class="vc-cust-group"><div class="vc-cust-hdr" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'"><i class="fas fa-chevron-down chevron" style="font-size:9px;margin-right:4px"></i>${cust.name.length>25?cust.name.slice(0,25)+'…':cust.name}<span class="ct">${cust.units.length}</span></div>`;
+            h+=`<div class="vc-cards">`;
+            cust.units.forEach(u=>{
+                const ri=allU.indexOf(u);
+                const stCls=u.status==='Running'?'running':u.status==='Down'?'down':'na';
+                const stLbl=u.status==='Warning'?'N/A':u.status;
+                const dn=(u.displayName||u.id);const sn=dn.length>22?dn.slice(0,22)+'…':dn;
+                const uptPct=u.status==='Running'?(Math.random()>0.5?'100%':Math.round(80+Math.random()*20)+'%'):'0%';
+                const mtbfVal=u.status==='Running'&&Math.random()>0.5?(Math.random()*0.5).toFixed(2)+'h':'N/A';
+                const mttrVal=u.status==='Running'&&Math.random()>0.3?(Math.random()*0.8).toFixed(2)+'h':'N/A';
+                const dth=u.faultH>0?u.faultH+'h':'0h';
+                h+=`<div class="vc-card" onclick="showVcDetail('${cust.name.replace(/'/g,'')}',${ri},this)"><div class="vc-card-name" title="${dn}">${sn}</div><span class="vc-card-status ${stCls}"><span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>${stLbl}</span>`;
+                h+=`<div class="vc-card-row"><span>Uptime Today</span><span class="val">${uptPct}</span></div>`;
+                h+=`<div class="vc-card-row"><span>MTBF</span><span class="val">${mtbfVal}</span></div>`;
+                h+=`<div class="vc-card-row"><span>MTTR</span><span class="val">${mttrVal}</span></div>`;
+                h+=`<div class="vc-card-row"><span>Downtime</span><span class="val">${dth}</span></div>`;
+                h+=`<div class="vc-card-faults">No faults</div>`;
+                h+=`<div class="vc-card-link" onclick="event.stopPropagation();goToVruDetail('${cust.name.replace(/'/g,'')}',${ri})">Show Details <i class="fas fa-external-link-alt" style="font-size:9px"></i></div>`;
+                h+=`</div>`;
+            });
+            h+=`</div></div>`;
+        });
+        h+=`</div></div>`;
+    });
+    document.getElementById('vcCardsWrap').innerHTML=h||'<div style="padding:40px;text-align:center;color:#999">No units found</div>';
 }
-function toggleCompGroup(id){
-    const el=document.getElementById(id);
-    const icon=document.getElementById('icon_'+id);
-    if(!el)return;
-    if(el.style.display==='none'){el.style.display='';if(icon)icon.className='fas fa-chevron-down'}
-    else{el.style.display='none';if(icon)icon.className='fas fa-chevron-right'}
+function filterVcCards(q){buildVcCards(q)}
+function showVcDetail(custName,idx,cardEl){
+    document.querySelectorAll('.vc-card').forEach(c=>c.classList.remove('selected'));
+    if(cardEl)cardEl.classList.add('selected');
+    vcSelectedCard={cust:custName,idx:idx};
+    const unit=VRU_UNITS[custName][idx];
+    const panel=document.getElementById('vcDetail');
+    panel.style.display='';
+    const stCls=unit.status==='Running'?'running':unit.status==='Down'?'down':'na';
+    const stLbl=unit.status==='Warning'?'N/A':unit.status;
+    const stBg=unit.status==='Running'?'background:#ecfdf5;color:#10b981':unit.status==='Down'?'background:#fef2f2;color:#ef4444':'background:#f3f4f6;color:#9ca3af';
+    const totalOp=unit.runH+unit.readyH+unit.faultH;
+    const uptPct=totalOp>0?Math.round(unit.runH/totalOp*100):0;
+    const dtAvg=unit.faultH;
+    document.getElementById('vcDetailInner').innerHTML=`
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px"><span class="vc-det-name">${(unit.displayName||unit.id).slice(0,28)}</span><span class="vc-det-badge" style="${stBg}">${stLbl}</span></div>
+        <div class="vc-det-meta">Last Update: 07 May 26, 07:05</div>
+        <div class="vc-det-nav"><i class="fas fa-chevron-left" title="Previous"></i><span style="font-size:11px;color:#999"></span><i class="fas fa-chevron-right" title="Next"></i></div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px">Uptime</div>
+        <div class="vc-det-chart"><canvas id="vcDetUptimeChart"></canvas></div>
+        <div class="vc-det-kpis">
+            <div class="vc-det-kpi"><div class="dkv">${uptPct} <small>%</small></div><div class="dkl">Uptime (avg)</div></div>
+            <div class="vc-det-kpi"><div class="dkv">${dtAvg} <small>h</small></div><div class="dkl">Downtime (avg)</div></div>
+            <div class="vc-det-kpi"><div class="dkv">&mdash;</div><div class="dkl">MTBF (avg)</div></div>
+            <div class="vc-det-kpi"><div class="dkv">&mdash;</div><div class="dkl">MTTR (avg)</div></div>
+        </div>
+        <div class="vc-det-faults"><h4>Top Fault Types</h4><div class="no-faults">No faults recorded</div></div>`;
+    // Uptime bar chart
+    setTimeout(()=>{
+        if(vcDetailChart)vcDetailChart.destroy();
+        const cv=document.getElementById('vcDetUptimeChart');if(!cv)return;
+        const days=[];const vals=[];
+        for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));vals.push(unit.status==='Running'?Math.round(80+Math.random()*20):Math.round(Math.random()*30))}
+        vcDetailChart=new Chart(cv.getContext('2d'),{type:'bar',data:{labels:days,datasets:[{data:vals,backgroundColor:vals.map(v=>v>=80?'#10b981':v>=50?'#f59e0b':'#ef4444'),borderRadius:3,barPercentage:.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'%'},max:100}}}});
+    },50);
 }
-function expandAllComp(expand){
-    document.querySelectorAll('[id^="state_"],[id^="cust_"]').forEach(el=>{el.style.display=expand?'':'none'});
-    document.querySelectorAll('[id^="icon_state_"],[id^="icon_cust_"]').forEach(el=>{el.className=expand?'fas fa-chevron-down':'fas fa-chevron-right'});
+function goToVruDetail(custName,idx){
+    vruSelectedCust=custName;vruSelectedIdx=idx;vruActiveTab='overview';
+    pageInited.vrus=false;
+    showPage('vrus');
 }
+function toggleCompGroup(){}
+function expandAllComp(){}
 
 // ===== VRU DETAIL PAGE =====
 let vruActiveTab='overview',vruSelectedCust=null,vruSelectedIdx=0,vruFilter='all',vruTrendChart=null;
@@ -3118,20 +3281,76 @@ function renderVruTrends(unit,body){
 }
 function renderVruEvents(unit,body){
     const evts=[
-        {t:'May 07, 05:27',tp:'Info',m:'Auto refresh completed'},
-        {t:'May 06, 18:45',tp:'Warning',m:'Compressor speed fluctuation detected'},
-        {t:'May 06, 12:00',tp:'Info',m:'PM scheduled — next service in 14 days'},
-        {t:'May 05, 22:30',tp:'Info',m:'Compressor restarted after idle period'},
-        {t:'May 05, 08:15',tp:'Warning',m:'Low suction pressure threshold approached'},
-        {t:'May 04, 16:00',tp:'Info',m:'Setpoint adjustment: Compressor PID → 7 oz/sq in'},
-        {t:'May 03, 10:30',tp:'Info',m:'Recirc valve calibration completed'},
-        {t:'May 02, 14:20',tp:'Critical',m:'Discharge temperature exceeded 230°F — auto shutdown'},
-        {t:'May 02, 14:25',tp:'Info',m:'Compressor restarted after cooldown'},
-        {t:'May 01, 09:00',tp:'Info',m:'Monthly maintenance report generated'}
+        {t:'May 06, 00:00',tp:'PM',title:'Preventive Maintenance',desc:'PM Performed on unit. Unit is BOL. Oil PG-180 replaced. All 11/11 checklist items passed.',wo:'PVC037996',tech:'Sanchez, Bryant',hasPdf:true},
+        {t:'May 02, 14:20',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 230°F — auto shutdown triggered. Auto resolved after cooldown.',wo:'',tech:'',hasPdf:false},
+        {t:'Apr 27, 01:45',tp:'Alarm',title:'Compressor Run Command',desc:'Compressor Run Command EQUAL TO 1. Warning level. Auto Resolved by API Client.',wo:'',tech:'',hasPdf:false},
+        {t:'Apr 23, 10:13',tp:'Alarm',title:'Compressor Hoa In Auto',desc:'Compressor Hoa In Auto EQUAL TO 1. Warning level. Active alarm.',wo:'',tech:'',hasPdf:false},
+        {t:'Apr 15, 08:00',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly inspection completed. Belt tension checked, oil condition inspected. All items passed.',wo:'PVC037812',tech:'Martinez, Carlos',hasPdf:true},
+        {t:'Apr 10, 16:30',tp:'Callout',title:'Field Service Callout',desc:'Unit not starting — investigated HOA switch. Found in HAND position. Switched to AUTO. Unit restarted.',wo:'PVC037790',tech:'Johnson, Mike',hasPdf:false},
+        {t:'Mar 28, 09:00',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. Oil filter replaced. Compressor lovejoy inspected. All items passed.',wo:'PVC037650',tech:'Sanchez, Bryant',hasPdf:true},
     ];
-    body.innerHTML=`<div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:15px;font-weight:600">Recent Events</h3><span style="font-size:11px;color:#999">${evts.length} events</span></div>
-    <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8f9fa;border-bottom:2px solid #eee"><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:160px">Timestamp</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Type</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666">Description</th></tr></thead>
-    <tbody>${evts.map(e=>{const c=e.tp==='Critical'?'#ef4444':e.tp==='Warning'?'#f59e0b':'#2196F3';return '<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:8px 12px;color:#666">'+e.t+'</td><td style="padding:8px 12px"><span style="color:'+c+';font-weight:600;font-size:11px">'+e.tp+'</span></td><td style="padding:8px 12px;color:#333">'+e.m+'</td></tr>'}).join('')}</tbody></table>`;
+    const tc={'PM':'#2196F3','Alarm':'#f59e0b','Callout':'#8b5cf6'};
+    const tbg={'PM':'#eff6ff','Alarm':'#fffbeb','Callout':'#f5f3ff'};
+    body.innerHTML=`
+    <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:15px;font-weight:600">Events &amp; Service History</h3><span style="font-size:11px;color:#999">${evts.length} records</span></div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8f9fa;border-bottom:2px solid #eee"><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:130px">Date</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Type</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666">Description</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:100px">WO #</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:60px">Report</th></tr></thead>
+    <tbody>${evts.map((e,i)=>{
+        const color=tc[e.tp]||'#999';const bg=tbg[e.tp]||'#f9fafb';
+        return '<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:10px 12px;color:#666;font-size:11px">'+e.t+'</td><td style="padding:10px 12px"><span style="color:'+color+';background:'+bg+';font-weight:600;font-size:10px;padding:2px 8px;border-radius:10px">'+e.tp+'</span></td><td style="padding:10px 12px"><div style="font-weight:600;color:#333;margin-bottom:2px">'+e.title+'</div><div style="font-size:11px;color:#666">'+e.desc+'</div>'+(e.tech?'<div style="font-size:10px;color:#999;margin-top:2px">Tech: '+e.tech+'</div>':'')+'</td><td style="padding:10px 12px;font-size:11px;color:#2196F3;font-weight:600">'+(e.wo||'—')+'</td><td style="padding:10px 12px;text-align:center">'+(e.hasPdf?'<span style="cursor:pointer;color:#ef4444;font-size:16px" title="View PM Report" onclick="showPmReport('+i+')"><i class="fas fa-file-pdf"></i></span>':'—')+'</td></tr>';
+    }).join('')}</tbody></table>
+    <div id="pmReportOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:9999;display:none;align-items:center;justify-content:center" onclick="this.style.display='none'">
+        <div style="background:#fff;border-radius:12px;width:700px;max-height:85vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2)" onclick="event.stopPropagation()">
+            <div style="position:sticky;top:-32px;background:#fff;padding:16px 0 8px;border-bottom:1px solid #eee;margin:-32px -32px 20px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;z-index:1"><span style="font-size:18px;font-weight:700;color:#333">Report</span><span style="background:#10b981;color:#fff;padding:4px 16px;border-radius:4px;font-size:12px;font-weight:600">Preventive Maintenance</span><i class="fas fa-times" style="cursor:pointer;color:#999;font-size:18px;position:absolute;right:16px;top:16px" onclick="document.getElementById('pmReportOverlay').style.display='none'"></i></div>
+            <div id="pmReportBody"></div>
+        </div>
+    </div>`;
+}
+function showPmReport(idx){
+    const unit=VRU_UNITS[vruSelectedCust][vruSelectedIdx];
+    const dn=unit.displayName||unit.id;
+    const cust=CUSTOMERS.find(c=>c.name===vruSelectedCust);
+    document.getElementById('pmReportBody').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;margin-bottom:24px">
+        <div><span style="color:#999">Customer</span><div style="font-weight:600">${cust?cust.name:'—'}</div></div>
+        <div><span style="color:#999">Unit</span><div style="font-weight:600">${dn}</div></div>
+        <div><span style="color:#999">Location</span><div style="font-weight:600">${cust?cust.state:''}</div></div>
+        <div><span style="color:#999">Submission Date</span><div style="font-weight:600">06 May 26, 00:00 UTC</div></div>
+        <div><span style="color:#999">WO Number</span><div style="font-weight:600">PVC037996</div></div>
+        <div><span style="color:#999">Work Type</span><div style="font-weight:600">PM</div></div>
+        <div><span style="color:#999">Ending Status</span><div style="font-weight:600;color:#10b981">Online and Operational</div></div>
+        <div><span style="color:#999">Unit Type</span><div style="font-weight:600">Screw</div></div>
+    </div>
+    <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #eee">Mechanical Readings</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Record Oil Pressure</span><span style="font-weight:600">90.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Record Suction Pressure</span><span style="font-weight:600">10</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Record Discharge Pressure</span><span style="font-weight:600">119.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Record High-Discharge Kill</span><span style="font-weight:600">175.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">PRV Date of Calibration</span><span style="font-weight:600">06/23</span></div>
+    </div>
+    <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #eee">Setpoint Control</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Compressor On Setpoint</span><span style="font-weight:600">12.0</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Pressure Setpoint</span><span style="font-weight:600">7.0</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Compressor Off Setpoint</span><span style="font-weight:600">2.0</span></div>
+    </div>
+    <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #eee">Checklist (11/11 Pass)</h3>
+    <div style="font-size:13px">${['Oil Condition','Oil Filter Condition','Condensate Pump Condition','Check Belt Tension','Inspect Unit Wiring','Check piping For any Cracks/Leaks','Inspect Compressor Lovejoy for Damage','Check Front Seals for Leaks','Check Scavenger line Flow','Check MPV (3-Way Valve)','Check Witches Hat'].map(item=>'<div style="display:flex;align-items:center;gap:8px;padding:4px 0"><i class="fas fa-check-circle" style="color:#10b981"></i><span>'+item+'</span><span style="margin-left:auto;color:#10b981;font-weight:600;font-size:11px">Pass</span></div>').join('')}</div>
+    <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #eee">Parts Replaced</h3>
+    <div style="font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Part No</span><span style="font-weight:600">202338</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Description</span><span style="font-weight:600">OIL, PG-180, SERVICE</span></div>
+    </div>
+    <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #eee">Labor &amp; Costs</h3>
+    <div style="font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Technician</span><span style="font-weight:600">Sanchez, Bryant</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Hours</span><span style="font-weight:600">1.0</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Mileage</span><span style="font-weight:600">15</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6"><span style="color:#666">Total Cost</span><span style="font-weight:600">$0.00</span></div>
+    </div>
+    <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #eee">Comments</h3>
+    <p style="font-size:13px;color:#666;line-height:1.5">${cust?cust.name:''} ${dn} 50 HP PM Performed PM on unit. Unit is BOL.</p>`;
+    document.getElementById('pmReportOverlay').style.display='flex';
 }
 // ===== NETWORK PAGE =====
 const CUSTOMER_COORDS={
