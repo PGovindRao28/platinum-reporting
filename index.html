@@ -2775,8 +2775,6 @@ const pageInited={};
 
 function showPage(page){
     ALL_PAGES.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
-    const targetId=PAGE_MAP[page];
-    if(targetId)document.getElementById(targetId).style.display='block';
     document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));
     const idx=PAGE_SIDEBAR_IDX[page];
     if(idx!==undefined)document.querySelectorAll('.sidebar-item')[idx].classList.add('active');
@@ -2795,6 +2793,8 @@ function showPage(page){
     if(page==='vrus'&&!pageInited.vrus){pageInited.vrus=true;initVrusPage()}
     if(page==='network'&&!pageInited.network){pageInited.network=true;initNetworkPage()}
     if(page==='alarms'&&!pageInited.alarms){pageInited.alarms=true;initAlarmsPage()}
+    const targetId=PAGE_MAP[page];
+    if(targetId)document.getElementById(targetId).style.display='block';
 }
 
 function runReport(){
