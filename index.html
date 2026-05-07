@@ -756,10 +756,6 @@
         .opt-live-indicator{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#10b981;font-weight:500;padding:4px 10px;background:#ecfdf5;border-radius:12px;white-space:nowrap}
         .opt-live-indicator .live-dot{width:7px;height:7px;border-radius:50%;background:#10b981;animation:optPulse 2s infinite}
         @keyframes optPulse{0%,100%{opacity:1}50%{opacity:.4}}
-        .opt-persona-tabs{display:flex;gap:2px;background:#f1f3f5;border-radius:6px;padding:2px;margin-left:auto;flex-shrink:0}
-        .opt-persona-tabs button{border:none;background:transparent;padding:6px 14px;font-size:11px;color:#666;border-radius:4px;cursor:pointer;font-weight:500;white-space:nowrap;transition:all .15s}
-        .opt-persona-tabs button:hover{color:#333}
-        .opt-persona-tabs button.active{background:#fff;color:#2196F3;box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600}
         .opt-top-bar{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
         .opt-top-bar h3{margin:0;font-size:15px;font-weight:600;color:#333;display:flex;align-items:center;gap:8px}
         .opt-action-center{margin-bottom:16px}
@@ -3763,12 +3759,6 @@ function renderVruOptimization(unit,body){
     <div class="opt-top-bar">
         <h3><i class="fas fa-shield-alt" style="color:#2196F3"></i> Predictive Optimization &amp; Reliability Engine</h3>
         <span class="opt-live-indicator"><span class="live-dot"></span> Live &bull; Auto-refreshes</span>
-        <div class="opt-persona-tabs" id="optPersonaTabs">
-            <button data-view="vp">VP of Engineering</button>
-            <button data-view="manager" class="active">Engineering Manager</button>
-            <button data-view="field">Field Engineer</button>
-            <button data-view="tech">Technician</button>
-        </div>
     </div>
 
     <div class="opt-summary">
@@ -3802,7 +3792,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- C. AI Action Center -->
-    <div class="opt-action-center opt-section" data-persona="all">
+    <div class="opt-action-center opt-section">
         <div class="sec-title"><i class="fas fa-bolt" style="color:#f59e0b"></i> AI Action Center</div>
         <div class="opt-card">
             <div class="opt-card-b" style="padding:0;overflow-x:auto">
@@ -3876,7 +3866,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- D. Risk & Forecast Section -->
-    <div class="opt-grid opt-section" data-persona="manager,field,vp">
+    <div class="opt-grid opt-section">
         <!-- Left: Failure Window -->
         <div class="opt-card">
             <div class="opt-card-h"><h4><i class="fas fa-exclamation-triangle" style="color:#ef4444"></i> Failure Risk Window</h4><span class="tag" style="background:#fef2f2;color:#ef4444">Medium Risk</span></div>
@@ -3921,7 +3911,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- E. Performance Trend & Forecast -->
-    <div class="opt-section" data-persona="manager,field,vp">
+    <div class="opt-section">
         <div class="opt-card">
             <div class="opt-card-h"><h4><i class="fas fa-chart-line" style="color:#2196F3"></i> Performance Trend &amp; Forecast</h4>
                 <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -3936,7 +3926,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- F. Evidence Section -->
-    <div class="opt-grid opt-section" data-persona="manager,field,tech">
+    <div class="opt-grid opt-section">
         <!-- Left: Sensor Deviations -->
         <div class="opt-card">
             <div class="opt-card-h"><h4><i class="fas fa-wave-square" style="color:#f59e0b"></i> Sensor Deviations</h4><span class="tag" style="background:#fef2f220;color:#f59e0b">5 signals monitored</span></div>
@@ -4011,7 +4001,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- G. Execution Timeline -->
-    <div class="opt-section" data-persona="manager,field,tech">
+    <div class="opt-section">
         <div class="opt-card">
             <div class="opt-card-h"><h4><i class="fas fa-stream" style="color:#8b5cf6"></i> Execution Timeline</h4></div>
             <div class="opt-card-b">
@@ -4029,7 +4019,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- H. Model & Data Governance -->
-    <div class="opt-section" data-persona="manager,vp">
+    <div class="opt-section">
         <div class="opt-card">
             <div class="opt-card-h"><h4><i class="fas fa-cogs" style="color:#2196F3"></i> Model &amp; Data Governance</h4></div>
             <div class="opt-card-b" style="overflow-x:auto">
@@ -4075,7 +4065,7 @@ function renderVruOptimization(unit,body){
     </div>
 
     <!-- I. Financial Impact Summary -->
-    <div class="opt-section" data-persona="manager,vp">
+    <div class="opt-section">
         <div class="opt-card">
             <div class="opt-card-h"><h4><i class="fas fa-dollar-sign" style="color:#10b981"></i> Financial Impact Summary</h4><span class="tag" style="background:#ecfdf5;color:#10b981">Annualized Value at Risk Avoided</span></div>
             <div class="opt-card-b">
@@ -4091,32 +4081,6 @@ function renderVruOptimization(unit,body){
         </div>
     </div>
     `;
-
-    // Persona tab switching
-    const tabContainer=document.getElementById('optPersonaTabs');
-    if(tabContainer){
-        tabContainer.addEventListener('click',function(e){
-            const btn=e.target.closest('button');
-            if(!btn)return;
-            tabContainer.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-            btn.classList.add('active');
-            const view=btn.dataset.view;
-            const sections=body.querySelectorAll('[data-persona]');
-            sections.forEach(sec=>{
-                const allowed=sec.dataset.persona;
-                if(allowed==='all'){sec.style.display='';return;}
-                if(view==='vp'){
-                    sec.style.display=allowed.includes('vp')?'':'none';
-                }else if(view==='manager'){
-                    sec.style.display='';
-                }else if(view==='field'){
-                    sec.style.display=allowed.includes('field')?'':'none';
-                }else if(view==='tech'){
-                    sec.style.display=allowed.includes('tech')?'':'none';
-                }
-            });
-        });
-    }
 
     setTimeout(()=>{
         // Date labels
