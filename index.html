@@ -3204,7 +3204,7 @@ function switchVruTab(){
 }
 function renderVruOv(unit,body){
     const sp=(4.9+(Math.random()*2-1)).toFixed(1),rv=(12.6+(Math.random()*3-1.5)).toFixed(1),op=(77.3+(Math.random()*5-2.5)).toFixed(1),dt=Math.round(221+(Math.random()*10-5)),dp=(112.2+(Math.random()*8-4)).toFixed(1);
-    const gi=(0+(Math.random()*2)).toFixed(1),oi=(0+(Math.random()*5)).toFixed(1);
+    const cSpd=(15+(Math.random()*3-1.5)).toFixed(1),gfDiff=(0.2+(Math.random()*.3)).toFixed(2),oilT=(180+(Math.random()*10)).toFixed(0),gasT=(95+(Math.random()*8)).toFixed(0);
     const setpoints=[['Compressor Start Setpoint','12','oz/sq in'],['Compressor Stop Setpoint','2','oz/sq in'],['Oil Cooler Start Setpoint','225','°F'],['Oil Cooler Stop Setpoint','215','°F'],['Oil Cooler Temperature SP','218','°F'],['Gas Cooler Start Setpoint','0','°F'],['Gas Cooler Stop Setpoint','0','°F'],['Gas Cooler Temperature','0','°F'],['Compressor PID Setpoint','7','oz/sq in'],['Recirc Valve Suction Pressure SP','5','oz/sq in'],['Recirc Valve Discharge Pressure SP','160','psi'],['Low Suction Pressure Alarm SP','-9999','psi'],['Low Oil Pressure Alarm SP','-9999','psi'],['Low Discharge Pressure Alarm SP','10','psi'],['Spare Analog Input 3 Low Alarm SP','-9999',''],['Low Discharge Temp Alarm SP','-9999','°F'],['Low Oil Inlet Temp Alarm SP','0','°F'],['Low Gas Inlet Temp Alarm SP','0','°F']];
     const isRunning=unit.status==='Running';
     const stColor=isRunning?'#10b981':'#ef4444';
@@ -3218,122 +3218,182 @@ function renderVruOv(unit,body){
         <div class="vru-ov-right">
             <div class="vru-sect"><h3>Digital Twin</h3>
                 <div class="vru-dt"><div class="vru-dt-img">
-                    <div class="vru-dtl" style="top:12px;left:12px"><span class="dv">${sp}</span> <span class="du">oz/sq in</span><span class="dn">Suction Pressure</span></div>
-                    <div class="vru-dtl" style="top:12px;right:12px"><span class="dv">${op}</span> <span class="du">psi</span><span class="dn">Oil Pressure</span></div>
-                    <div class="vru-dtl" style="bottom:70px;left:12px"><span class="dv" style="color:#10b981">${rv}</span> <span class="du">%</span><span class="dn">RECIRC Valve %</span></div>
-                    <div class="vru-dtl" style="bottom:70px;right:12px"><span class="dv" style="color:#10b981">${dt}</span> <span class="du">°F</span><span class="dn">Discharge Temp</span></div>
-                    <div class="vru-dtl" style="bottom:12px;left:50%;transform:translateX(-50%)"><span class="dv">${dp}</span> <span class="du">psi</span><span class="dn">Discharge Pressure</span></div>
-                    <svg viewBox="0 0 520 340" width="520" height="340" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto;display:block">
+                    <div class="vru-dtl" style="top:10px;left:10px"><span class="dv">${sp}</span> <span class="du">oz/sq in</span><span class="dn">Suction Pressure</span></div>
+                    <div class="vru-dtl" style="top:10px;left:50%;transform:translateX(-50%)"><span class="dv" style="color:#10b981">${rv}</span> <span class="du">%</span><span class="dn">RECIRC Valve</span></div>
+                    <div class="vru-dtl" style="top:10px;right:10px"><span class="dv">${op}</span> <span class="du">psi</span><span class="dn">Oil Pressure</span></div>
+                    <div class="vru-dtl" style="bottom:55px;left:10px"><span class="dv" style="color:${dt>225?'#ef4444':'#10b981'}">${dt}</span> <span class="du">°F</span><span class="dn">Discharge Temp</span></div>
+                    <div class="vru-dtl" style="bottom:55px;right:10px"><span class="dv">${dp}</span> <span class="du">psi</span><span class="dn">Discharge Pressure</span></div>
+                    <div class="vru-dtl" style="bottom:8px;left:50%;transform:translateX(-50%)"><span class="dv">${cSpd}</span> <span class="du">%</span><span class="dn">Compressor Speed</span></div>
+                    <svg viewBox="0 0 600 340" width="600" height="340" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto;display:block">
                         <defs>
-                            <linearGradient id="skidG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#64748b"/></linearGradient>
-                            <linearGradient id="bodyG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b0bec5"/><stop offset="50%" stop-color="#90a4ae"/><stop offset="100%" stop-color="#78909c"/></linearGradient>
-                            <linearGradient id="bodyTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#cfd8dc"/><stop offset="100%" stop-color="#b0bec5"/></linearGradient>
-                            <linearGradient id="motorG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1565c0"/><stop offset="50%" stop-color="#0d47a1"/><stop offset="100%" stop-color="#0a3d91"/></linearGradient>
-                            <linearGradient id="motorTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e88e5"/><stop offset="100%" stop-color="#1565c0"/></linearGradient>
-                            <linearGradient id="pipeG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b0bec5"/><stop offset="50%" stop-color="#90a4ae"/><stop offset="100%" stop-color="#78909c"/></linearGradient>
-                            <linearGradient id="tankG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#78909c"/><stop offset="50%" stop-color="#90a4ae"/><stop offset="100%" stop-color="#78909c"/></linearGradient>
-                            <linearGradient id="coolerG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a5d6a7"/><stop offset="100%" stop-color="#66bb6a"/></linearGradient>
-                            <filter id="shd"><feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".15"/></filter>
+                            <linearGradient id="isoFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0e0e0"/><stop offset="100%" stop-color="#bdbdbd"/></linearGradient>
+                            <linearGradient id="steelL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#9e9e9e"/><stop offset="40%" stop-color="#bdbdbd"/><stop offset="100%" stop-color="#757575"/></linearGradient>
+                            <linearGradient id="steelT" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0e0e0"/><stop offset="100%" stop-color="#bdbdbd"/></linearGradient>
+                            <linearGradient id="steelR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#757575"/><stop offset="60%" stop-color="#616161"/><stop offset="100%" stop-color="#424242"/></linearGradient>
+                            <linearGradient id="cylF" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#90a4ae"/><stop offset="35%" stop-color="#cfd8dc"/><stop offset="65%" stop-color="#b0bec5"/><stop offset="100%" stop-color="#78909c"/></linearGradient>
+                            <linearGradient id="cylTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#eceff1"/><stop offset="100%" stop-color="#cfd8dc"/></linearGradient>
+                            <linearGradient id="mBlue" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1565c0"/><stop offset="35%" stop-color="#1e88e5"/><stop offset="65%" stop-color="#1976d2"/><stop offset="100%" stop-color="#0d47a1"/></linearGradient>
+                            <linearGradient id="mBlueT" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#42a5f5"/><stop offset="100%" stop-color="#1e88e5"/></linearGradient>
+                            <linearGradient id="mBlueR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d47a1"/><stop offset="100%" stop-color="#0a3069"/></linearGradient>
+                            <linearGradient id="tankCyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#78909c"/><stop offset="30%" stop-color="#b0bec5"/><stop offset="70%" stop-color="#90a4ae"/><stop offset="100%" stop-color="#607d8b"/></linearGradient>
+                            <linearGradient id="coolerF" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#66bb6a"/><stop offset="35%" stop-color="#81c784"/><stop offset="100%" stop-color="#43a047"/></linearGradient>
+                            <linearGradient id="pipeH" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b0bec5"/><stop offset="40%" stop-color="#cfd8dc"/><stop offset="100%" stop-color="#90a4ae"/></linearGradient>
+                            <filter id="ds"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".2"/></filter>
+                            <filter id="ds2"><feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000" flood-opacity=".25"/></filter>
                         </defs>
-                        <!-- Skid / Base frame -->
-                        <rect x="30" y="280" width="460" height="14" rx="3" fill="url(#skidG)" filter="url(#shd)"/>
-                        <rect x="40" y="292" width="14" height="18" rx="2" fill="#546e7a"/>
-                        <rect x="230" y="292" width="14" height="18" rx="2" fill="#546e7a"/>
-                        <rect x="460" y="292" width="14" height="18" rx="2" fill="#546e7a"/>
-                        <!-- Compressor body - isometric box -->
-                        <g filter="url(#shd)">
-                            <rect x="100" y="160" width="200" height="120" rx="6" fill="url(#bodyG)"/>
-                            <path d="M100,166 L100,160 Q100,154 106,154 L294,154 Q300,154 300,160 L300,166 Z" fill="url(#bodyTop)"/>
-                            <rect x="115" y="170" width="60" height="50" rx="4" fill="#607d8b" opacity=".3"/>
-                            <rect x="125" y="178" width="40" height="34" rx="2" fill="#37474f" opacity=".4"/>
-                            <circle cx="145" cy="195" r="10" fill="none" stroke="#90a4ae" stroke-width="1.5"/>
-                            <line x1="145" y1="185" x2="145" y2="190" stroke="#f44336" stroke-width="1.5" stroke-linecap="round"/>
-                            <text x="145" y="210" text-anchor="middle" fill="#cfd8dc" font-size="6">GAUGE</text>
-                            <!-- Fins on top -->
-                            ${Array.from({length:8},(_,i)=>'<rect x="'+(190+i*12)+'" y="150" width="3" height="10" rx="1" fill="#78909c"/>').join('')}
-                            <!-- Nameplate -->
-                            <rect x="195" y="230" width="90" height="38" rx="3" fill="#263238"/>
-                            <text x="240" y="245" text-anchor="middle" fill="#e0e0e0" font-size="8" font-weight="700">VRU COMPRESSOR</text>
-                            <text x="240" y="256" text-anchor="middle" fill="${stColor}" font-size="7" font-weight="600">${stText}</text>
-                            <text x="240" y="264" text-anchor="middle" fill="#78909c" font-size="5.5">${unit.id}</text>
-                            <!-- Bolts -->
-                            <circle cx="108" cy="168" r="3" fill="#546e7a" stroke="#455a64" stroke-width=".5"/>
-                            <circle cx="292" cy="168" r="3" fill="#546e7a" stroke="#455a64" stroke-width=".5"/>
-                            <circle cx="108" cy="272" r="3" fill="#546e7a" stroke="#455a64" stroke-width=".5"/>
-                            <circle cx="292" cy="272" r="3" fill="#546e7a" stroke="#455a64" stroke-width=".5"/>
+                        <!-- SKID BASE - isometric steel I-beam frame -->
+                        <g filter="url(#ds2)">
+                            <path d="M50,290 L300,310 L550,290 L300,270 Z" fill="url(#isoFloor)" stroke="#9e9e9e" stroke-width="1.5"/>
+                            <path d="M50,290 L50,296 L300,316 L300,310 Z" fill="#9e9e9e"/>
+                            <path d="M300,310 L300,316 L550,296 L550,290 Z" fill="#757575"/>
+                            <!-- Skid cross beams -->
+                            <line x1="120" y1="286" x2="180" y2="296" stroke="#bdbdbd" stroke-width="2"/>
+                            <line x1="420" y1="296" x2="480" y2="286" stroke="#9e9e9e" stroke-width="2"/>
                         </g>
-                        <!-- Electric Motor -->
-                        <g filter="url(#shd)">
-                            <rect x="320" y="180" width="120" height="80" rx="8" fill="url(#motorG)"/>
-                            <path d="M320,188 L320,180 Q320,172 328,172 L432,172 Q440,172 440,180 L440,188 Z" fill="url(#motorTop)"/>
-                            <rect x="330" y="188" width="100" height="60" rx="4" fill="#0d47a1" opacity=".5"/>
-                            <!-- Motor vent lines -->
-                            ${Array.from({length:6},(_,i)=>'<line x1="335" y1="'+(195+i*8)+'" x2="425" y2="'+(195+i*8)+'" stroke="#1565c0" stroke-width=".5"/>').join('')}
-                            <!-- Motor fan cover -->
-                            <circle cx="442" cy="220" r="18" fill="#1565c0" stroke="#0d47a1" stroke-width="2"/>
-                            <circle cx="442" cy="220" r="12" fill="none" stroke="#1e88e5" stroke-width="1"/>
-                            ${Array.from({length:6},(_,i)=>{const a=i*60*Math.PI/180;return '<line x1="'+(442+6*Math.cos(a))+'" y1="'+(220+6*Math.sin(a))+'" x2="'+(442+11*Math.cos(a))+'" y2="'+(220+11*Math.sin(a))+'" stroke="#1e88e5" stroke-width="1"/>';}).join('')}
-                            <text x="380" y="265" text-anchor="middle" fill="#bbdefb" font-size="7" font-weight="600">50 HP MOTOR</text>
+                        <!-- COMPRESSOR BODY - isometric rectangular housing -->
+                        <g filter="url(#ds2)">
+                            <!-- Front face -->
+                            <path d="M120,175 L120,275 L280,285 L280,185 Z" fill="url(#steelL)"/>
+                            <!-- Top face -->
+                            <path d="M120,175 L280,185 L340,155 L180,145 Z" fill="url(#steelT)"/>
+                            <!-- Right face -->
+                            <path d="M280,185 L340,155 L340,255 L280,285 Z" fill="url(#steelR)"/>
+                            <!-- Cooling fins on top -->
+                            ${Array.from({length:6},(_,i)=>{const x1=145+i*22,x2=x1+60;return '<path d="M'+x1+','+(170-i*1.5)+' L'+(x1+2)+','+(167-i*1.5)+' L'+(x2+2)+','+(157-i*.5)+' L'+x2+','+(160-i*.5)+' Z" fill="#b0bec5" stroke="#9e9e9e" stroke-width=".5"/>';}).join('')}
+                            <!-- Gauge window on front face -->
+                            <rect x="138" y="200" width="48" height="40" rx="4" fill="#263238" stroke="#455a64" stroke-width="1.5"/>
+                            <rect x="142" y="204" width="40" height="32" rx="2" fill="#37474f"/>
+                            <circle cx="162" cy="220" r="12" fill="#263238" stroke="#546e7a" stroke-width="1"/>
+                            <path d="M162,212 L162,218" stroke="#f44336" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M162,218 L168,224" stroke="#f44336" stroke-width="1.5" stroke-linecap="round"/>
+                            ${Array.from({length:8},(_,i)=>{const a=(i*45-90)*Math.PI/180;return '<line x1="'+(162+9*Math.cos(a))+'" y1="'+(220+9*Math.sin(a))+'" x2="'+(162+11*Math.cos(a))+'" y2="'+(220+11*Math.sin(a))+'" stroke="#546e7a" stroke-width=".8"/>';}).join('')}
+                            <!-- Nameplate on front -->
+                            <rect x="200" y="240" width="70" height="30" rx="2" fill="#1a1a2e" stroke="#333" stroke-width=".5"/>
+                            <text x="235" y="253" text-anchor="middle" fill="#ccc" font-size="7" font-weight="700" font-family="monospace">VRU C-101</text>
+                            <text x="235" y="263" text-anchor="middle" fill="${stColor}" font-size="6.5" font-weight="600" font-family="sans-serif">${stText}</text>
+                            <!-- Bolts corners -->
+                            <circle cx="128" cy="183" r="3.5" fill="#78909c" stroke="#546e7a" stroke-width="1"/><circle cx="128" cy="183" r="1" fill="#455a64"/>
+                            <circle cx="272" cy="193" r="3.5" fill="#78909c" stroke="#546e7a" stroke-width="1"/><circle cx="272" cy="193" r="1" fill="#455a64"/>
+                            <circle cx="128" cy="270" r="3.5" fill="#78909c" stroke="#546e7a" stroke-width="1"/><circle cx="128" cy="270" r="1" fill="#455a64"/>
+                            <circle cx="272" cy="280" r="3.5" fill="#78909c" stroke="#546e7a" stroke-width="1"/><circle cx="272" cy="280" r="1" fill="#455a64"/>
+                            <!-- Access panel lines right face -->
+                            <path d="M290,175 L290,248 L332,220 L332,162 Z" fill="none" stroke="#555" stroke-width=".5" stroke-dasharray="2,2"/>
+                            <circle cx="295" cy="215" r="2" fill="#555"/>
                         </g>
-                        <!-- Coupling between motor and compressor -->
-                        <rect x="298" y="208" width="24" height="24" rx="4" fill="#455a64" stroke="#37474f" stroke-width="1"/>
-                        <circle cx="310" cy="220" r="6" fill="#37474f" stroke="#546e7a" stroke-width="1"/>
-                        <!-- Suction inlet pipe (left) -->
+                        <!-- ELECTRIC MOTOR - isometric cylinder -->
+                        <g filter="url(#ds2)">
+                            <!-- Motor body front -->
+                            <path d="M345,195 L345,265 L420,275 L420,205 Z" fill="url(#mBlue)"/>
+                            <!-- Motor body top -->
+                            <path d="M345,195 L420,205 L460,185 L385,175 Z" fill="url(#mBlueT)"/>
+                            <!-- Motor body right -->
+                            <path d="M420,205 L460,185 L460,255 L420,275 Z" fill="url(#mBlueR)"/>
+                            <!-- Motor rib lines on front -->
+                            ${Array.from({length:7},(_,i)=>'<line x1="350" y1="'+(205+i*8)+'" x2="415" y2="'+(213+i*8)+'" stroke="#1565c0" stroke-width=".7" opacity=".5"/>').join('')}
+                            <!-- Motor rib lines on right side -->
+                            ${Array.from({length:7},(_,i)=>'<line x1="425" y1="'+(213+i*8)+'" x2="455" y2="'+(197+i*8)+'" stroke="#0a3069" stroke-width=".5" opacity=".5"/>').join('')}
+                            <!-- Fan shroud on right end -->
+                            <ellipse cx="460" cy="220" rx="15" ry="20" fill="#0d47a1" stroke="#0a3069" stroke-width="1.5"/>
+                            <ellipse cx="460" cy="220" rx="10" ry="14" fill="none" stroke="#1565c0" stroke-width=".8"/>
+                            ${Array.from({length:6},(_,i)=>{const a=i*60*Math.PI/180;return '<line x1="'+(460+5*Math.cos(a))+'" y1="'+(220+7*Math.sin(a))+'" x2="'+(460+9*Math.cos(a))+'" y2="'+(220+12*Math.sin(a))+'" stroke="#1976d2" stroke-width="1"/>';}).join('')}
+                            <!-- Motor nameplate -->
+                            <rect x="360" y="245" width="48" height="16" rx="1" fill="#0a3069"/>
+                            <text x="384" y="256" text-anchor="middle" fill="#90caf9" font-size="6" font-weight="600">50 HP</text>
+                            <!-- Junction box on top -->
+                            <path d="M375,180 L400,184 L410,178 L385,174 Z" fill="#37474f"/>
+                            <path d="M375,180 L375,170 L385,164 L385,174 Z" fill="#455a64"/>
+                            <path d="M385,174 L385,164 L410,168 L410,178 Z" fill="#37474f"/>
+                        </g>
+                        <!-- SHAFT COUPLING -->
                         <g>
-                            <rect x="30" y="200" width="72" height="18" rx="3" fill="url(#pipeG)"/>
-                            <rect x="30" y="197" width="10" height="24" rx="2" fill="#78909c" stroke="#607d8b" stroke-width=".5"/>
-                            <text x="60" y="195" text-anchor="middle" fill="#546e7a" font-size="7" font-weight="600">SUCTION</text>
-                            <!-- Flow arrow -->
-                            <polygon points="80,204 75,200 75,208" fill="#2196F3" opacity=".7"/>
+                            <path d="M336,225 L336,245 L348,247 L348,227 Z" fill="#546e7a" stroke="#455a64" stroke-width="1"/>
+                            <path d="M336,225 L348,227 L352,222 L340,220 Z" fill="#78909c"/>
+                            <ellipse cx="342" cy="237" rx="4" ry="5" fill="#37474f" stroke="#455a64" stroke-width=".5"/>
                         </g>
-                        <!-- Discharge pipe (top right) -->
+                        <!-- SUCTION PIPE entering left -->
                         <g>
-                            <rect x="240" y="120" width="18" height="38" rx="3" fill="url(#pipeG)"/>
-                            <rect x="240" y="116" width="18" height="8" rx="2" fill="#78909c" stroke="#607d8b" stroke-width=".5"/>
-                            <rect x="234" y="100" width="100" height="18" rx="3" fill="url(#pipeG)"/>
-                            <!-- PRV valve symbol -->
-                            <polygon points="324,100 330,90 336,100" fill="none" stroke="#f44336" stroke-width="1.5"/>
-                            <text x="330" y="87" text-anchor="middle" fill="#f44336" font-size="6" font-weight="600">PRV</text>
-                            <text x="290" y="97" text-anchor="middle" fill="#546e7a" font-size="7" font-weight="600">DISCHARGE</text>
+                            <path d="M30,230 L30,240 L120,250 L120,240 Z" fill="url(#pipeH)"/>
+                            <path d="M30,230 L120,240 L125,237 L35,227 Z" fill="#cfd8dc"/>
+                            <!-- Flange at compressor -->
+                            <rect x="115" y="236" width="10" height="18" rx="1" fill="#90a4ae" stroke="#78909c" stroke-width="1"/>
+                            <circle cx="120" cy="241" r="1.5" fill="#546e7a"/><circle cx="120" cy="250" r="1.5" fill="#546e7a"/>
+                            <!-- Flange at entry -->
+                            <rect x="28" y="226" width="8" height="18" rx="1" fill="#90a4ae" stroke="#78909c" stroke-width="1"/>
                             <!-- Flow arrow -->
-                            <polygon points="310,104 315,100 310,96" fill="#ef4444" opacity=".7"/>
+                            <polygon points="90,233 82,229 82,237" fill="#2196F3" opacity=".6"/>
+                            <text x="60" y="226" fill="#546e7a" font-size="7" font-weight="600" font-family="sans-serif">SUCTION IN</text>
                         </g>
-                        <!-- Oil separator tank (top left) -->
-                        <g filter="url(#shd)">
-                            <rect x="50" y="70" width="50" height="90" rx="25" fill="url(#tankG)"/>
-                            <ellipse cx="75" cy="72" rx="25" ry="8" fill="#90a4ae" stroke="#78909c" stroke-width="1"/>
-                            <text x="75" y="120" text-anchor="middle" fill="#fff" font-size="6" font-weight="600">OIL</text>
-                            <text x="75" y="128" text-anchor="middle" fill="#fff" font-size="5">SEP</text>
+                        <!-- DISCHARGE PIPE going up and right -->
+                        <g>
+                            <rect x="255" y="120" width="14" height="58" rx="2" fill="url(#pipeH)"/>
+                            <ellipse cx="262" cy="120" rx="7" ry="3" fill="#cfd8dc" stroke="#b0bec5" stroke-width=".5"/>
+                            <!-- Horizontal run at top -->
+                            <path d="M260,122 L260,130 L380,120 L380,112 Z" fill="url(#pipeH)"/>
+                            <path d="M260,122 L380,112 L385,109 L265,119 Z" fill="#cfd8dc"/>
+                            <!-- Flange -->
+                            <rect x="250" y="170" width="22" height="8" rx="1" fill="#90a4ae" stroke="#78909c" stroke-width=".5"/>
+                            <polygon points="325,108 320,104 320,112" fill="#ef4444" opacity=".6"/>
+                            <text x="310" y="104" fill="#546e7a" font-size="7" font-weight="600" font-family="sans-serif">DISCHARGE</text>
+                        </g>
+                        <!-- OIL SEPARATOR - vertical cylinder with 3D -->
+                        <g filter="url(#ds)">
+                            <rect x="55" y="100" width="44" height="115" rx="0" fill="url(#tankCyl)"/>
+                            <!-- Cylinder highlight -->
+                            <rect x="68" y="100" width="10" height="115" fill="#cfd8dc" opacity=".3"/>
+                            <!-- Top dome -->
+                            <ellipse cx="77" cy="100" rx="22" ry="8" fill="url(#cylTop)" stroke="#78909c" stroke-width="1"/>
+                            <!-- Bottom dome -->
+                            <ellipse cx="77" cy="215" rx="22" ry="7" fill="#607d8b" stroke="#78909c" stroke-width="1"/>
+                            <!-- Weld seam -->
+                            <line x1="55" y1="160" x2="99" y2="160" stroke="#78909c" stroke-width=".5" stroke-dasharray="3,2"/>
+                            <!-- Level sight glass -->
+                            <rect x="98" y="140" width="5" height="50" rx="2" fill="#e1f5fe" stroke="#78909c" stroke-width=".8"/>
+                            <rect x="99" y="155" width="3" height="20" fill="#81d4fa" opacity=".6"/>
+                            <text x="77" y="150" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">OIL</text>
+                            <text x="77" y="160" text-anchor="middle" fill="#fff" font-size="6">SEP</text>
                             <!-- Oil return pipe -->
-                            <rect x="98" y="130" width="30" height="8" rx="2" fill="url(#pipeG)"/>
-                            <rect x="124" y="130" width="8" height="40" rx="2" fill="url(#pipeG)"/>
+                            <path d="M99,185 L99,190 L130,192 L130,187 Z" fill="url(#pipeH)"/>
+                            <path d="M128,187 L128,247 L132,249 L132,189 Z" fill="url(#pipeH)"/>
                         </g>
-                        <!-- Discharge cooler (top right) -->
-                        <g filter="url(#shd)">
-                            <rect x="380" y="60" width="100" height="65" rx="6" fill="url(#coolerG)"/>
-                            <text x="430" y="82" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">DISCHARGE</text>
-                            <text x="430" y="92" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">COOLER</text>
-                            ${Array.from({length:5},(_,i)=>'<line x1="390" y1="'+(100+i*0)+'" x2="470" y2="'+(100+i*0)+'" stroke="#4caf50" stroke-width=".3"/>').join('')}
-                            <!-- Cooler fins -->
-                            ${Array.from({length:7},(_,i)=>'<rect x="'+(388+i*14)+'" y="55" width="4" height="10" rx="1" fill="#81c784"/>').join('')}
-                            <!-- Pipe from discharge to cooler -->
-                            <rect x="330" y="104" width="52" height="8" rx="2" fill="url(#pipeG)"/>
-                            <rect x="374" y="82" width="8" height="30" rx="2" fill="url(#pipeG)"/>
+                        <!-- DISCHARGE COOLER - isometric box with fins -->
+                        <g filter="url(#ds)">
+                            <!-- Cooler body front -->
+                            <path d="M410,90 L410,140 L500,148 L500,98 Z" fill="url(#coolerF)"/>
+                            <!-- Cooler body top -->
+                            <path d="M410,90 L500,98 L530,82 L440,74 Z" fill="#a5d6a7"/>
+                            <!-- Cooler body right -->
+                            <path d="M500,98 L530,82 L530,132 L500,148 Z" fill="#388e3c"/>
+                            <!-- Fins on top -->
+                            ${Array.from({length:8},(_,i)=>{const x=418+i*10;return '<path d="M'+x+','+( 89-i*.7)+' L'+(x+2)+','+(86-i*.7)+' L'+(x+2)+','+(71-i*.7)+' L'+x+','+(74-i*.7)+' Z" fill="#81c784" stroke="#66bb6a" stroke-width=".3"/>';}).join('')}
+                            <!-- Fan circle on front -->
+                            <circle cx="455" cy="118" r="16" fill="#43a047" stroke="#2e7d32" stroke-width="1" opacity=".4"/>
+                            <circle cx="455" cy="118" r="10" fill="none" stroke="#66bb6a" stroke-width=".8"/>
+                            ${isRunning?Array.from({length:4},(_,i)=>{const a=i*90*Math.PI/180;return '<line x1="'+(455+4*Math.cos(a))+'" y1="'+(118+4*Math.sin(a))+'" x2="'+(455+9*Math.cos(a))+'" y2="'+(118+9*Math.sin(a))+'" stroke="#a5d6a7" stroke-width="1.5" stroke-linecap="round"/>';}).join(''):''}
+                            <text x="455" y="145" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">COOLER</text>
+                            <!-- Pipe connecting discharge to cooler -->
+                            <path d="M378,114 L378,120 L412,118 L412,112 Z" fill="url(#pipeH)"/>
                         </g>
-                        <!-- Control panel -->
-                        <g filter="url(#shd)">
-                            <rect x="440" y="128" width="50" height="36" rx="3" fill="#263238"/>
-                            <rect x="445" y="133" width="18" height="12" rx="1" fill="#00e676" opacity=".7"/>
-                            <circle cx="474" cy="139" r="3" fill="#f44336"/>
-                            <circle cx="484" cy="139" r="3" fill="#ffc107"/>
-                            <rect x="445" y="150" width="40" height="3" rx="1" fill="#37474f"/>
-                            <rect x="445" y="155" width="28" height="3" rx="1" fill="#37474f"/>
-                            <text x="465" y="170" text-anchor="middle" fill="#90a4ae" font-size="5">PLC PANEL</text>
+                        <!-- PLC CONTROL PANEL -->
+                        <g filter="url(#ds)">
+                            <path d="M490,160 L490,215 L540,210 L540,155 Z" fill="#263238"/>
+                            <path d="M490,160 L540,155 L555,148 L505,153 Z" fill="#37474f"/>
+                            <path d="M540,155 L555,148 L555,203 L540,210 Z" fill="#1a1a2e"/>
+                            <!-- Screen -->
+                            <rect x="497" y="168" width="28" height="18" rx="1" fill="#00e676" opacity=".65"/>
+                            <text x="511" y="180" text-anchor="middle" fill="#004d40" font-size="5" font-weight="700">PLC</text>
+                            <!-- LEDs -->
+                            <circle cx="500" cy="195" r="2.5" fill="${stColor}">${isRunning?'<animate attributeName="opacity" values="1;.3;1" dur="1.5s" repeatCount="indefinite"/>':''}</circle>
+                            <circle cx="508" cy="195" r="2.5" fill="#ffc107"/>
+                            <circle cx="516" cy="195" r="2.5" fill="#f44336" opacity=".3"/>
+                            <!-- Conduit -->
+                            <rect x="510" y="210" width="4" height="55" fill="#455a64"/>
                         </g>
-                        <!-- Status indicator LED -->
-                        <circle cx="200" cy="148" r="4" fill="${stColor}">
-                            ${isRunning?'<animate attributeName="opacity" values="1;.4;1" dur="2s" repeatCount="indefinite"/>':''}
-                        </circle>
+                        <!-- STATUS BADGE -->
+                        <g>
+                            <rect x="140" y="148" width="54" height="16" rx="8" fill="${stColor}" opacity=".9"/>
+                            <text x="167" y="159" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">${stText}</text>
+                            ${isRunning?'<circle cx="147" cy="156" r="3" fill="#fff" opacity=".8"><animate attributeName="opacity" values=".8;.2;.8" dur="2s" repeatCount="indefinite"/></circle>':''}
+                        </g>
                     </svg>
                 </div></div>
             </div>
@@ -3341,181 +3401,282 @@ function renderVruOv(unit,body){
     </div>
     <div class="vru-pid"><h3>P&amp;ID view <span class="actions"><i class="fas fa-expand-arrows-alt"></i><i class="fas fa-chevron-up"></i></span></h3>
         <div class="vru-pid-schematic">
-            <svg viewBox="0 0 900 320" width="900" height="320" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 960 420" width="960" height="420" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <marker id="arw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#2196F3"/></marker>
-                    <marker id="arwR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#ef4444"/></marker>
-                    <marker id="arwG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#4caf50"/></marker>
+                    <marker id="fa" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0,0 6,2.5 0,5" fill="#333"/></marker>
                 </defs>
                 <style>
-                    .pid-label{font-size:9px;fill:#333;font-weight:600;font-family:sans-serif}
-                    .pid-sub{font-size:7px;fill:#666;font-family:sans-serif}
-                    .pid-val{font-size:10px;fill:#1565c0;font-weight:700;font-family:sans-serif}
-                    .pid-pipe{stroke:#2196F3;stroke-width:3;fill:none}
-                    .pid-pipe-d{stroke:#ef4444;stroke-width:3;fill:none}
-                    .pid-pipe-oil{stroke:#f59e0b;stroke-width:2;fill:none;stroke-dasharray:6,3}
+                    .pl{stroke:#333;stroke-width:2;fill:none}
+                    .pl-oil{stroke:#333;stroke-width:1.5;fill:none;stroke-dasharray:8,4}
+                    .eq-label{font:bold 8px sans-serif;fill:#333}
+                    .eq-tag{font:bold 7px sans-serif;fill:#666}
+                    .inst{font:600 7px sans-serif}
                 </style>
+                <!-- TITLE BLOCK -->
+                <rect x="0" y="0" width="960" height="420" fill="#fff" stroke="#999" stroke-width="1"/>
+                <rect x="0" y="395" width="960" height="25" fill="#f5f5f5" stroke="#ccc" stroke-width=".5"/>
+                <text x="20" y="412" style="font:bold 9px sans-serif;fill:#666">P&amp;ID — VRU COMPRESSOR PACKAGE</text>
+                <text x="500" y="412" style="font:9px sans-serif;fill:#999">${unit.displayName||unit.id}</text>
+                <text x="880" y="412" style="font:9px sans-serif;fill:#999">DWG: PID-001</text>
 
-                <!-- GAS INLET -->
-                <line x1="0" y1="160" x2="70" y2="160" class="pid-pipe" marker-end="url(#arw)"/>
-                <text x="10" y="150" class="pid-label">Gas Inlet</text>
+                <!-- ========== PROCESS LINES ========== -->
+                <!-- Gas inlet line -->
+                <line x1="10" y1="200" x2="72" y2="200" class="pl" marker-end="url(#fa)"/>
+                <line x1="95" y1="200" x2="148" y2="200" class="pl" marker-end="url(#fa)"/>
+                <!-- Scrubber to compressor -->
+                <line x1="192" y1="200" x2="285" y2="200" class="pl" marker-end="url(#fa)"/>
+                <!-- Compressor to check valve -->
+                <line x1="355" y1="200" x2="410" y2="200" class="pl" marker-end="url(#fa)"/>
+                <!-- Check valve to cooler -->
+                <line x1="440" y1="200" x2="488" y2="200" class="pl" marker-end="url(#fa)"/>
+                <!-- Cooler to oil sep -->
+                <line x1="572" y1="200" x2="640" y2="200" class="pl" marker-end="url(#fa)"/>
+                <!-- Oil sep to sales -->
+                <line x1="695" y1="200" x2="790" y2="200" class="pl" marker-end="url(#fa)"/>
+                <!-- Sales exit -->
+                <line x1="835" y1="200" x2="950" y2="200" class="pl" marker-end="url(#fa)"/>
 
-                <!-- Check valve at inlet -->
-                <g transform="translate(75,152)">
-                    <polygon points="0,0 16,8 0,16" fill="none" stroke="#333" stroke-width="1.5"/>
-                    <line x1="16" y1="0" x2="16" y2="16" stroke="#333" stroke-width="1.5"/>
+                <!-- Recirc bypass line -->
+                <line x1="245" y1="200" x2="245" y2="130" class="pl"/>
+                <line x1="245" y1="130" x2="355" y2="130" class="pl"/>
+                <line x1="355" y1="130" x2="355" y2="200" class="pl"/>
+
+                <!-- Oil return line -->
+                <line x1="668" y1="285" x2="668" y2="340" class="pl-oil"/>
+                <line x1="320" y1="340" x2="668" y2="340" class="pl-oil"/>
+                <line x1="320" y1="290" x2="320" y2="340" class="pl-oil"/>
+
+                <!-- Drain from scrubber -->
+                <line x1="170" y1="260" x2="170" y2="310" class="pl"/>
+
+                <!-- PSV vent line -->
+                <line x1="730" y1="200" x2="730" y2="140" class="pl"/>
+
+                <!-- ========== EQUIPMENT ========== -->
+
+                <!-- CHECK VALVE at inlet -->
+                <g transform="translate(73,192)">
+                    <polygon points="0,0 18,8 0,16" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <line x1="18" y1="0" x2="18" y2="16" stroke="#333" stroke-width="2"/>
+                    <text x="9" y="-4" text-anchor="middle" class="eq-tag">CV-100</text>
                 </g>
 
-                <!-- SUCTION SCRUBBER -->
+                <!-- SUCTION SCRUBBER V-100 -->
                 <g>
-                    <rect x="110" y="100" width="60" height="120" rx="30" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
-                    <ellipse cx="140" cy="102" rx="30" ry="10" fill="#bbdefb" stroke="#1565c0" stroke-width="1.5"/>
-                    <line x1="125" y1="160" x2="155" y2="160" stroke="#90caf9" stroke-width="1" stroke-dasharray="3,2"/>
-                    <line x1="125" y1="175" x2="155" y2="175" stroke="#90caf9" stroke-width="1" stroke-dasharray="3,2"/>
-                    <text x="140" y="145" text-anchor="middle" class="pid-label" style="font-size:8px">SUCTION</text>
-                    <text x="140" y="155" text-anchor="middle" class="pid-label" style="font-size:8px">SCRUBBER</text>
-                    <!-- PI instrument -->
-                    <circle cx="140" cy="85" r="12" fill="#fff" stroke="#333" stroke-width="1.5"/>
-                    <text x="140" y="82" text-anchor="middle" class="pid-sub" style="font-size:7px">PI</text>
-                    <text x="140" y="91" text-anchor="middle" class="pid-val" style="font-size:8px">${sp}</text>
-                    <!-- Drain valve -->
-                    <line x1="140" y1="220" x2="140" y2="245" stroke="#333" stroke-width="1.5"/>
-                    <polygon points="132,245 148,245 140,256" fill="none" stroke="#333" stroke-width="1.5"/>
-                    <text x="140" y="268" text-anchor="middle" class="pid-sub">Drain</text>
+                    <rect x="148" y="140" width="44" height="120" rx="22" fill="none" stroke="#333" stroke-width="2"/>
+                    <ellipse cx="170" cy="142" rx="22" ry="8" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <line x1="155" y1="195" x2="185" y2="195" stroke="#999" stroke-width=".8" stroke-dasharray="3,2"/>
+                    <line x1="155" y1="210" x2="185" y2="210" stroke="#999" stroke-width=".8" stroke-dasharray="3,2"/>
+                    <text x="170" y="180" text-anchor="middle" class="eq-label">V-100</text>
+                    <text x="170" y="278" text-anchor="middle" class="eq-tag">SUCTION</text>
+                    <text x="170" y="288" text-anchor="middle" class="eq-tag">SCRUBBER</text>
                 </g>
 
-                <!-- Pipe from scrubber to compressor -->
-                <line x1="170" y1="160" x2="255" y2="160" class="pid-pipe" marker-end="url(#arw)"/>
+                <!-- Drain valve -->
+                <g transform="translate(162,310)">
+                    <polygon points="0,0 8,-8 16,0" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <polygon points="0,0 8,8 16,0" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <text x="8" y="18" text-anchor="middle" class="eq-tag">XV-100</text>
+                </g>
 
-                <!-- RECIRC VALVE (bypass above main pipe) -->
+                <!-- RECIRC CONTROL VALVE -->
+                <g transform="translate(288,122)">
+                    <polygon points="0,0 14,8 0,16" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <polygon points="28,0 14,8 28,16" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <line x1="14" y1="8" x2="14" y2="-10" stroke="#333" stroke-width="1"/>
+                    <rect x="4" y="-30" width="20" height="18" rx="0" fill="none" stroke="#333" stroke-width="1"/>
+                    <text x="14" y="-18" text-anchor="middle" class="inst" style="fill:#333">FCV</text>
+                    <text x="14" y="26" text-anchor="middle" class="eq-tag">FCV-101</text>
+                </g>
+
+                <!-- VRU COMPRESSOR C-101 -->
                 <g>
-                    <line x1="220" y1="160" x2="220" y2="110" stroke="#4caf50" stroke-width="2"/>
-                    <line x1="220" y1="110" x2="320" y2="110" stroke="#4caf50" stroke-width="2"/>
-                    <line x1="320" y1="110" x2="320" y2="160" stroke="#4caf50" stroke-width="2" marker-end="url(#arwG)"/>
-                    <!-- Control valve symbol -->
-                    <g transform="translate(258,102)">
-                        <polygon points="0,0 12,8 0,16" fill="none" stroke="#4caf50" stroke-width="1.5"/>
-                        <polygon points="24,0 12,8 24,16" fill="none" stroke="#4caf50" stroke-width="1.5"/>
-                        <line x1="12" y1="8" x2="12" y2="-8" stroke="#4caf50" stroke-width="1"/>
-                        <circle cx="12" cy="-14" r="6" fill="#fff" stroke="#4caf50" stroke-width="1"/>
-                        <text x="12" y="-11" text-anchor="middle" style="font-size:6px;fill:#4caf50;font-weight:700">CV</text>
-                    </g>
-                    <text x="270" y="82" text-anchor="middle" class="pid-label" style="fill:#4caf50;font-size:8px">RECIRC ${rv}%</text>
+                    <circle cx="320" cy="200" r="35" fill="none" stroke="#333" stroke-width="2.5"/>
+                    <text x="320" y="204" text-anchor="middle" class="eq-label" style="font-size:10px">C-101</text>
+                    <text x="320" y="250" text-anchor="middle" class="eq-tag">VRU COMPRESSOR</text>
+                    <text x="320" y="260" text-anchor="middle" class="eq-tag">(Screw, 50 HP)</text>
+                    <!-- Motor circle -->
+                    <line x1="320" y1="235" x2="320" y2="268" stroke="#333" stroke-width="1.5"/>
+                    <circle cx="320" cy="280" r="12" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <text x="320" y="284" text-anchor="middle" style="font:bold 10px sans-serif;fill:#333">M</text>
                 </g>
 
-                <!-- VRU COMPRESSOR -->
+                <!-- CHECK VALVE on discharge -->
+                <g transform="translate(412,192)">
+                    <polygon points="0,0 18,8 0,16" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <line x1="18" y1="0" x2="18" y2="16" stroke="#333" stroke-width="2"/>
+                    <text x="9" y="-4" text-anchor="middle" class="eq-tag">CV-101</text>
+                </g>
+
+                <!-- DISCHARGE COOLER E-101 -->
                 <g>
-                    <circle cx="310" cy="160" r="45" fill="#e8eaf6" stroke="#333" stroke-width="2.5"/>
-                    <circle cx="310" cy="160" r="35" fill="#fff" stroke="#666" stroke-width="1"/>
-                    <!-- Compressor symbol (two arcs) -->
-                    <path d="M285,145 Q310,130 335,145" fill="none" stroke="#333" stroke-width="2"/>
-                    <path d="M285,175 Q310,190 335,175" fill="none" stroke="#333" stroke-width="2"/>
-                    <line x1="285" y1="145" x2="285" y2="175" stroke="#333" stroke-width="2"/>
-                    <line x1="335" y1="145" x2="335" y2="175" stroke="#333" stroke-width="2"/>
-                    <text x="310" y="163" text-anchor="middle" class="pid-label" style="font-size:9px">C-101</text>
-                    <text x="310" y="210" text-anchor="middle" class="pid-label">VRU COMPRESSOR</text>
-                    <text x="310" y="222" text-anchor="middle" class="pid-sub">(Screw Type, 50 HP)</text>
-                    <!-- Motor symbol M -->
-                    <circle cx="310" cy="240" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
-                    <text x="310" y="244" text-anchor="middle" style="font-size:11px;fill:#1565c0;font-weight:700">M</text>
-                    <line x1="310" y1="205" x2="310" y2="226" stroke="#333" stroke-width="1.5"/>
-                </g>
-
-                <!-- Discharge pipe from compressor -->
-                <line x1="355" y1="160" x2="440" y2="160" class="pid-pipe-d" marker-end="url(#arwR)"/>
-
-                <!-- TI on discharge -->
-                <g>
-                    <circle cx="400" cy="135" r="12" fill="#fff" stroke="#333" stroke-width="1.5"/>
-                    <text x="400" y="132" text-anchor="middle" class="pid-sub" style="font-size:7px">TI</text>
-                    <text x="400" y="141" text-anchor="middle" class="pid-val" style="font-size:8px;fill:#ef4444">${dt}°F</text>
-                    <line x1="400" y1="147" x2="400" y2="158" stroke="#333" stroke-width="1"/>
-                </g>
-
-                <!-- Check valve on discharge -->
-                <g transform="translate(420,152)">
-                    <polygon points="0,0 16,8 0,16" fill="none" stroke="#333" stroke-width="1.5"/>
-                    <line x1="16" y1="0" x2="16" y2="16" stroke="#333" stroke-width="1.5"/>
-                </g>
-
-                <!-- DISCHARGE COOLER -->
-                <g>
-                    <rect x="450" y="120" width="100" height="80" rx="4" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+                    <rect x="488" y="160" width="84" height="80" rx="0" fill="none" stroke="#333" stroke-width="2"/>
                     <!-- Internal baffles -->
-                    ${Array.from({length:4},(_,i)=>'<line x1="460" y1="'+(135+i*15)+'" x2="540" y2="'+(135+i*15)+'" stroke="#a5d6a7" stroke-width="1"/>').join('')}
-                    <text x="500" y="158" text-anchor="middle" class="pid-label" style="font-size:8px">DISCHARGE</text>
-                    <text x="500" y="168" text-anchor="middle" class="pid-label" style="font-size:8px">COOLER</text>
-                    <text x="500" y="210" text-anchor="middle" class="pid-sub">E-101 (Air Cooled)</text>
-                    <!-- Fan symbol -->
-                    <circle cx="500" cy="115" r="8" fill="none" stroke="#2e7d32" stroke-width="1"/>
-                    <line x1="496" y1="109" x2="504" y2="121" stroke="#2e7d32" stroke-width="1"/>
-                    <line x1="504" y1="109" x2="496" y2="121" stroke="#2e7d32" stroke-width="1"/>
+                    <line x1="500" y1="176" x2="560" y2="176" stroke="#999" stroke-width="1"/>
+                    <line x1="500" y1="192" x2="560" y2="192" stroke="#999" stroke-width="1"/>
+                    <line x1="500" y1="208" x2="560" y2="208" stroke="#999" stroke-width="1"/>
+                    <line x1="500" y1="224" x2="560" y2="224" stroke="#999" stroke-width="1"/>
+                    <text x="530" y="202" text-anchor="middle" class="eq-label">E-101</text>
+                    <text x="530" y="258" text-anchor="middle" class="eq-tag">DISCHARGE</text>
+                    <text x="530" y="268" text-anchor="middle" class="eq-tag">COOLER</text>
+                    <!-- Fan symbol on top -->
+                    <line x1="530" y1="155" x2="530" y2="160" stroke="#333" stroke-width="1"/>
+                    <circle cx="530" cy="148" r="7" fill="none" stroke="#333" stroke-width="1"/>
+                    <line x1="526" y1="143" x2="534" y2="153" stroke="#333" stroke-width="1"/>
+                    <line x1="534" y1="143" x2="526" y2="153" stroke="#333" stroke-width="1"/>
                 </g>
 
-                <!-- Pipe from cooler to oil separator -->
-                <line x1="550" y1="160" x2="620" y2="160" class="pid-pipe-d" marker-end="url(#arwR)"/>
-
-                <!-- PI on discharge side -->
+                <!-- OIL SEPARATOR V-101 -->
                 <g>
-                    <circle cx="590" cy="135" r="12" fill="#fff" stroke="#333" stroke-width="1.5"/>
-                    <text x="590" y="132" text-anchor="middle" class="pid-sub" style="font-size:7px">PI</text>
-                    <text x="590" y="141" text-anchor="middle" class="pid-val" style="font-size:8px">${dp}</text>
-                    <line x1="590" y1="147" x2="590" y2="158" stroke="#333" stroke-width="1"/>
+                    <rect x="640" y="140" width="55" height="145" rx="27" fill="none" stroke="#333" stroke-width="2"/>
+                    <ellipse cx="668" cy="142" rx="27" ry="9" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <line x1="650" y1="205" x2="685" y2="205" stroke="#999" stroke-width=".8" stroke-dasharray="3,2"/>
+                    <line x1="650" y1="220" x2="685" y2="220" stroke="#999" stroke-width=".8" stroke-dasharray="3,2"/>
+                    <!-- Sight glass -->
+                    <rect x="695" y="185" width="4" height="40" fill="none" stroke="#333" stroke-width="1"/>
+                    <line x1="695" y1="185" x2="695" y2="200" stroke="#333" stroke-width=".5"/>
+                    <text x="668" y="190" text-anchor="middle" class="eq-label">V-101</text>
+                    <text x="668" y="302" text-anchor="middle" class="eq-tag">OIL</text>
+                    <text x="668" y="312" text-anchor="middle" class="eq-tag">SEPARATOR</text>
                 </g>
 
-                <!-- OIL SEPARATOR -->
+                <!-- PSV-101 -->
+                <g transform="translate(722,120)">
+                    <polygon points="0,18 8,0 16,18" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <line x1="0" y1="18" x2="16" y2="18" stroke="#333" stroke-width="2"/>
+                    <text x="8" y="-4" text-anchor="middle" class="eq-tag">PSV-101</text>
+                    <!-- Vent arrow -->
+                    <line x1="8" y1="0" x2="8" y2="-12" stroke="#333" stroke-width="1" marker-end="url(#fa)"/>
+                </g>
+
+                <!-- FLOW METER at sales -->
+                <g transform="translate(800,188)">
+                    <circle cx="12" cy="12" r="12" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <text x="12" y="16" text-anchor="middle" class="inst" style="fill:#333;font-size:9px">FI</text>
+                    <text x="12" y="-4" text-anchor="middle" class="eq-tag">FI-101</text>
+                </g>
+
+                <!-- Sales line label -->
+                <text x="910" y="195" class="eq-label" style="font-size:9px">TO SALES</text>
+                <text x="910" y="206" class="eq-tag">LINE</text>
+
+                <!-- Oil return label -->
+                <text x="485" y="336" text-anchor="middle" class="eq-tag">OIL RETURN</text>
+
+                <!-- ========== INSTRUMENT DATA CALLOUTS ========== -->
+
+                <!-- Suction Pressure callout -->
                 <g>
-                    <rect x="625" y="90" width="55" height="140" rx="27" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
-                    <ellipse cx="652" cy="92" rx="27" ry="9" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5"/>
-                    <line x1="637" y1="150" x2="668" y2="150" stroke="#ffcc80" stroke-width="1" stroke-dasharray="3,2"/>
-                    <line x1="637" y1="170" x2="668" y2="170" stroke="#ffcc80" stroke-width="1" stroke-dasharray="3,2"/>
-                    <text x="652" y="135" text-anchor="middle" class="pid-label" style="font-size:8px">OIL</text>
-                    <text x="652" y="145" text-anchor="middle" class="pid-label" style="font-size:8px">SEP</text>
-                    <text x="652" y="240" text-anchor="middle" class="pid-sub">V-101</text>
-                    <!-- Oil return to compressor -->
-                    <line x1="652" y1="230" x2="652" y2="280" class="pid-pipe-oil"/>
-                    <line x1="310" y1="280" x2="652" y2="280" class="pid-pipe-oil"/>
-                    <line x1="310" y1="260" x2="310" y2="280" class="pid-pipe-oil"/>
-                    <text x="480" y="275" text-anchor="middle" class="pid-sub" style="fill:#f59e0b">Oil Return</text>
-                    <!-- PI on oil -->
-                    <circle cx="652" cy="70" r="12" fill="#fff" stroke="#333" stroke-width="1.5"/>
-                    <text x="652" y="67" text-anchor="middle" class="pid-sub" style="font-size:7px">PI</text>
-                    <text x="652" y="76" text-anchor="middle" class="pid-val" style="font-size:8px">${op}</text>
+                    <line x1="170" y1="125" x2="170" y2="75" stroke="#2196F3" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="118" y="40" width="105" height="35" rx="4" fill="#eff6ff" stroke="#2196F3" stroke-width="1.2"/>
+                    <circle cx="128" cy="57" r="8" fill="#2196F3"/>
+                    <text x="128" y="60" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">PI</text>
+                    <text x="175" y="54" text-anchor="middle" style="font:bold 16px sans-serif;fill:#1565c0">${sp}</text>
+                    <text x="202" y="54" style="font:9px sans-serif;fill:#90a4ae">oz/sq in</text>
+                    <text x="175" y="68" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Suction Pressure</text>
                 </g>
 
-                <!-- Gas out from oil sep -->
-                <line x1="680" y1="160" x2="770" y2="160" class="pid-pipe" marker-end="url(#arw)"/>
-
-                <!-- PSV / PRV on discharge header -->
-                <g transform="translate(720,120)">
-                    <line x1="0" y1="38" x2="0" y2="18" stroke="#f44336" stroke-width="1.5"/>
-                    <polygon points="-8,18 0,0 8,18" fill="none" stroke="#f44336" stroke-width="1.5"/>
-                    <text x="0" y="-6" text-anchor="middle" class="pid-label" style="fill:#f44336;font-size:7px">PSV-101</text>
-                </g>
-
-                <!-- SALES LINE / OUTPUT -->
+                <!-- RECIRC Valve % callout -->
                 <g>
-                    <rect x="775" y="130" width="80" height="60" rx="4" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" stroke-dasharray="5,3"/>
-                    <text x="815" y="155" text-anchor="middle" class="pid-label" style="font-size:8px;fill:#2e7d32">SALES</text>
-                    <text x="815" y="167" text-anchor="middle" class="pid-label" style="font-size:8px;fill:#2e7d32">LINE</text>
+                    <line x1="302" y1="92" x2="302" y2="68" stroke="#4caf50" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="255" y="30" width="95" height="35" rx="4" fill="#f1f8e9" stroke="#4caf50" stroke-width="1.2"/>
+                    <circle cx="265" cy="47" r="8" fill="#4caf50"/>
+                    <text x="265" y="50" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">CV</text>
+                    <text x="308" y="44" text-anchor="middle" style="font:bold 16px sans-serif;fill:#2e7d32">${rv}</text>
+                    <text x="332" y="44" style="font:9px sans-serif;fill:#90a4ae">%</text>
+                    <text x="305" y="58" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">RECIRC Valve</text>
                 </g>
 
-                <!-- Flow meter at output -->
-                <g transform="translate(755,152)">
-                    <circle cx="0" cy="8" r="8" fill="#fff" stroke="#333" stroke-width="1.5"/>
-                    <text x="0" y="11" text-anchor="middle" style="font-size:8px;fill:#333;font-weight:700">FI</text>
+                <!-- Discharge Temperature callout -->
+                <g>
+                    <line x1="460" y1="160" x2="460" y2="68" stroke="#ef4444" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="410" y="30" width="100" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1.2"/>
+                    <circle cx="420" cy="47" r="8" fill="#ef4444"/>
+                    <text x="420" y="50" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">TI</text>
+                    <text x="465" y="44" text-anchor="middle" style="font:bold 16px sans-serif;fill:${dt>225?'#ef4444':'#333'}">${dt}</text>
+                    <text x="488" y="44" style="font:9px sans-serif;fill:#90a4ae">°F</text>
+                    <text x="462" y="58" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Discharge Temp</text>
                 </g>
 
-                <!-- Legend -->
-                <g transform="translate(20,290)">
-                    <line x1="0" y1="8" x2="25" y2="8" class="pid-pipe"/>
-                    <text x="30" y="12" class="pid-sub">Gas (Low P)</text>
-                    <line x1="120" y1="8" x2="145" y2="8" class="pid-pipe-d"/>
-                    <text x="150" y="12" class="pid-sub">Gas (High P)</text>
-                    <line x1="250" y1="8" x2="275" y2="8" class="pid-pipe-oil"/>
-                    <text x="280" y="12" class="pid-sub">Oil</text>
-                    <circle cx="345" cy="8" r="7" fill="#fff" stroke="#333" stroke-width="1"/>
-                    <text x="358" y="12" class="pid-sub">Instrument</text>
+                <!-- Discharge Pressure callout -->
+                <g>
+                    <line x1="610" y1="160" x2="610" y2="68" stroke="#2196F3" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="555" y="30" width="110" height="35" rx="4" fill="#eff6ff" stroke="#2196F3" stroke-width="1.2"/>
+                    <circle cx="565" cy="47" r="8" fill="#2196F3"/>
+                    <text x="565" y="50" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">PI</text>
+                    <text x="615" y="44" text-anchor="middle" style="font:bold 16px sans-serif;fill:#1565c0">${dp}</text>
+                    <text x="645" y="44" style="font:9px sans-serif;fill:#90a4ae">psi</text>
+                    <text x="612" y="58" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Discharge Pressure</text>
+                </g>
+
+                <!-- Oil Pressure callout -->
+                <g>
+                    <line x1="668" y1="140" x2="740" y2="68" stroke="#f59e0b" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="700" y="30" width="100" height="35" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.2"/>
+                    <circle cx="710" cy="47" r="8" fill="#f59e0b"/>
+                    <text x="710" y="50" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">PI</text>
+                    <text x="755" y="44" text-anchor="middle" style="font:bold 16px sans-serif;fill:#d97706">${op}</text>
+                    <text x="782" y="44" style="font:9px sans-serif;fill:#90a4ae">psi</text>
+                    <text x="752" y="58" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Oil Pressure</text>
+                </g>
+
+                <!-- Compressor Speed callout -->
+                <g>
+                    <line x1="320" y1="235" x2="320" y2="355" stroke="#8b5cf6" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="268" y="355" width="105" height="35" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.2"/>
+                    <circle cx="278" cy="372" r="8" fill="#8b5cf6"/>
+                    <text x="278" y="375" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">SI</text>
+                    <text x="325" y="369" text-anchor="middle" style="font:bold 16px sans-serif;fill:#6d28d9">${cSpd}</text>
+                    <text x="350" y="369" style="font:9px sans-serif;fill:#90a4ae">%</text>
+                    <text x="322" y="383" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Compressor Speed</text>
+                </g>
+
+                <!-- Oil Inlet Temp callout -->
+                <g>
+                    <line x1="500" y1="340" x2="500" y2="368" stroke="#f59e0b" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="448" y="355" width="105" height="35" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.2"/>
+                    <circle cx="458" cy="372" r="8" fill="#f59e0b"/>
+                    <text x="458" y="375" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">TI</text>
+                    <text x="505" y="369" text-anchor="middle" style="font:bold 16px sans-serif;fill:#d97706">${oilT}</text>
+                    <text x="530" y="369" style="font:9px sans-serif;fill:#90a4ae">°F</text>
+                    <text x="502" y="383" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Oil Inlet Temp</text>
+                </g>
+
+                <!-- Gas Inlet Temp callout -->
+                <g>
+                    <line x1="45" y1="200" x2="45" y2="355" stroke="#2196F3" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="10" y="355" width="105" height="35" rx="4" fill="#eff6ff" stroke="#2196F3" stroke-width="1.2"/>
+                    <circle cx="20" cy="372" r="8" fill="#2196F3"/>
+                    <text x="20" y="375" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">TI</text>
+                    <text x="68" y="369" text-anchor="middle" style="font:bold 16px sans-serif;fill:#1565c0">${gasT}</text>
+                    <text x="90" y="369" style="font:9px sans-serif;fill:#90a4ae">°F</text>
+                    <text x="65" y="383" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Gas Inlet Temp</text>
+                </g>
+
+                <!-- Flow meter value callout -->
+                <g>
+                    <line x1="812" y1="188" x2="845" y2="120" stroke="#2196F3" stroke-width=".8" stroke-dasharray="2,2"/>
+                    <rect x="815" y="88" width="115" height="35" rx="4" fill="#eff6ff" stroke="#2196F3" stroke-width="1.2"/>
+                    <circle cx="825" cy="105" r="8" fill="#2196F3"/>
+                    <text x="825" y="108" text-anchor="middle" fill="#fff" style="font:bold 7px sans-serif">FI</text>
+                    <text x="878" y="101" text-anchor="middle" style="font:bold 14px sans-serif;fill:#1565c0">0.42</text>
+                    <text x="903" y="101" style="font:9px sans-serif;fill:#90a4ae">MMSCF</text>
+                    <text x="878" y="115" text-anchor="middle" style="font:600 8px sans-serif;fill:#666">Flow Rate</text>
+                </g>
+
+                <!-- ========== LEGEND ========== -->
+                <g transform="translate(630,355)">
+                    <text x="0" y="10" style="font:bold 8px sans-serif;fill:#999">LEGEND:</text>
+                    <line x1="55" y1="7" x2="85" y2="7" class="pl"/>
+                    <text x="90" y="10" style="font:7px sans-serif;fill:#666">Process Line</text>
+                    <line x1="160" y1="7" x2="190" y2="7" class="pl-oil"/>
+                    <text x="195" y="10" style="font:7px sans-serif;fill:#666">Oil Line</text>
+                    <g transform="translate(55,18)"><polygon points="0,0 10,5 0,10" fill="none" stroke="#333" stroke-width="1"/><line x1="10" y1="0" x2="10" y2="10" stroke="#333" stroke-width="1.5"/></g>
+                    <text x="90" y="28" style="font:7px sans-serif;fill:#666">Check Valve</text>
+                    <g transform="translate(160,18)"><polygon points="0,0 8,-6 16,0" fill="none" stroke="#333" stroke-width="1"/><polygon points="0,0 8,6 16,0" fill="none" stroke="#333" stroke-width="1"/></g>
+                    <text x="195" y="28" style="font:7px sans-serif;fill:#666">Control Valve</text>
+                    <circle cx="68" cy="42" r="7" fill="none" stroke="#333" stroke-width="1"/>
+                    <text x="90" y="46" style="font:7px sans-serif;fill:#666">Instrument</text>
                 </g>
             </svg>
         </div>
