@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sotaog — VRU Availability Intelligence</title>
+    <title>Sotaog — Compressor IQ</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -458,6 +458,126 @@
         @keyframes spin{to{transform:rotate(360deg)}}
 
         @media print{.sidebar,.topbar,.filter-row,.report-tabs-wrap,.insights-strip,.table-toggle-area{display:none!important}.main{margin-left:0}}
+
+        /* ===== SHARED PAGE STYLES ===== */
+        .page-header{padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between}
+        .page-title{font-size:22px;font-weight:700;color:#333333}
+        .page-subtitle{font-size:12px;color:#6c757d;margin-top:2px}
+        .page-content{padding:16px 24px}
+        .page-kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+        .page-kpi{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:16px;display:flex;align-items:center;gap:12px}
+        .page-kpi-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+        .page-kpi .kpi-val{font-size:22px;font-weight:700;color:#333333;line-height:1}
+        .page-kpi .kpi-label{font-size:10px;color:#6c757d;margin-top:2px}
+        .btn-primary{padding:8px 18px;font-size:13px;font-weight:600;color:#fff;background:#2196F3;border:none;border-radius:6px;cursor:pointer;transition:background .15s}
+        .btn-primary:hover{background:#1976D2}
+        .btn-outline{padding:8px 18px;font-size:13px;font-weight:600;color:#2196F3;background:#fff;border:1px solid #2196F3;border-radius:6px;cursor:pointer;transition:all .15s}
+        .btn-outline:hover{background:#eff6ff}
+        .btn-secondary{padding:8px 16px;font-size:12px;font-weight:500;color:#374151;background:#fff;border:1px solid #d1d5db;border-radius:6px;cursor:pointer}
+        .btn-secondary:hover{background:#f8f9fa}
+
+        /* ===== ALARMS PAGE ===== */
+        .alarm-tabs{display:flex;gap:0;border-bottom:2px solid #dee2e6}
+        .alarm-tab{padding:12px 24px;font-size:14px;font-weight:500;color:#6c757d;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+        .alarm-tab:hover{color:#333333}
+        .alarm-tab.active{color:#2196F3;border-bottom-color:#2196F3;font-weight:600}
+        .alarm-filter-row{display:flex;align-items:center;gap:12px;padding:16px 0;flex-wrap:wrap}
+        .alarm-search{display:flex;align-items:center;background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:0 12px;height:36px;width:280px}
+        .alarm-search i{color:#999;font-size:12px;margin-right:8px}
+        .alarm-search input{border:none;background:none;outline:none;font-size:13px;flex:1;color:#333}
+        .alarm-group{background:#fff;border:1px solid #dee2e6;border-radius:6px;margin-bottom:12px;overflow:hidden}
+        .alarm-group-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;transition:background .1s}
+        .alarm-group-header:hover{background:#f8f9fa}
+        .alarm-group-path{display:flex;align-items:center;gap:4px;font-size:13px;color:#2196F3;font-weight:500}
+        .alarm-group-path span.sep{color:#6c757d;font-weight:400}
+        .alarm-badges{display:flex;gap:6px}
+        .alarm-sev-badge{padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px}
+        .alarm-sev-badge.critical{background:#fef2f2;color:#ef4444;border:1px solid #fecaca}
+        .alarm-sev-badge.warning{background:#fff7ed;color:#f59e0b;border:1px solid #fed7aa}
+        .alarm-table{width:100%;border-collapse:collapse}
+        .alarm-table thead th{padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:.3px;background:#fafbfc;border-bottom:1px solid #dee2e6}
+        .alarm-table tbody td{padding:10px 12px;font-size:12px;border-bottom:1px solid #f3f4f6;color:#374151}
+        .alarm-table tbody tr:hover{background:#fafbfc}
+        .alarm-condition{display:inline-flex;align-items:center;gap:6px;font-size:12px}
+        .alarm-condition .cond-tag{background:#e8f0fe;color:#1967d2;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
+        .alarm-condition .cond-val{background:#fff3e0;color:#e65100;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
+        .alarm-name-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px}
+        .alarm-name-badge .sev-icon{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;display:inline-flex;align-items:center;gap:3px}
+        .alarm-name-badge .sev-icon.warn{background:#fff7ed;color:#f59e0b}
+        .alarm-name-badge .sev-icon.crit{background:#fef2f2;color:#ef4444}
+        .alarm-status-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600}
+
+        /* ===== VRUS FLEET PAGE ===== */
+        .fleet-filter-pills{display:flex;gap:8px;margin-bottom:16px}
+        .fleet-pill{padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #dee2e6;background:#fff;color:#6c757d;transition:all .15s;display:flex;align-items:center;gap:6px}
+        .fleet-pill:hover{border-color:#2196F3;color:#2196F3}
+        .fleet-pill.active{background:#2196F3;color:#fff;border-color:#2196F3}
+        .fleet-pill .pill-count{font-weight:700}
+        .fleet-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+        .fleet-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:12px 14px;transition:all .2s;cursor:pointer;position:relative}
+        .fleet-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08);border-color:#2196F3}
+        .fleet-card .fc-id{font-size:13px;font-weight:700;color:#2196F3}
+        .fleet-card .fc-customer{font-size:10px;color:#6c757d;margin-top:2px}
+        .fleet-card .fc-state{font-size:9px;color:#999;margin-top:1px}
+        .fleet-card .fc-status{position:absolute;top:12px;right:12px;width:8px;height:8px;border-radius:50%}
+        .fleet-card .fc-avail{font-size:16px;font-weight:700;margin-top:6px}
+        .fleet-card .fc-bar{height:3px;background:#f3f4f6;border-radius:2px;margin-top:4px;overflow:hidden}
+        .fleet-card .fc-bar-fill{height:100%;border-radius:2px}
+        .fleet-state-group{margin-bottom:16px}
+        .fleet-state-label{font-size:11px;font-weight:700;color:#6c757d;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+        .fleet-state-label .fsl-count{font-weight:400;color:#999}
+
+        /* ===== CUSTOM DASHBOARD ===== */
+        .cd-search-row{display:flex;align-items:center;gap:0;border:1px solid #d1d5db;border-radius:6px;background:#fff;overflow:hidden;margin-bottom:20px}
+        .cd-search-row select{border:none;background:none;padding:10px 14px;font-size:13px;color:#374151;border-right:1px solid #d1d5db;outline:none;cursor:pointer;min-width:120px}
+        .cd-search-row input{flex:1;border:none;padding:10px 14px;font-size:13px;outline:none;color:#333}
+        .cd-search-row .cd-chevron{padding:10px 14px;color:#2196F3;font-size:14px;cursor:pointer}
+        .cd-panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+        .cd-panel{background:#fff;border:1px solid #dee2e6;border-radius:6px;min-height:200px;max-height:320px;overflow-y:auto}
+        .cd-panel-header{padding:12px 16px;border-bottom:1px solid #dee2e6;display:flex;align-items:center;justify-content:space-between}
+        .cd-panel-header h4{font-size:13px;font-weight:600;color:#2196F3}
+        .cd-item{padding:10px 16px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#374151;cursor:pointer;transition:background .1s}
+        .cd-item:hover{background:#f8f9fa}
+        .cd-selected-item{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border:1px solid #dee2e6;border-radius:6px;margin-bottom:8px;background:#fff}
+        .cd-selected-item .item-text{font-size:12px;color:#374151}
+        .cd-selected-item .item-sub{font-size:10px;color:#999}
+        .cd-selected-item .remove-btn{color:#999;cursor:pointer;font-size:14px;padding:2px 6px}
+        .cd-selected-item .remove-btn:hover{color:#ef4444}
+        .cd-actions{display:flex;align-items:center;gap:10px}
+
+        /* ===== VRU COMPRESSORS TABLE ===== */
+        .comp-table-wrap{background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden}
+        .comp-table{width:100%;border-collapse:collapse}
+        .comp-table thead th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.3px;background:#f8f9fa;border-bottom:2px solid #dee2e6}
+        .comp-table tbody td{padding:8px 14px;font-size:12px;border-bottom:1px solid #f3f4f6}
+        .comp-table tbody tr:hover{background:#fafbfc}
+        .comp-state-row{background:#e3f2fd !important}
+        .comp-state-row td{font-size:13px;font-weight:700;color:#1565c0;padding:10px 14px !important}
+        .comp-cust-row{background:#f5f5f5 !important}
+        .comp-cust-row td{font-size:12px;font-weight:600;color:#333;padding:8px 14px !important}
+        .comp-expand-btn{background:none;border:none;color:#2196F3;cursor:pointer;font-size:11px;font-weight:600;padding:2px 8px}
+        .comp-expand-btn:hover{text-decoration:underline}
+
+        /* ===== NETWORK PAGE ===== */
+        .network-hub{text-align:center;margin-bottom:24px}
+        .network-hub-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#1565c0);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 16px rgba(33,150,243,.3)}
+        .network-hub-circle i{font-size:24px;margin-bottom:4px}
+        .network-hub-circle span{font-size:10px;font-weight:600}
+        .network-nodes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+        .network-node{background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:16px;text-align:center;position:relative;transition:all .2s}
+        .network-node:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .network-node .nn-status{position:absolute;top:10px;right:10px;width:10px;height:10px;border-radius:50%}
+        .network-node .nn-name{font-size:14px;font-weight:700;color:#333;margin-bottom:4px}
+        .network-node .nn-stats{display:flex;justify-content:center;gap:12px;font-size:11px;color:#6c757d;margin-top:8px}
+        .network-node .nn-online{color:#10b981;font-weight:600}
+        .network-node .nn-offline{color:#ef4444;font-weight:600}
+        .network-line{border-top:2px dashed #dee2e6;margin:-8px auto 16px;width:60%}
+
+        /* ===== CUSTOMERS PAGE ===== */
+        .cust-page-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+        .cust-page-search{display:flex;align-items:center;background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:0 12px;height:36px;min-width:240px}
+        .cust-page-search i{color:#999;font-size:12px;margin-right:8px}
+        .cust-page-search input{border:none;background:none;outline:none;font-size:13px;flex:1;color:#333}
     </style>
 </head>
 <body>
@@ -466,14 +586,14 @@
     <div class="sidebar-logo">S</div>
     <div class="sidebar-nav">
         <a class="sidebar-item active" title="Overview" onclick="showPage('overview')"><i class="fas fa-th-large"></i>Overview</a>
-        <a class="sidebar-item" title="Custom" onclick="showPage('overview')"><i class="fas fa-chart-line"></i>Custo...</a>
-        <a class="sidebar-item" title="Customers" onclick="showPage('overview')"><i class="fas fa-building"></i>Custo...</a>
-        <a class="sidebar-item" title="VRU Compressors" onclick="showPage('overview')"><i class="fas fa-cogs"></i>VRU C...</a>
-        <a class="sidebar-item" title="VRUs" onclick="showPage('overview')"><i class="fas fa-microchip"></i>VRUs</a>
-        <a class="sidebar-item" title="Network" onclick="showPage('overview')"><i class="fas fa-project-diagram"></i>Network</a>
-        <a class="sidebar-item" title="Alarms" onclick="showPage('overview')"><i class="fas fa-exclamation-triangle"></i>Alarms<span class="sidebar-badge"></span></a>
+        <a class="sidebar-item" title="Custom Dashboard" onclick="showPage('customDashboard')"><i class="fas fa-chart-line"></i>Custo...</a>
+        <a class="sidebar-item" title="Customers" onclick="showPage('customers')"><i class="fas fa-building"></i>Custo...</a>
+        <a class="sidebar-item" title="VRU Compressors" onclick="showPage('vruCompressors')"><i class="fas fa-cogs"></i>VRU C...</a>
+        <a class="sidebar-item" title="VRUs" onclick="showPage('vrus')"><i class="fas fa-microchip"></i>VRUs</a>
+        <a class="sidebar-item" title="Network" onclick="showPage('network')"><i class="fas fa-project-diagram"></i>Network</a>
+        <a class="sidebar-item" title="Alarms" onclick="showPage('alarms')"><i class="fas fa-exclamation-triangle"></i>Alarms<span class="sidebar-badge"></span></a>
         <a class="sidebar-item sidebar-pulse" id="sidebarReports" title="Reports" onclick="showPage('reports')"><i class="fas fa-chart-bar"></i>Reports</a>
-        <a class="sidebar-item" title="More" onclick="showPage('overview')"><i class="fas fa-ellipsis-h"></i>More A...</a>
+        <a class="sidebar-item" title="More Apps" onclick="showPage('overview')"><i class="fas fa-th"></i>More A...</a>
     </div>
 </nav>
 
@@ -663,6 +783,112 @@
                 <div class="ov-section-head"><h3><i class="fas fa-table" style="color:#6c757d;font-size:11px"></i> Financial Summary by Customer</h3></div>
                 <div class="ov-section-body" style="padding:0"><div class="scroll-y" style="max-height:300px" id="ovFinTable"></div></div>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== CUSTOM DASHBOARD PAGE ===== -->
+    <div id="customDashPage" style="display:none">
+        <div class="page-header"><div><div class="page-title">Custom Dashboard</div><div class="page-subtitle">Create custom data comparisons and charts</div></div><button class="btn-outline" onclick="void(0)"><i class="fas fa-bookmark" style="margin-right:6px"></i>View Saved Comparison</button></div>
+        <div class="page-content">
+            <div class="cv-section-title" style="padding:0 0 10px"><i class="fas fa-layer-group"></i> Create Group</div>
+            <div class="cd-search-row">
+                <select id="cdDataTypeSelect"><option>Asset Type</option><option>Data Type</option></select>
+                <input type="text" id="cdSearchInput" placeholder="Search data type..." oninput="filterCdItems()">
+                <div class="cd-chevron"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="cd-panels">
+                <div class="cd-panel">
+                    <div class="cd-panel-header"><h4>Data Types</h4><span style="font-size:11px;color:#999" id="cdItemCount">7 items</span></div>
+                    <div id="cdItemList"></div>
+                </div>
+                <div class="cd-panel">
+                    <div class="cd-panel-header"><h4>Popular Search</h4><div style="display:flex;gap:12px"><a style="font-size:11px;color:#2196F3;cursor:pointer" onclick="clearCdSelections()">Clear all</a><a style="font-size:11px;color:#6c757d;cursor:pointer" id="cdCollapseBtn" onclick="toggleCdCollapse()">Collapse</a></div></div>
+                    <div id="cdSelectedList" style="padding:8px 12px"></div>
+                </div>
+            </div>
+            <div class="cd-actions">
+                <button class="btn-primary" onclick="plotCdChart()"><i class="fas fa-chart-line" style="margin-right:6px"></i>Plot Chart</button>
+                <button class="btn-secondary"><i class="fas fa-save" style="margin-right:6px"></i>Save</button>
+                <div class="datepicker-trigger" style="padding:6px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;color:#374151;cursor:pointer"><i class="fas fa-calendar-alt" style="color:#2196F3;margin-right:6px"></i>04/26/2026 — 05/07/2026</div>
+                <button class="btn-secondary" style="color:#2196F3;border-color:#2196F3"><i class="fas fa-file-excel"></i></button>
+                <div style="flex:1"></div>
+                <div style="display:flex;gap:2px"><button class="btn-secondary" style="border-radius:6px 0 0 6px;padding:8px 10px"><i class="fas fa-th"></i></button><button class="btn-secondary" style="border-radius:0 6px 6px 0;padding:8px 10px;background:#f8f9fa"><i class="fas fa-list"></i></button></div>
+            </div>
+            <div id="cdChartArea" style="display:none;margin-top:20px">
+                <div class="card"><div class="card-header"><h3>Custom Comparison Chart</h3><select class="card-select" style="font-size:11px"><option>Line Chart</option><option>Bar Chart</option><option>Area Chart</option></select></div><div class="card-body" style="height:320px"><canvas id="cdChart"></canvas></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CUSTOMERS PAGE ===== -->
+    <div id="customersPage" style="display:none">
+        <div class="page-header"><div><div class="page-title">Customers</div><div class="page-subtitle">All customer accounts and VRU fleet status</div></div></div>
+        <div class="page-content">
+            <div class="page-kpi-strip" id="custPageKpis"></div>
+            <div class="cust-page-toolbar">
+                <div class="cust-page-search"><i class="fas fa-search"></i><input type="text" placeholder="Search customers..." id="custPageSearch" oninput="filterCustPage()"></div>
+                <div style="flex:1"></div>
+                <div class="pill-toggle"><button class="pill-btn active" onclick="sortCustPage('risk',this)">Risk</button><button class="pill-btn" onclick="sortCustPage('alpha',this)">A-Z</button><button class="pill-btn" onclick="sortCustPage('units',this)">Units</button></div>
+            </div>
+            <div class="comp-table-wrap"><div class="scroll-y" style="max-height:600px"><table class="data-table" id="custPageTable"></table></div></div>
+        </div>
+    </div>
+
+    <!-- ===== VRU COMPRESSORS PAGE ===== -->
+    <div id="vruCompressorsPage" style="display:none">
+        <div class="page-header"><div><div class="page-title">VRU Compressors</div><div class="page-subtitle">All compressor units grouped by state and customer</div></div><div style="display:flex;gap:8px"><button class="btn-secondary" onclick="expandAllComp(true)"><i class="fas fa-plus" style="margin-right:4px"></i>Expand All</button><button class="btn-secondary" onclick="expandAllComp(false)"><i class="fas fa-minus" style="margin-right:4px"></i>Collapse All</button></div></div>
+        <div class="page-content"><div class="comp-table-wrap"><div class="scroll-y" style="max-height:700px" id="compTableBody"></div></div></div>
+    </div>
+
+    <!-- ===== VRUS FLEET OVERVIEW PAGE ===== -->
+    <div id="vrusPage" style="display:none">
+        <div class="page-header"><div><div class="page-title">VRUs</div><div class="page-subtitle">Fleet Overview — Real-time compressor monitoring</div></div></div>
+        <div class="page-content">
+            <div class="page-kpi-strip" id="vrusKpiStrip"></div>
+            <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-bottom:20px">
+                <div class="card"><div class="card-header"><h3><i class="fas fa-chart-bar" style="color:#ef4444;margin-right:6px"></i>Downtime Distribution</h3></div><div class="card-body" style="height:280px"><canvas id="vrusDowntimeChart"></canvas></div></div>
+                <div class="card"><div class="card-header"><h3><i class="fas fa-heartbeat" style="color:#2196F3;margin-right:6px"></i>Reliability Metrics</h3></div><div class="card-body" style="height:280px"><canvas id="vrusReliabilityChart"></canvas></div></div>
+            </div>
+            <div class="cv-section-title" style="padding:0 0 12px"><i class="fas fa-desktop"></i> Compressor Monitoring</div>
+            <div class="fleet-filter-pills" id="vrusFilterPills"></div>
+            <div id="vrusFleetCards"></div>
+        </div>
+    </div>
+
+    <!-- ===== NETWORK PAGE ===== -->
+    <div id="networkPage" style="display:none">
+        <div class="page-header"><div><div class="page-title">Network</div><div class="page-subtitle">Device connectivity and communication status</div></div></div>
+        <div class="page-content">
+            <div class="page-kpi-strip" id="networkKpis"></div>
+            <div class="card" style="margin-bottom:20px"><div class="card-header"><h3><i class="fas fa-project-diagram" style="color:#2196F3;margin-right:6px"></i>Network Topology</h3></div><div class="card-body">
+                <div class="network-hub"><div class="network-hub-circle"><i class="fas fa-cloud"></i><span>Sotaog Cloud</span></div></div>
+                <div class="network-line"></div>
+                <div class="network-nodes" id="networkNodes"></div>
+            </div></div>
+            <div class="card"><div class="card-header"><h3><i class="fas fa-list" style="color:#6c757d;margin-right:6px"></i>Device Connectivity Log</h3></div><div class="card-body"><div class="scroll-y" style="max-height:400px"><table class="data-table" id="networkTable"></table></div></div></div>
+        </div>
+    </div>
+
+    <!-- ===== ALARMS PAGE ===== -->
+    <div id="alarmsPage" style="display:none">
+        <div class="page-header" style="margin-bottom:0"><div><div class="page-title">Alarms</div><div class="page-subtitle">Monitor, acknowledge, and configure alarm rules</div></div><div style="display:flex;gap:8px"><button class="btn-secondary" id="alarmAckBtn"><i class="fas fa-check" style="margin-right:4px"></i>Acknowledge</button><button class="btn-secondary"><i class="fas fa-download" style="margin-right:4px"></i>Export</button></div></div>
+        <div class="page-content">
+            <div class="alarm-tabs" id="alarmTabs">
+                <div class="alarm-tab active" data-atab="active">Active</div>
+                <div class="alarm-tab" data-atab="history">History</div>
+                <div class="alarm-tab" data-atab="configure">Configure</div>
+            </div>
+            <div id="alarmFilterRow" class="alarm-filter-row">
+                <div class="alarm-search"><i class="fas fa-search"></i><input type="text" id="alarmSearchInput" placeholder="Search by Alarm Name, Facility, Asset Name" oninput="filterAlarmGroups()"></div>
+                <select style="padding:7px 12px;border:1px solid #d1d5db;border-radius:4px;font-size:12px"><option>48 alarms selected</option><option>All alarms</option></select>
+                <select style="padding:7px 12px;border:1px solid #d1d5db;border-radius:4px;font-size:12px"><option>All Severities</option><option>Critical</option><option>Warning</option></select>
+                <button class="btn-primary" style="padding:7px 16px;font-size:12px">Submit</button>
+                <div style="flex:1"></div>
+                <button class="btn-secondary" id="groupByLocBtn" onclick="this.dataset.on=this.dataset.on==='1'?'0':'1';this.innerHTML='<i class=\'fas fa-map-marker-alt\' style=\'margin-right:4px\'></i>Group By Location: '+(this.dataset.on==='1'?'<b>ON</b>':'<b>OFF</b>')" data-on="0"><i class="fas fa-map-marker-alt" style="margin-right:4px"></i>Group By Location: <b>OFF</b></button>
+                <button class="btn-secondary" onclick="toggleAllAlarmGroups(true)"><i class="fas fa-plus" style="margin-right:3px"></i>Expand All</button>
+                <button class="btn-secondary" onclick="toggleAllAlarmGroups(false)"><i class="fas fa-minus" style="margin-right:3px"></i>Collapse All</button>
+            </div>
+            <div id="alarmTabContent"></div>
         </div>
     </div>
 
@@ -2419,17 +2645,20 @@ function initOverviewDashboard(){
 
 // ===== PAGE NAVIGATION =====
 let reportGenerated=false;
+const ALL_PAGES=['overviewDashPage','customDashPage','customersPage','vruCompressorsPage','vrusPage','networkPage','alarmsPage','reportsPage'];
+const PAGE_MAP={overview:'overviewDashPage',customDashboard:'customDashPage',customers:'customersPage',vruCompressors:'vruCompressorsPage',vrus:'vrusPage',network:'networkPage',alarms:'alarmsPage',reports:'reportsPage'};
+const PAGE_TITLES={overview:'Overview',customDashboard:'Custom Dashboard',customers:'Customers',vruCompressors:'VRU Compressors',vrus:'VRUs',network:'Network',alarms:'Alarms',reports:'Reports'};
+const PAGE_SIDEBAR_IDX={overview:0,customDashboard:1,customers:2,vruCompressors:3,vrus:4,network:5,alarms:6,reports:7};
+const pageInited={};
+
 function showPage(page){
-    document.getElementById('overviewDashPage').style.display=page==='overview'?'block':'none';
-    document.getElementById('reportsPage').style.display=page==='reports'?'block':'none';
+    ALL_PAGES.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
+    const targetId=PAGE_MAP[page];
+    if(targetId)document.getElementById(targetId).style.display='block';
     document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));
-    if(page==='overview'){
-        document.querySelectorAll('.sidebar-item')[0].classList.add('active');
-        document.getElementById('breadcrumbCurrent').textContent='Overview';
-    } else {
-        document.querySelectorAll('.sidebar-item')[7].classList.add('active');
-        document.getElementById('breadcrumbCurrent').textContent='Reports';
-    }
+    const idx=PAGE_SIDEBAR_IDX[page];
+    if(idx!==undefined)document.querySelectorAll('.sidebar-item')[idx].classList.add('active');
+    document.getElementById('breadcrumbCurrent').textContent=PAGE_TITLES[page]||page;
     if(page==='reports'){
         document.getElementById('sidebarReports').classList.remove('sidebar-pulse');
         if(!reportGenerated){
@@ -2438,6 +2667,12 @@ function showPage(page){
             document.getElementById('reportLoading').style.display='none';
         }
     }
+    if(page==='customDashboard'&&!pageInited.customDash){pageInited.customDash=true;initCustomDashboard()}
+    if(page==='customers'&&!pageInited.customers){pageInited.customers=true;initCustomersPage()}
+    if(page==='vruCompressors'&&!pageInited.vruComp){pageInited.vruComp=true;initVruCompressorsPage()}
+    if(page==='vrus'&&!pageInited.vrus){pageInited.vrus=true;initVrusPage()}
+    if(page==='network'&&!pageInited.network){pageInited.network=true;initNetworkPage()}
+    if(page==='alarms'&&!pageInited.alarms){pageInited.alarms=true;initAlarmsPage()}
 }
 
 function runReport(){
@@ -2457,6 +2692,372 @@ function runReport(){
             renderHeatmap();
         }
     },1500);
+}
+
+// ===== CUSTOM DASHBOARD PAGE =====
+const CD_DATA_ITEMS=['Berm O2 Switch','Compressor Fail','Compressor Hoa In Auto','Compressor Hoa In Hand','Compressor Pid Setpoint','Compressor Running Status','Compressor Speed Fail','Low Suction Pilot Light','Condensate Pump Fail','High Discharge Pressure','Motor Overload','Oil Level Low','Gas Detection','Vibration Level'];
+let cdSelections=[];
+let cdChartInst=null;
+function initCustomDashboard(){
+    renderCdItems();
+    cdSelections=[
+        {type:'Compressor Hoa In Hand',unit:'PVR2193',customer:'Callon Petroleum'},
+        {type:'Compressor Running Status',unit:'PVR2067',customer:'Diamondback Energy'},
+        {type:'Compressor Fail',unit:'PVR3184',customer:'Devon Energy'}
+    ];
+    renderCdSelections();
+}
+function renderCdItems(filter=''){
+    const list=document.getElementById('cdItemList');
+    const filtered=filter?CD_DATA_ITEMS.filter(i=>i.toLowerCase().includes(filter.toLowerCase())):CD_DATA_ITEMS;
+    document.getElementById('cdItemCount').textContent=filtered.length+' items';
+    list.innerHTML=filtered.map(item=>`<div class="cd-item" onclick="addCdSelection('${item}')">${item}</div>`).join('');
+}
+function filterCdItems(){renderCdItems(document.getElementById('cdSearchInput').value)}
+function addCdSelection(type){
+    const custs=CUSTOMERS.slice(0,6);
+    const c=custs[Math.floor(Math.random()*custs.length)];
+    const units=VRU_UNITS[c.name]||[];
+    const u=units.length?units[Math.floor(Math.random()*units.length)]:{id:'PVR'+Math.floor(2000+Math.random()*2000)};
+    cdSelections.push({type,unit:u.id,customer:c.name});
+    renderCdSelections();
+}
+function removeCdSelection(idx){cdSelections.splice(idx,1);renderCdSelections()}
+function clearCdSelections(){cdSelections=[];renderCdSelections()}
+function renderCdSelections(){
+    const list=document.getElementById('cdSelectedList');
+    if(!cdSelections.length){list.innerHTML='<div style="padding:20px;text-align:center;color:#999;font-size:12px">No items selected. Click data types on the left to add.</div>';return}
+    list.innerHTML=cdSelections.map((s,i)=>`<div class="cd-selected-item"><div><div class="item-text">${s.type}</div><div class="item-sub">${s.customer} — ${s.unit}</div></div><span class="remove-btn" onclick="removeCdSelection(${i})">&times;</span></div>`).join('');
+}
+function toggleCdCollapse(){
+    const list=document.getElementById('cdSelectedList');
+    const btn=document.getElementById('cdCollapseBtn');
+    if(list.style.display==='none'){list.style.display='';btn.textContent='Collapse'}else{list.style.display='none';btn.textContent='Expand'}
+}
+function plotCdChart(){
+    document.getElementById('cdChartArea').style.display='block';
+    if(cdChartInst)cdChartInst.destroy();
+    const ctx=document.getElementById('cdChart').getContext('2d');
+    const days=14,labels=[];const today=new Date(2026,4,7);
+    for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}))}
+    const colors=['#2196F3','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#ec4899'];
+    const datasets=cdSelections.slice(0,7).map((s,i)=>({label:s.type+' ('+s.unit+')',data:labels.map(()=>Math.round(Math.random()*100*10)/10),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+'18',borderWidth:2,tension:.35,pointRadius:2,fill:false}));
+    cdChartInst=new Chart(ctx,{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e',cornerRadius:6}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
+}
+
+// ===== CUSTOMERS PAGE =====
+let custPageSort='risk';
+function initCustomersPage(){
+    const kpis=document.getElementById('custPageKpis');
+    const belowSla=CUSTOMERS.filter(c=>c.avail<95).length;
+    kpis.innerHTML=`
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-building"></i></div><div><div class="kpi-val">18</div><div class="kpi-label">Total Customers</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-cogs"></i></div><div><div class="kpi-val">487</div><div class="kpi-label">Total Units</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-chart-line"></i></div><div><div class="kpi-val" style="color:#10b981">94.7%</div><div class="kpi-label">Avg Availability</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-exclamation-triangle"></i></div><div><div class="kpi-val" style="color:#ef4444">${belowSla}</div><div class="kpi-label">Below SLA</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-arrow-down"></i></div><div><div class="kpi-val" style="color:#ef4444">26</div><div class="kpi-label">Units Down</div></div></div>`;
+    renderCustPageTable();
+}
+function sortCustPage(mode,el){
+    custPageSort=mode;
+    el.closest('.pill-toggle').querySelectorAll('.pill-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+    renderCustPageTable();
+}
+function filterCustPage(){renderCustPageTable()}
+function renderCustPageTable(){
+    const search=(document.getElementById('custPageSearch')||{}).value||'';
+    let sorted=[...CUSTOMERS];
+    if(search)sorted=sorted.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.state.toLowerCase().includes(search.toLowerCase()));
+    if(custPageSort==='risk')sorted.sort((a,b)=>a.avail-b.avail);
+    else if(custPageSort==='alpha')sorted.sort((a,b)=>a.name.localeCompare(b.name));
+    else sorted.sort((a,b)=>b.units-a.units);
+    const tbl=document.getElementById('custPageTable');
+    let h=`<thead><tr><th>#</th><th>Customer</th><th>State</th><th style="text-align:center">Units</th><th style="text-align:center">Running</th><th style="text-align:center">Warning</th><th style="text-align:center">Down</th><th style="min-width:150px">Availability</th><th>Trend</th><th>SLA Status</th></tr></thead><tbody>`;
+    sorted.forEach((c,i)=>{
+        const units=VRU_UNITS[c.name]||[];
+        const running=units.filter(u=>u.status==='Running').length;
+        const warning=units.filter(u=>u.status==='Warning').length;
+        const fc=c.avail>=95?'#10b981':c.avail>=92?'#2196F3':c.avail>=88?'#f59e0b':'#ef4444';
+        const slaClass=c.avail>=95?'above':c.avail>=92?'at-risk':'below';
+        const slaLabel=c.avail>=95?'Above SLA':c.avail>=92?'At Risk':'Below SLA';
+        const tDir=c.trend>=0?'up':'down';const tColor=c.trend>=0?'#10b981':'#ef4444';
+        h+=`<tr onclick="navigateTo('customerView',{customer:'${c.name.replace(/'/g,"\\'")}'})" style="cursor:pointer" title="View ${c.name} →">
+            <td style="color:#999;font-size:10px;text-align:center">${i+1}</td>
+            <td style="font-weight:600;color:#2196F3">${c.name}</td>
+            <td style="color:#6c757d">${c.state}</td>
+            <td style="text-align:center;font-weight:600">${c.units}</td>
+            <td style="text-align:center;color:#10b981;font-weight:600">${running}</td>
+            <td style="text-align:center;color:#f59e0b;font-weight:600">${warning}</td>
+            <td style="text-align:center;color:${c.down>0?'#ef4444':'#d1d5db'};font-weight:${c.down>0?'700':'400'}">${c.down}</td>
+            <td><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden"><div style="width:${c.avail}%;height:100%;background:${fc};border-radius:2px"></div></div><span style="font-weight:700;color:${fc};font-size:11px;min-width:38px">${c.avail}%</span></div></td>
+            <td style="font-size:10px;color:${tColor};font-weight:600"><i class="fas fa-arrow-${tDir}" style="font-size:8px;margin-right:2px"></i>${Math.abs(c.trend)}%</td>
+            <td><span class="sla-badge ${slaClass}">${slaLabel}</span></td></tr>`;
+    });
+    h+='</tbody>';
+    tbl.innerHTML=h;
+}
+
+// ===== VRU COMPRESSORS PAGE =====
+function initVruCompressorsPage(){
+    const cont=document.getElementById('compTableBody');
+    let h='<table class="comp-table"><thead><tr><th style="width:50px">S No</th><th>VRU Compressors</th><th>Customer</th><th>Type</th><th>Status</th><th>Uptime %</th></tr></thead><tbody>';
+    let sno=1;
+    const byState={};
+    CUSTOMERS.forEach(c=>{if(!byState[c.state])byState[c.state]=[];byState[c.state].push(c)});
+    Object.keys(byState).sort().forEach(state=>{
+        const custs=byState[state];
+        const stateUnits=custs.reduce((s,c)=>s+c.units,0);
+        h+=`<tr class="comp-state-row" onclick="toggleCompGroup('state_${state.replace(/\s/g,'_')}')" style="cursor:pointer"><td colspan="6"><i class="fas fa-chevron-down" style="margin-right:8px;font-size:10px" id="icon_state_${state.replace(/\s/g,'_')}"></i><i class="fas fa-map-marker-alt" style="margin-right:6px;color:#2196F3"></i>${state} <span style="font-weight:400;color:#6c757d;margin-left:6px">${stateUnits} units</span></td></tr>`;
+        h+=`<tbody id="state_${state.replace(/\s/g,'_')}">`;
+        custs.sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
+            h+=`<tr class="comp-cust-row" onclick="toggleCompGroup('cust_${c.name.replace(/[^a-zA-Z0-9]/g,'_')}')" style="cursor:pointer"><td colspan="6"><i class="fas fa-chevron-down" style="margin-right:8px;font-size:9px" id="icon_cust_${c.name.replace(/[^a-zA-Z0-9]/g,'_')}"></i><i class="fas fa-building" style="margin-right:6px;color:#8b5cf6"></i>${c.name} <span style="font-weight:400;color:#6c757d;margin-left:6px">${c.units} units</span></td></tr>`;
+            h+=`<tbody id="cust_${c.name.replace(/[^a-zA-Z0-9]/g,'_')}">`;
+            const units=(VRU_UNITS[c.name]||[]).slice(0,8);
+            units.forEach(u=>{
+                const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+                const sbg=u.status==='Running'?'#ecfdf5':u.status==='Warning'?'#fffbeb':'#fef2f2';
+                const uc=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+                h+=`<tr><td style="text-align:center;color:#999">${sno++}</td><td style="font-weight:600;color:#2196F3">${u.id}</td><td>${c.name}</td><td>VRU</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${u.status}</span></td><td style="font-weight:700;color:${uc}">${u.avail}%</td></tr>`;
+            });
+            h+='</tbody>';
+        });
+        h+='</tbody>';
+    });
+    h+='</tbody></table>';
+    cont.innerHTML=h;
+}
+function toggleCompGroup(id){
+    const el=document.getElementById(id);
+    const icon=document.getElementById('icon_'+id);
+    if(!el)return;
+    if(el.style.display==='none'){el.style.display='';if(icon)icon.className='fas fa-chevron-down'}
+    else{el.style.display='none';if(icon)icon.className='fas fa-chevron-right'}
+}
+function expandAllComp(expand){
+    document.querySelectorAll('[id^="state_"],[id^="cust_"]').forEach(el=>{el.style.display=expand?'':'none'});
+    document.querySelectorAll('[id^="icon_state_"],[id^="icon_cust_"]').forEach(el=>{el.className=expand?'fas fa-chevron-down':'fas fa-chevron-right'});
+}
+
+// ===== VRUS FLEET OVERVIEW PAGE =====
+let vrusCharts={};
+function initVrusPage(){
+    const totalUnits=487,running=387,idle=24,warning=50,down=26;
+    document.getElementById('vrusKpiStrip').innerHTML=`
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-microchip"></i></div><div><div class="kpi-val">${totalUnits}</div><div class="kpi-label">Total VRUs</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-check-circle"></i></div><div><div class="kpi-val" style="color:#10b981">${running}</div><div class="kpi-label">Running</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-pause-circle"></i></div><div><div class="kpi-val" style="color:#2196F3">${idle}</div><div class="kpi-label">Idle</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-exclamation-triangle"></i></div><div><div class="kpi-val" style="color:#f59e0b">${warning}</div><div class="kpi-label">Warning</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-times-circle"></i></div><div><div class="kpi-val" style="color:#ef4444">${down}</div><div class="kpi-label">Down</div></div></div>`;
+    renderVrusCharts();
+    renderVrusFilterPills('All');
+    renderVrusFleetCards('All');
+}
+function renderVrusCharts(){
+    Object.values(vrusCharts).forEach(c=>c.destroy());vrusCharts={};
+    const causes=['Mechanical','Electrical','Sensor','Comm Loss','Overheating','Other'];
+    const causeData=[32,22,16,12,10,8];
+    const causeColors=['#ef4444','#f59e0b','#8b5cf6','#3b82f6','#ec4899','#6b7280'];
+    vrusCharts.downtime=new Chart(document.getElementById('vrusDowntimeChart').getContext('2d'),{type:'bar',data:{labels:causes,datasets:[{label:'Downtime %',data:causeData,backgroundColor:causeColors,borderRadius:4,barPercentage:.6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e',callbacks:{label:ctx=>ctx.parsed.x+'% of downtime'}},datalabels:{display:true,anchor:'end',align:'right',color:'#374151',font:{weight:'bold',size:11},formatter:v=>v+'%'}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:10},callback:v=>v+'%'},max:40},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'},color:'#374151'}}}}});
+    const reliabilityLabels=STATES_DATA.map(s=>s.name);
+    const mtbf=STATES_DATA.map(s=>Math.round(180+s.avail*1.5+(Math.random()*40)));
+    const mttr=STATES_DATA.map(s=>Math.round((10-s.avail/12+(Math.random()*2))*10)/10);
+    vrusCharts.reliability=new Chart(document.getElementById('vrusReliabilityChart').getContext('2d'),{type:'bar',data:{labels:reliabilityLabels,datasets:[{label:'MTBF (hours)',data:mtbf,backgroundColor:'#2196F3',borderRadius:3,barPercentage:.4,yAxisID:'y'},{label:'MTTR (hours)',data:mttr,backgroundColor:'#ef4444',borderRadius:3,barPercentage:.4,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{position:'left',grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'},title:{display:true,text:'MTBF',font:{size:10}}},y1:{position:'right',grid:{display:false},ticks:{font:{size:9},callback:v=>v+'h'},title:{display:true,text:'MTTR',font:{size:10}}}}}});
+}
+function renderVrusFilterPills(active){
+    const allUnits=[],runUnits=[],downUnits=[],warnUnits=[];
+    CUSTOMERS.forEach(c=>{(VRU_UNITS[c.name]||[]).forEach(u=>{allUnits.push({...u,customer:c.name,state:c.state});if(u.status==='Running')runUnits.push(u);else if(u.status==='Down')downUnits.push(u);else warnUnits.push(u)})});
+    const pills=[{label:'All',count:allUnits.length,key:'All'},{label:'Running',count:runUnits.length,key:'Running'},{label:'Down',count:downUnits.length,key:'Down'},{label:'Warning',count:warnUnits.length,key:'Warning'}];
+    document.getElementById('vrusFilterPills').innerHTML=pills.map(p=>`<div class="fleet-pill ${active===p.key?'active':''}" onclick="renderVrusFilterPills('${p.key}');renderVrusFleetCards('${p.key}')"><span class="pill-count">${p.count}</span> ${p.label}</div>`).join('');
+}
+function renderVrusFleetCards(filter){
+    const cont=document.getElementById('vrusFleetCards');
+    const byState={};
+    CUSTOMERS.forEach(c=>{
+        if(!byState[c.state])byState[c.state]=[];
+        (VRU_UNITS[c.name]||[]).slice(0,6).forEach(u=>{
+            if(filter==='All'||u.status===filter)byState[c.state].push({...u,customer:c.name,state:c.state});
+        });
+    });
+    let h='';
+    Object.keys(byState).sort().forEach(state=>{
+        const units=byState[state];
+        if(!units.length)return;
+        h+=`<div class="fleet-state-group"><div class="fleet-state-label"><i class="fas fa-map-marker-alt" style="color:#2196F3"></i>${state} <span class="fsl-count">(${units.length} units)</span></div><div class="fleet-cards">`;
+        units.forEach(u=>{
+            const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
+            const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
+            h+=`<div class="fleet-card"><div class="fc-status" style="background:${sc}"></div><div class="fc-id">${u.id}</div><div class="fc-customer">${u.customer}</div><div class="fc-state">${u.state}</div><div class="fc-avail" style="color:${ac}">${u.avail}%</div><div class="fc-bar"><div class="fc-bar-fill" style="width:${u.avail}%;background:${ac}"></div></div></div>`;
+        });
+        h+=`</div></div>`;
+    });
+    if(!h)h='<div style="padding:40px;text-align:center;color:#999"><i class="fas fa-search" style="font-size:24px;margin-bottom:8px;display:block;color:#d1d5db"></i>No units match this filter</div>';
+    cont.innerHTML=h;
+}
+
+// ===== NETWORK PAGE =====
+function initNetworkPage(){
+    const online=461,offline=26,total=487;
+    document.getElementById('networkKpis').innerHTML=`
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-server"></i></div><div><div class="kpi-val">${total}</div><div class="kpi-label">Total Devices</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-wifi"></i></div><div><div class="kpi-val" style="color:#10b981">${online}</div><div class="kpi-label">Online</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-exclamation-circle"></i></div><div><div class="kpi-val" style="color:#ef4444">${offline}</div><div class="kpi-label">Offline</div></div></div>
+        <div class="page-kpi"><div class="page-kpi-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-signal"></i></div><div><div class="kpi-val" style="color:#10b981">${(online/total*100).toFixed(1)}%</div><div class="kpi-label">Connection Rate</div></div></div>`;
+    const nodes=document.getElementById('networkNodes');
+    nodes.innerHTML=STATES_DATA.map(s=>{
+        const on=s.units-s.down;
+        const statusColor=s.down>3?'#ef4444':s.down>0?'#f59e0b':'#10b981';
+        return `<div class="network-node"><div class="nn-status" style="background:${statusColor}"></div><div class="nn-name">${s.name}</div><div style="font-size:22px;font-weight:700;color:#333">${s.units}</div><div style="font-size:10px;color:#6c757d">devices</div><div class="nn-stats"><span class="nn-online"><i class="fas fa-check-circle" style="margin-right:3px"></i>${on}</span><span class="nn-offline"><i class="fas fa-times-circle" style="margin-right:3px"></i>${s.down}</span></div></div>`;
+    }).join('');
+    renderNetworkTable();
+}
+function renderNetworkTable(){
+    const tbl=document.getElementById('networkTable');
+    let h='<thead><tr><th>Device ID</th><th>Customer</th><th>State</th><th>Status</th><th>Last Seen</th><th>Signal</th><th>Latency</th></tr></thead><tbody>';
+    CUSTOMERS.forEach(c=>{
+        const units=(VRU_UNITS[c.name]||[]).slice(0,3);
+        units.forEach(u=>{
+            const isOnline=u.status!=='Down';
+            const sc=isOnline?'#10b981':'#ef4444';
+            const sbg=isOnline?'#ecfdf5':'#fef2f2';
+            const sl=isOnline?'Online':'Offline';
+            const signal=isOnline?Math.floor(70+Math.random()*28)+'%':'-';
+            const latency=isOnline?Math.floor(20+Math.random()*80)+'ms':'-';
+            const lastSeen=isOnline?'Just now':'Apr '+Math.floor(Math.random()*28+1)+', 2026';
+            h+=`<tr><td style="font-weight:600;color:#2196F3">${u.id}</td><td>${c.name}</td><td>${c.state}</td><td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;background:${sbg};color:${sc}"><span style="width:5px;height:5px;border-radius:50%;background:${sc}"></span>${sl}</span></td><td style="color:#6c757d;font-size:11px">${lastSeen}</td><td style="font-weight:600;color:${isOnline?'#10b981':'#999'}">${signal}</td><td style="color:${isOnline?(parseInt(latency)<50?'#10b981':'#f59e0b'):'#999'}">${latency}</td></tr>`;
+        });
+    });
+    h+='</tbody>';
+    tbl.innerHTML=h;
+}
+
+// ===== ALARMS PAGE =====
+const ALARM_TYPES=['Berm O2 Switch','Compressor Fail','Compressor Hoa In Auto','Compressor Hoa In Hand','Compressor Run Command','Compressor Running Status','Compressor Speed Fail','Low Suction Pilot Light','Condensate Pump Fail'];
+const ALARM_ACTIVE_GROUPS=[
+    {state:'Texas',customer:'XTO Energy',unit:'PVR2238',critical:1,warning:4,alarms:[
+        {cond:'Compressor Running Status',op:'EQUAL TO',val:'1',name:'Compressor Running Status',sev:'Warning',time:'May 07, 06:14',ack:'—',status:'Active'},
+        {cond:'Compressor Fail',op:'EQUAL TO',val:'1',name:'Compressor Fail',sev:'Critical',time:'May 07, 05:58',ack:'—',status:'Active'},
+        {cond:'Compressor Hoa In Auto',op:'EQUAL TO',val:'0',name:'Compressor Hoa In Auto',sev:'Warning',time:'May 07, 04:32',ack:'J. Morris',status:'Active'},
+        {cond:'Low Suction Pilot Light',op:'EQUAL TO',val:'1',name:'Low Suction Pilot Light',sev:'Warning',time:'May 07, 03:17',ack:'—',status:'Active'},
+        {cond:'Berm O2 Switch',op:'EQUAL TO',val:'1',name:'Berm O2 Switch',sev:'Warning',time:'May 07, 02:45',ack:'—',status:'Active'}]},
+    {state:'Texas',customer:'Diamondback Energy',unit:'PVR2067',critical:2,warning:1,alarms:[
+        {cond:'Compressor Fail',op:'EQUAL TO',val:'1',name:'Compressor Fail',sev:'Critical',time:'May 07, 05:44',ack:'—',status:'Active'},
+        {cond:'Compressor Speed Fail',op:'EQUAL TO',val:'1',name:'Compressor Speed Fail',sev:'Critical',time:'May 07, 05:30',ack:'—',status:'Active'},
+        {cond:'Condensate Pump Fail',op:'EQUAL TO',val:'1',name:'Condensate Pump Fail',sev:'Warning',time:'May 07, 04:11',ack:'R. Chen',status:'Active'}]},
+    {state:'Oklahoma',customer:'Devon Energy',unit:'PVR3184',critical:0,warning:3,alarms:[
+        {cond:'Compressor Hoa In Hand',op:'EQUAL TO',val:'1',name:'Compressor Hoa In Hand',sev:'Warning',time:'May 07, 06:02',ack:'—',status:'Active'},
+        {cond:'Compressor Run Command',op:'EQUAL TO',val:'0',name:'Compressor Run Command',sev:'Warning',time:'May 07, 05:15',ack:'—',status:'Active'},
+        {cond:'Compressor Running Status',op:'EQUAL TO',val:'0',name:'Compressor Running Status',sev:'Warning',time:'May 07, 04:48',ack:'M. Patel',status:'Active'}]},
+    {state:'New Mexico',customer:'Mewbourne Oil',unit:'PVR1456',critical:1,warning:2,alarms:[
+        {cond:'Compressor Fail',op:'EQUAL TO',val:'1',name:'Compressor Fail',sev:'Critical',time:'May 07, 05:22',ack:'—',status:'Active'},
+        {cond:'Berm O2 Switch',op:'EQUAL TO',val:'1',name:'Berm O2 Switch',sev:'Warning',time:'May 07, 03:55',ack:'—',status:'Active'},
+        {cond:'Low Suction Pilot Light',op:'EQUAL TO',val:'1',name:'Low Suction Pilot Light',sev:'Warning',time:'May 07, 02:10',ack:'K. Davis',status:'Active'}]},
+    {state:'Colorado',customer:'Centennial Dev',unit:'PVR2891',critical:1,warning:1,alarms:[
+        {cond:'Compressor Speed Fail',op:'EQUAL TO',val:'1',name:'Compressor Speed Fail',sev:'Critical',time:'May 07, 06:08',ack:'—',status:'Active'},
+        {cond:'Compressor Hoa In Auto',op:'EQUAL TO',val:'0',name:'Compressor Hoa In Auto',sev:'Warning',time:'May 07, 04:20',ack:'—',status:'Active'}]},
+    {state:'North Dakota',customer:'Whiting Petroleum',unit:'PVR3098',critical:0,warning:2,alarms:[
+        {cond:'Compressor Running Status',op:'EQUAL TO',val:'0',name:'Compressor Running Status',sev:'Warning',time:'May 07, 05:50',ack:'—',status:'Active'},
+        {cond:'Condensate Pump Fail',op:'EQUAL TO',val:'1',name:'Condensate Pump Fail',sev:'Warning',time:'May 07, 03:30',ack:'—',status:'Active'}]},
+    {state:'Texas',customer:'Pioneer Natural',unit:'PVR1783',critical:1,warning:0,alarms:[
+        {cond:'Compressor Fail',op:'EQUAL TO',val:'1',name:'Compressor Fail',sev:'Critical',time:'May 07, 06:20',ack:'—',status:'Active'}]},
+    {state:'Wyoming',customer:'Laramie Resources',unit:'PVR2615',critical:0,warning:3,alarms:[
+        {cond:'Compressor Hoa In Hand',op:'EQUAL TO',val:'1',name:'Compressor Hoa In Hand',sev:'Warning',time:'May 07, 05:35',ack:'—',status:'Active'},
+        {cond:'Compressor Run Command',op:'EQUAL TO',val:'0',name:'Compressor Run Command',sev:'Warning',time:'May 07, 04:00',ack:'T. Wilson',status:'Active'},
+        {cond:'Berm O2 Switch',op:'EQUAL TO',val:'1',name:'Berm O2 Switch',sev:'Warning',time:'May 07, 02:55',ack:'—',status:'Active'}]}
+];
+const ALARM_HISTORY_GROUPS=[
+    {state:'Texas',customer:'Callon Petroleum',unit:'PVR1920',alarms:[
+        {cond:'Compressor Fail',op:'EQUAL TO',val:'1',name:'Compressor Fail',sev:'Critical',time:'May 06, 22:14',resolved:'May 07, 01:30',status:'Auto Resolved'},
+        {cond:'Low Suction Pilot Light',op:'EQUAL TO',val:'1',name:'Low Suction Pilot Light',sev:'Warning',time:'May 06, 20:45',resolved:'May 06, 23:10',status:'Auto Resolved'}]},
+    {state:'Oklahoma',customer:'Sandridge Energy',unit:'PVR3341',alarms:[
+        {cond:'Compressor Hoa In Auto',op:'EQUAL TO',val:'0',name:'Compressor Hoa In Auto',sev:'Warning',time:'May 06, 16:20',resolved:'May 06, 18:45',status:'Auto Resolved'}]},
+    {state:'New Mexico',customer:'Concho Resources',unit:'PVR2774',alarms:[
+        {cond:'Compressor Speed Fail',op:'EQUAL TO',val:'1',name:'Compressor Speed Fail',sev:'Critical',time:'May 06, 12:40',resolved:'May 06, 14:20',status:'Auto Resolved'},
+        {cond:'Condensate Pump Fail',op:'EQUAL TO',val:'1',name:'Condensate Pump Fail',sev:'Warning',time:'May 06, 10:15',resolved:'May 06, 12:00',status:'Auto Resolved'}]},
+    {state:'North Dakota',customer:'Enerplus',unit:'PVR2614',alarms:[
+        {cond:'Compressor Run Command',op:'EQUAL TO',val:'0',name:'Compressor Run Command',sev:'Warning',time:'May 06, 08:30',resolved:'May 06, 10:05',status:'Auto Resolved'}]},
+    {state:'Colorado',customer:'Extraction Oil',unit:'PVR2450',alarms:[
+        {cond:'Compressor Hoa In Hand',op:'EQUAL TO',val:'1',name:'Compressor Hoa In Hand',sev:'Warning',time:'May 06, 03:10',resolved:'May 06, 05:30',status:'Auto Resolved'},
+        {cond:'Low Suction Pilot Light',op:'EQUAL TO',val:'1',name:'Low Suction Pilot Light',sev:'Warning',time:'May 06, 01:00',resolved:'May 06, 03:00',status:'Auto Resolved'}]}
+];
+const ALARM_CONFIG_RULES=[
+    {assets:'XTO Energy — PVR2238',cond:'Compressor Fail EQUAL TO 1',title:'Compressor Failure Alert',shared:'Operations Team',enabled:true,date:'2026-03-15'},
+    {assets:'Diamondback — PVR2067',cond:'Compressor Speed Fail EQUAL TO 1',title:'Speed Failure Alert',shared:'Field Engineers',enabled:true,date:'2026-03-18'},
+    {assets:'Devon Energy — PVR3184',cond:'Running Status EQUAL TO 0',title:'Running Status Monitor',shared:'Operations Team',enabled:true,date:'2026-04-02'},
+    {assets:'Mewbourne Oil — PVR1456',cond:'Low Suction Pilot Light EQUAL TO 1',title:'Low Suction Alert',shared:'All Users',enabled:false,date:'2026-04-05'},
+    {assets:'Centennial Dev — PVR2891',cond:'Berm O2 Switch EQUAL TO 1',title:'O2 Switch Alarm',shared:'Safety Team',enabled:true,date:'2026-04-10'},
+    {assets:'Oasis Petroleum — PVR3502',cond:'Condensate Pump Fail EQUAL TO 1',title:'Pump Failure Alert',shared:'Operations Team',enabled:true,date:'2026-04-12'},
+    {assets:'Pioneer Natural — PVR1783',cond:'Compressor Fail EQUAL TO 1',title:'Compressor Down Alert',shared:'Field Engineers',enabled:true,date:'2026-04-18'},
+    {assets:'Laramie — PVR2615',cond:'Compressor Hoa In Hand EQUAL TO 1',title:'HOA Hand Mode Alert',shared:'Operations Team',enabled:false,date:'2026-04-22'},
+    {assets:'Callon Petroleum — PVR1920',cond:'Hoa In Auto EQUAL TO 0',title:'HOA Auto Loss Alert',shared:'All Users',enabled:true,date:'2026-04-28'},
+    {assets:'Sandridge — PVR3341',cond:'Run Command EQUAL TO 0',title:'Run Command Lost',shared:'Safety Team',enabled:true,date:'2026-05-01'}
+];
+
+function initAlarmsPage(){
+    document.querySelectorAll('#alarmTabs .alarm-tab').forEach(tab=>{
+        tab.addEventListener('click',function(){
+            document.querySelectorAll('#alarmTabs .alarm-tab').forEach(t=>t.classList.remove('active'));
+            this.classList.add('active');
+            const t=this.dataset.atab;
+            document.getElementById('alarmFilterRow').style.display=t==='configure'?'none':'flex';
+            if(t==='active')renderAlarmsActive();
+            else if(t==='history')renderAlarmsHistory();
+            else renderAlarmsConfigure();
+        });
+    });
+    renderAlarmsActive();
+}
+function buildAlarmGroup(g,idx,prefix,isHistory){
+    const cBadge=g.critical?`<span class="alarm-sev-badge critical"><i class="fas fa-times-circle"></i>${g.critical} Critical</span>`:'';
+    const wBadge=g.warning?`<span class="alarm-sev-badge warning"><i class="fas fa-exclamation-triangle"></i>${g.warning} Warning</span>`:g.alarms?`<span class="alarm-sev-badge warning"><i class="fas fa-exclamation-triangle"></i>${g.alarms.filter(a=>a.sev==='Warning').length} Warning</span>`:'';
+    let h=`<div class="alarm-group" id="ag_${prefix}${idx}"><div class="alarm-group-header" onclick="toggleAlarmGrp('${prefix}${idx}')"><div class="alarm-group-path"><i class="fas fa-chevron-down" style="font-size:10px;color:#6c757d" id="agi_${prefix}${idx}"></i><span>${g.state}</span><span class="sep">&gt;</span><span>${g.customer}</span><span class="sep">&gt;</span><span style="font-weight:600">${g.unit}</span></div><div class="alarm-badges">${cBadge}${wBadge}<span style="font-size:11px;color:#999;margin-left:8px">${g.alarms.length} alarm${g.alarms.length>1?'s':''}</span></div></div>`;
+    h+=`<div id="agb_${prefix}${idx}"><table class="alarm-table"><thead><tr><th style="width:30px"><input type="checkbox"></th><th>Conditions</th><th>Alarm Name</th><th>Triggered At</th>${isHistory?'<th>Resolved At</th>':''}<th>Acknowledged by</th><th>Status</th></tr></thead><tbody>`;
+    g.alarms.forEach(a=>{
+        const sevIcon=a.sev==='Critical'?'<span class="sev-icon crit"><i class="fas fa-times-circle"></i>Critical</span>':'<span class="sev-icon warn"><i class="fas fa-exclamation-triangle"></i>Warning</span>';
+        const statusBg=a.status==='Active'?'#ecfdf5':a.status==='Auto Resolved'?'#f3f4f6':'#eff6ff';
+        const statusColor=a.status==='Active'?'#10b981':'#6c757d';
+        h+=`<tr><td><input type="checkbox"></td><td><span class="alarm-condition">${a.cond} <span class="cond-tag">${a.op}</span> <span class="cond-val">${a.val}</span></span></td><td><span class="alarm-name-badge">${a.name} ${sevIcon}</span></td><td>${a.time}</td>${isHistory?`<td>${a.resolved||''}</td>`:''}<td>${a.ack||'—'}</td><td><span class="alarm-status-badge" style="background:${statusBg};color:${statusColor}">${a.status}</span></td></tr>`;
+    });
+    h+='</tbody></table></div></div>';
+    return h;
+}
+function renderAlarmsActive(){
+    const cont=document.getElementById('alarmTabContent');
+    cont.innerHTML=ALARM_ACTIVE_GROUPS.map((g,i)=>buildAlarmGroup(g,i,'a',false)).join('');
+}
+function renderAlarmsHistory(){
+    const cont=document.getElementById('alarmTabContent');
+    cont.innerHTML=ALARM_HISTORY_GROUPS.map((g,i)=>buildAlarmGroup(g,i,'h',true)).join('');
+}
+function renderAlarmsConfigure(){
+    const cont=document.getElementById('alarmTabContent');
+    let h=`<div style="margin:16px 0"><button class="btn-primary"><i class="fas fa-plus" style="margin-right:6px"></i>Add New Alarm</button></div>`;
+    h+=`<div class="comp-table-wrap"><table class="alarm-table" style="width:100%"><thead><tr><th>Assets</th><th>Conditions</th><th>Title</th><th>Shared with</th><th style="text-align:center">Enable</th><th>Date</th><th style="text-align:center">Actions</th></tr></thead><tbody>`;
+    ALARM_CONFIG_RULES.forEach(r=>{
+        h+=`<tr><td style="font-weight:500">${r.assets}</td><td style="color:#6c757d;font-size:11px">${r.cond}</td><td style="font-weight:600">${r.title}</td><td>${r.shared}</td><td style="text-align:center"><div style="display:inline-block;width:36px;height:20px;border-radius:10px;background:${r.enabled?'#2196F3':'#d1d5db'};position:relative;cursor:pointer"><div style="position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;${r.enabled?'left:18px':'left:2px'};transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div></div></td><td style="color:#6c757d;font-size:11px">${r.date}</td><td style="text-align:center"><button class="btn-secondary" style="padding:4px 10px;font-size:11px;margin-right:4px">Edit</button><button class="btn-secondary" style="padding:4px 10px;font-size:11px;color:#ef4444;border-color:#fecaca">Delete</button></td></tr>`;
+    });
+    h+='</tbody></table></div>';
+    cont.innerHTML=h;
+}
+function toggleAlarmGrp(id){
+    const body=document.getElementById('agb_'+id);
+    const icon=document.getElementById('agi_'+id);
+    if(!body)return;
+    if(body.style.display==='none'){body.style.display='';icon.className='fas fa-chevron-down'}
+    else{body.style.display='none';icon.className='fas fa-chevron-right'}
+}
+function toggleAllAlarmGroups(expand){
+    document.querySelectorAll('[id^="agb_"]').forEach(el=>el.style.display=expand?'':'none');
+    document.querySelectorAll('[id^="agi_"]').forEach(el=>el.className=expand?'fas fa-chevron-down':'fas fa-chevron-right');
+}
+function filterAlarmGroups(){
+    const search=(document.getElementById('alarmSearchInput')||{}).value||'';
+    if(!search.trim()){document.querySelectorAll('.alarm-group').forEach(el=>el.style.display='');return}
+    const s=search.toLowerCase();
+    document.querySelectorAll('.alarm-group').forEach(el=>{
+        const text=el.textContent.toLowerCase();
+        el.style.display=text.includes(s)?'':'none';
+    });
 }
 
 // ===== INIT =====
