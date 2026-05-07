@@ -785,6 +785,60 @@
         .opt-tl-item::before{content:'';position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid;background:#fff}
         .opt-tl-item .tl-date{font-size:10px;color:#999}
         .opt-tl-item .tl-text{font-size:12px;color:#333;font-weight:500}
+
+        /* ===== CUSTOMER DETAIL PAGE ===== */
+        .cdp-breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:#6c757d;padding:14px 24px 0}
+        .cdp-breadcrumb a{color:#6c757d;text-decoration:none;cursor:pointer}.cdp-breadcrumb a:hover{color:#2196F3}
+        .cdp-breadcrumb .sep{color:#d1d5db}.cdp-breadcrumb .current{color:#333;font-weight:600}
+        .cdp-header{display:flex;align-items:center;justify-content:space-between;padding:10px 24px 0;flex-wrap:wrap;gap:12px}
+        .cdp-header h1{font-size:22px;font-weight:700;color:#333;margin:0}
+        .cdp-kpis{display:flex;gap:16px;flex-wrap:wrap}
+        .cdp-kpi{text-align:center;min-width:90px}
+        .cdp-kpi .cdp-kpi-val{font-size:22px;font-weight:700;line-height:1}
+        .cdp-kpi .cdp-kpi-label{font-size:10px;color:#6c757d;margin-top:2px}
+        .cdp-kpi .cdp-kpi-sub{font-size:10px;font-weight:600;margin-top:1px}
+        .cdp-tabs{display:flex;gap:0;border-bottom:2px solid #dee2e6;padding:0 24px;margin-top:10px}
+        .cdp-tab{padding:10px 20px;font-size:13px;font-weight:500;color:#6c757d;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;user-select:none}
+        .cdp-tab:hover{color:#333}
+        .cdp-tab.active{color:#2196F3;border-bottom-color:#2196F3;font-weight:600}
+        .cdp-body{padding:16px 24px 24px}
+        .cdp-top-row{display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:16px}
+        .cdp-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;overflow:hidden}
+        .cdp-card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #dee2e6}
+        .cdp-card-head h3{font-size:13px;font-weight:600;color:#333;margin:0}
+        .cdp-card-body{padding:14px 16px}
+        .cdp-em-kpis{display:flex;gap:20px;margin-bottom:12px}
+        .cdp-em-kpi{font-size:11px;color:#6c757d}
+        .cdp-em-kpi strong{font-size:15px;font-weight:700;color:#333;display:block}
+        .cdp-overview-section-title{font-size:14px;font-weight:600;color:#333;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+        .cdp-buckets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+        .cdp-bucket{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:12px 14px;text-align:center}
+        .cdp-bucket .cdp-bucket-val{font-size:22px;font-weight:700;line-height:1}
+        .cdp-bucket .cdp-bucket-label{font-size:10px;color:#6c757d;margin-top:4px;line-height:1.3}
+        .cdp-unit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+        .cdp-unit-card{background:#fff;border-radius:6px;border:1px solid #dee2e6;padding:10px 12px;cursor:pointer;transition:all .15s;position:relative}
+        .cdp-unit-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .cdp-unit-card.red{border-left:3px solid #ef4444}
+        .cdp-unit-card.yellow{border-left:3px solid #f59e0b}
+        .cdp-unit-card.green{border-left:3px solid #10b981}
+        .cdp-unit-card.gray{border-left:3px solid #9ca3af}
+        .cdp-unit-name{font-size:11px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .cdp-unit-avail{font-size:14px;font-weight:700;margin-top:2px}
+        .cdp-legend{display:flex;align-items:center;gap:14px;font-size:10px;color:#6c757d;margin-top:6px;flex-wrap:wrap}
+        .cdp-legend-item{display:flex;align-items:center;gap:4px}
+        .cdp-legend-dot{width:10px;height:4px;border-radius:2px}
+        .cdp-assets-table{width:100%;border-collapse:collapse;font-size:12px}
+        .cdp-assets-table thead th{background:#f8f9fa;padding:9px 14px;text-align:left;font-weight:600;font-size:10px;color:#333;text-transform:uppercase;letter-spacing:.3px;border-bottom:2px solid #dee2e6;white-space:nowrap}
+        .cdp-assets-table tbody td{padding:8px 14px;border-bottom:1px solid #f3f4f6;color:#374151}
+        .cdp-assets-table tbody tr:hover{background:#f8f9fa;cursor:pointer}
+        .cdp-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;color:#999;text-align:center}
+        .cdp-placeholder i{font-size:40px;color:#d1d5db;margin-bottom:12px}
+        .cdp-placeholder h3{font-size:15px;font-weight:600;color:#6c757d;margin-bottom:4px}
+        .cdp-placeholder p{font-size:12px;color:#999}
+        .cdp-date-range{display:flex;align-items:center;gap:6px;font-size:12px;color:#6c757d;border:1px solid #dee2e6;border-radius:6px;padding:5px 10px;background:#fff}
+        @media(max-width:1200px){.cdp-unit-grid{grid-template-columns:repeat(4,1fr)}.cdp-top-row{grid-template-columns:1fr}}
+        @media(max-width:900px){.cdp-unit-grid{grid-template-columns:repeat(3,1fr)}.cdp-buckets{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:600px){.cdp-unit-grid{grid-template-columns:repeat(2,1fr)}}
     </style>
 </head>
 <body>
@@ -1040,6 +1094,9 @@
             <div class="comp-table-wrap"><div class="scroll-y" style="max-height:600px"><table class="data-table" id="custPageTable"></table></div></div>
         </div>
     </div>
+
+    <!-- ===== CUSTOMER DETAIL PAGE ===== -->
+    <div id="customerDetailPage" style="display:none"></div>
 
     <!-- ===== VRU COMPRESSORS PAGE ===== -->
     <div id="vruCompressorsPage" style="display:none">
@@ -2894,10 +2951,10 @@ function initOverviewDashboard(){
 
 // ===== PAGE NAVIGATION =====
 let reportGenerated=false;
-const ALL_PAGES=['overviewDashPage','customDashPage','customersPage','vruCompressorsPage','vrusPage','networkPage','alarmsPage','reportsPage'];
-const PAGE_MAP={overview:'overviewDashPage',customDashboard:'customDashPage',customers:'customersPage',vruCompressors:'vruCompressorsPage',vrus:'vrusPage',network:'networkPage',alarms:'alarmsPage',reports:'reportsPage'};
-const PAGE_TITLES={overview:'Overview',customDashboard:'Custom Dashboard',customers:'Customers',vruCompressors:'VRU Compressors',vrus:'VRUs',network:'Network',alarms:'Alarms',reports:'Reports'};
-const PAGE_SIDEBAR_IDX={overview:0,customDashboard:1,customers:2,vruCompressors:3,vrus:4,network:5,alarms:6,reports:7};
+const ALL_PAGES=['overviewDashPage','customDashPage','customersPage','customerDetailPage','vruCompressorsPage','vrusPage','networkPage','alarmsPage','reportsPage'];
+const PAGE_MAP={overview:'overviewDashPage',customDashboard:'customDashPage',customers:'customersPage',customerDetail:'customerDetailPage',vruCompressors:'vruCompressorsPage',vrus:'vrusPage',network:'networkPage',alarms:'alarmsPage',reports:'reportsPage'};
+const PAGE_TITLES={overview:'Overview',customDashboard:'Custom Dashboard',customers:'Customers',customerDetail:'Customer Detail',vruCompressors:'VRU Compressors',vrus:'VRUs',network:'Network',alarms:'Alarms',reports:'Reports'};
+const PAGE_SIDEBAR_IDX={overview:0,customDashboard:1,customers:2,customerDetail:2,vruCompressors:3,vrus:4,network:5,alarms:6,reports:7};
 const pageInited={};
 
 function showPage(page){
@@ -2916,6 +2973,7 @@ function showPage(page){
     }
     if(page==='customDashboard'&&!pageInited.customDash){pageInited.customDash=true;initCustomDashboard()}
     if(page==='customers'&&!pageInited.customers){pageInited.customers=true;initCustomersPage()}
+    if(page==='customerDetail'){initCustomerDetailPage()}
     if(page==='vruCompressors'&&!pageInited.vruComp){pageInited.vruComp=true;initVruCompressorsPage()}
     if(page==='vrus'&&!pageInited.vrus){pageInited.vrus=true;initVrusPage()}
     if(page==='network'&&!pageInited.network){pageInited.network=true;initNetworkPage()}
@@ -3031,7 +3089,7 @@ function renderCustPageTable(){
         const slaClass=c.avail>=95?'above':c.avail>=92?'at-risk':'below';
         const slaLabel=c.avail>=95?'Above SLA':c.avail>=92?'At Risk':'Below SLA';
         const tDir=c.trend>=0?'up':'down';const tColor=c.trend>=0?'#10b981':'#ef4444';
-        h+=`<tr onclick="navigateTo('customerView',{customer:'${c.name.replace(/'/g,"\\'")}'})" style="cursor:pointer" title="View ${c.name} →">
+        h+=`<tr onclick="goToCustomerDetail('${c.name.replace(/'/g,"\\'")}');" style="cursor:pointer" title="View ${c.name}→">
             <td style="color:#999;font-size:10px;text-align:center">${i+1}</td>
             <td style="font-weight:600;color:#2196F3">${c.name}</td>
             <td style="color:#6c757d">${c.state}</td>
@@ -3045,6 +3103,177 @@ function renderCustPageTable(){
     });
     h+='</tbody>';
     tbl.innerHTML=h;
+}
+
+// ===== CUSTOMER DETAIL PAGE =====
+let custDetailName=null;
+let cdpCharts={};
+let cdpActiveTab='overview';
+function goToCustomerDetail(name){
+    custDetailName=name;
+    showPage('customerDetail');
+}
+function initCustomerDetailPage(){
+    // Destroy previous charts
+    Object.values(cdpCharts).forEach(c=>{try{c.destroy()}catch(e){}});
+    cdpCharts={};
+    cdpActiveTab='overview';
+    const cust=CUSTOMERS.find(c=>c.name===custDetailName);
+    if(!cust){document.getElementById('customerDetailPage').innerHTML='<p style="padding:24px">Customer not found.</p>';return}
+    const units=VRU_UNITS[cust.name]||[];
+    const running=units.filter(u=>u.status==='Running').length;
+    const down=units.filter(u=>u.status==='Down').length;
+    const na=units.filter(u=>u.status!=='Running'&&u.status!=='Down').length;
+    const totalU=units.length;
+    const runPct=totalU?(running/totalU*100).toFixed(1):'0';
+    const downPct=totalU?(down/totalU*100).toFixed(1):'0';
+    const naPct=totalU?(na/totalU*100).toFixed(1):'0';
+
+    const container=document.getElementById('customerDetailPage');
+    container.innerHTML=`
+    <div class="cdp-breadcrumb">
+        <a onclick="showPage('overview');return false"><i class="fas fa-home"></i></a><span class="sep">&gt;</span>
+        <a onclick="showPage('customers');return false">Customers</a><span class="sep">&gt;</span>
+        <span class="current">${cust.name}</span>
+    </div>
+    <div class="cdp-header">
+        <h1>${cust.name}</h1>
+        <div class="cdp-kpis">
+            <div class="cdp-kpi"><div class="cdp-kpi-val" style="color:#333">${totalU}</div><div class="cdp-kpi-label">Total Compressors</div></div>
+            <div class="cdp-kpi"><div class="cdp-kpi-val" style="color:#10b981">${running}</div><div class="cdp-kpi-sub" style="color:#10b981">${runPct}%</div><div class="cdp-kpi-label">Total Running</div></div>
+            <div class="cdp-kpi"><div class="cdp-kpi-val" style="color:#ef4444">${down}</div><div class="cdp-kpi-sub" style="color:#ef4444">${downPct}%</div><div class="cdp-kpi-label">Total Down</div></div>
+            <div class="cdp-kpi"><div class="cdp-kpi-val" style="color:#f59e0b">${na}</div><div class="cdp-kpi-sub" style="color:#f59e0b">${naPct}%</div><div class="cdp-kpi-label">N/A</div></div>
+        </div>
+    </div>
+    <div class="cdp-tabs">
+        <div class="cdp-tab active" onclick="cdpSwitchTab('overview',this)">Overview</div>
+        <div class="cdp-tab" onclick="cdpSwitchTab('assets',this)">Assets</div>
+        <div class="cdp-tab" onclick="cdpSwitchTab('comparison',this)">Comparison</div>
+        <div class="cdp-tab" onclick="cdpSwitchTab('analytics',this)">Advance Analytics</div>
+    </div>
+    <div class="cdp-body">
+        <div id="cdpTabOverview">${cdpBuildOverviewTab(cust,units)}</div>
+        <div id="cdpTabAssets" style="display:none">${cdpBuildAssetsTab(cust,units)}</div>
+        <div id="cdpTabComparison" style="display:none"><div class="cdp-placeholder"><i class="fas fa-chart-bar"></i><h3>Comparison</h3><p>Comparison tab content coming soon...</p></div></div>
+        <div id="cdpTabAnalytics" style="display:none"><div class="cdp-placeholder"><i class="fas fa-brain"></i><h3>Advance Analytics</h3><p>Advanced Analysis tab content coming soon...</p></div></div>
+    </div>`;
+    // Init charts after DOM is ready
+    setTimeout(()=>cdpInitOverviewCharts(cust,units),50);
+}
+function cdpSwitchTab(tab,el){
+    cdpActiveTab=tab;
+    document.querySelectorAll('.cdp-tab').forEach(t=>t.classList.remove('active'));
+    if(el)el.classList.add('active');
+    ['Overview','Assets','Comparison','Analytics'].forEach(t=>{
+        const panel=document.getElementById('cdpTab'+t);
+        if(panel)panel.style.display='none';
+    });
+    const map={overview:'Overview',assets:'Assets',comparison:'Comparison',analytics:'Analytics'};
+    const target=document.getElementById('cdpTab'+(map[tab]||'Overview'));
+    if(target)target.style.display='block';
+}
+function cdpBuildOverviewTab(cust,units){
+    // Date range text
+    const now=new Date();
+    const d7=new Date(now);d7.setDate(d7.getDate()-7);
+    const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const rangeStr=fmt(d7)+' - '+fmt(now);
+
+    // Buckets
+    const below98=units.filter(u=>u.avail<98).length;
+    const range98=units.filter(u=>u.avail>=98&&u.avail<98.5).length;
+    const above985=units.filter(u=>u.avail>=98.5).length;
+    const noData=units.filter(u=>u.status!=='Running'&&u.status!=='Down'&&u.avail<=0).length;
+
+    // Unit cards HTML
+    let cardsHtml='';
+    units.forEach((u,i)=>{
+        let colorCls='green';
+        let availColor='#10b981';
+        if(u.status==='Down'||u.avail<98){colorCls='red';availColor='#ef4444'}
+        else if(u.avail>=98&&u.avail<98.5){colorCls='yellow';availColor='#f59e0b'}
+        else if(u.status!=='Running'&&u.status!=='Down'){colorCls='gray';availColor='#9ca3af'}
+        const displayAvail=u.avail>0?u.avail+'%':'NA';
+        cardsHtml+=`<div class="cdp-unit-card ${colorCls}" onclick="goToVruDetail('${cust.name.replace(/'/g,"\\'")}',${i})" title="${u.displayName||u.id}">
+            <div class="cdp-unit-name">${u.displayName||u.id}</div>
+            <div class="cdp-unit-avail" style="color:${availColor}">${displayAvail}</div>
+        </div>`;
+    });
+
+    return `
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:12px">
+        <div class="cdp-date-range"><i class="far fa-calendar-alt"></i> ${rangeStr}</div>
+    </div>
+    <div class="cdp-top-row">
+        <div class="cdp-card">
+            <div class="cdp-card-head"><h3><i class="fas fa-leaf" style="color:#10b981;margin-right:6px"></i>Emission Trend</h3></div>
+            <div class="cdp-card-body">
+                <div class="cdp-em-kpis">
+                    <div class="cdp-em-kpi">Emission Reduced<strong>0 kg</strong></div>
+                    <div class="cdp-em-kpi">Recovered Gas Revenue<strong>$0</strong></div>
+                </div>
+                <div style="height:200px"><canvas id="cdpEmissionChart"></canvas></div>
+            </div>
+        </div>
+        <div class="cdp-card">
+            <div class="cdp-card-head"><h3><i class="fas fa-exclamation-triangle" style="color:#f59e0b;margin-right:6px"></i>All Faults</h3><span style="font-size:18px;font-weight:700;color:#333">0.0 Hrs</span></div>
+            <div class="cdp-card-body"><div style="height:200px"><canvas id="cdpFaultsChart"></canvas></div></div>
+        </div>
+    </div>
+    <div class="cdp-overview-section-title"><i class="fas fa-server" style="color:#2196F3"></i>Compressor Overview &mdash; Last 24 Hours</div>
+    <div class="cdp-buckets">
+        <div class="cdp-bucket" style="border-left:3px solid #ef4444"><div class="cdp-bucket-val" style="color:#ef4444">${below98}</div><div class="cdp-bucket-label">Compressors<br>(Uptime &lt; 98%)</div></div>
+        <div class="cdp-bucket" style="border-left:3px solid #f59e0b"><div class="cdp-bucket-val" style="color:#f59e0b">${range98}</div><div class="cdp-bucket-label">Compressors<br>(98% &le; Uptime &lt; 98.5%)</div></div>
+        <div class="cdp-bucket" style="border-left:3px solid #10b981"><div class="cdp-bucket-val" style="color:#10b981">${above985}</div><div class="cdp-bucket-label">Compressors<br>(Uptime &ge; 98.5%)</div></div>
+        <div class="cdp-bucket" style="border-left:3px solid #9ca3af"><div class="cdp-bucket-val" style="color:#9ca3af">${noData}</div><div class="cdp-bucket-label">Compressors<br>(No Data Available)</div></div>
+    </div>
+    <div class="cdp-unit-grid">${cardsHtml}</div>
+    <div class="cdp-legend">
+        <div class="cdp-legend-item"><div class="cdp-legend-dot" style="background:#ef4444"></div>Downtime 2% or more</div>
+        <div class="cdp-legend-item"><div class="cdp-legend-dot" style="background:#f59e0b"></div>At Risk</div>
+        <div class="cdp-legend-item"><div class="cdp-legend-dot" style="background:#10b981"></div>In Good Health (Uptime &ge; 98.5%)</div>
+        <div class="cdp-legend-item"><div class="cdp-legend-dot" style="background:#9ca3af"></div>No Data Available</div>
+    </div>`;
+}
+function cdpBuildAssetsTab(cust,units){
+    let rows='';
+    units.forEach((u,i)=>{
+        const statusColor=u.status==='Running'?'#10b981':u.status==='Down'?'#ef4444':'#f59e0b';
+        const statusBg=u.status==='Running'?'#ecfdf5':u.status==='Down'?'#fef2f2':'#fffbeb';
+        const availColor=u.avail>=98.5?'#10b981':u.avail>=98?'#f59e0b':'#ef4444';
+        rows+=`<tr onclick="goToVruDetail('${cust.name.replace(/'/g,"\\'")}',${i})">
+            <td style="color:#999;font-size:10px;text-align:center">${i+1}</td>
+            <td style="font-weight:600;color:#2196F3">${u.displayName||u.id}</td>
+            <td>${cust.name}</td>
+            <td>Screw</td>
+            <td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:600;background:${statusBg};color:${statusColor}"><span style="width:5px;height:5px;border-radius:50%;background:${statusColor}"></span>${u.status}</span></td>
+            <td style="font-weight:700;color:${availColor}">${u.avail}%</td>
+        </tr>`;
+    });
+    return `<div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden"><div class="scroll-y" style="max-height:600px">
+        <table class="cdp-assets-table"><thead><tr><th>#</th><th>VRU Compressors</th><th>Customer</th><th>Type</th><th>Status</th><th>Uptime %</th></tr></thead>
+        <tbody>${rows}</tbody></table></div></div>`;
+}
+function cdpInitOverviewCharts(cust,units){
+    // Emission Trend - dual axis line chart (Revenue $ vs Emissions Tons, last 7 days)
+    const days=[];
+    for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}))}
+    const revData=days.map(()=>Math.round(Math.random()*500));
+    const emData=days.map(()=>+(Math.random()*2).toFixed(2));
+    const cv1=document.getElementById('cdpEmissionChart');
+    if(cv1){
+        cdpCharts.emission=new Chart(cv1.getContext('2d'),{type:'line',data:{labels:days,datasets:[
+            {label:'Revenue ($)',data:revData,borderColor:'#2196F3',backgroundColor:'rgba(33,150,243,.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#2196F3',borderWidth:2,yAxisID:'y'},
+            {label:'Emissions (Tons)',data:emData,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#10b981',borderWidth:2,yAxisID:'y1'}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true,padding:12}},datalabels:{display:false}},interaction:{mode:'index',intersect:false},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},maxRotation:45}},y:{type:'linear',position:'left',grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>'$'+v},title:{display:true,text:'Revenue ($)',font:{size:9},color:'#6c757d'}},y1:{type:'linear',position:'right',grid:{display:false},ticks:{font:{size:9},callback:v=>v+'T'},title:{display:true,text:'Emissions (Tons)',font:{size:9},color:'#6c757d'}}}}});
+    }
+    // All Faults bar chart
+    const faultLabels=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const faultData=faultLabels.map(()=>+(Math.random()*2).toFixed(1));
+    const cv2=document.getElementById('cdpFaultsChart');
+    if(cv2){
+        cdpCharts.faults=new Chart(cv2.getContext('2d'),{type:'bar',data:{labels:faultLabels,datasets:[{label:'Fault Hours',data:faultData,backgroundColor:'rgba(245,158,11,.5)',borderColor:'#f59e0b',borderWidth:1,borderRadius:3,barPercentage:.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'top',color:'#666',font:{size:9,weight:'600'},formatter:v=>v>0?v+'h':''}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'},beginAtZero:true}}}});
+    }
 }
 
 // ===== VRU COMPRESSORS PAGE =====
