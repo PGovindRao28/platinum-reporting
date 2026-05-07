@@ -580,6 +580,104 @@
         .cust-page-search{display:flex;align-items:center;background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:0 12px;height:36px;min-width:240px}
         .cust-page-search i{color:#999;font-size:12px;margin-right:8px}
         .cust-page-search input{border:none;background:none;outline:none;font-size:13px;flex:1;color:#333}
+
+        /* ===== VRU DETAIL PAGE ===== */
+        .vru-layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
+        .vru-lp{width:200px;min-width:200px;border-right:1px solid #dee2e6;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+        .vru-lp-search{padding:10px;border-bottom:1px solid #eee;position:relative}
+        .vru-lp-search i{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:#999;font-size:11px}
+        .vru-lp-search input{width:100%;border:1px solid #dee2e6;border-radius:4px;padding:5px 8px 5px 26px;font-size:11px;outline:none;box-sizing:border-box}
+        .vru-lp-search input:focus{border-color:#2196F3}
+        .vru-pills{display:flex;flex-wrap:wrap;gap:4px;padding:8px 10px;border-bottom:1px solid #eee}
+        .vru-pill{font-size:10px;padding:2px 7px;border-radius:10px;cursor:pointer;border:1px solid #dee2e6;background:#fff;white-space:nowrap}
+        .vru-pill.active{background:#e3f2fd;border-color:#2196F3;color:#1976d2;font-weight:600}
+        .vru-pill .dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:2px;vertical-align:middle}
+        .vru-pill .dot.green{background:#10b981}.vru-pill .dot.red{background:#ef4444}.vru-pill .dot.gray{background:#9ca3af}
+        .vru-tree{flex:1;overflow-y:auto;font-size:11px}
+        .vt-state{padding:6px 10px;font-weight:700;color:#666;cursor:pointer;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase;letter-spacing:.4px;font-size:10px;border-bottom:1px solid #f3f4f6;user-select:none}
+        .vt-state:hover{background:#f9fafb}
+        .vt-cust{padding:3px 10px 3px 14px;font-weight:600;color:#555;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:11px;user-select:none}
+        .vt-cust:hover{background:#f3f4f6}
+        .vt-cust .ct{font-size:10px;color:#bbb;font-weight:400}
+        .vt-unit{padding:4px 8px 4px 22px;cursor:pointer;display:flex;align-items:center;gap:5px;font-size:11px;color:#444;border-left:2px solid transparent}
+        .vt-unit:hover{background:#f3f4f6}
+        .vt-unit.sel{background:#e3f2fd;color:#1976d2;border-left-color:#2196F3;font-weight:600}
+        .vt-unit .tu-ico{color:#888;font-size:10px}
+        .vt-unit .tu-st{font-size:9px;margin-left:auto;white-space:nowrap}
+        .vt-unit .tu-st.running{color:#10b981}.vt-unit .tu-st.down{color:#ef4444}.vt-unit .tu-st.na{color:#9ca3af}
+        .vru-mc{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+        .vru-hdr{padding:12px 24px 4px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px}
+        .vru-hdr-title{display:flex;align-items:center;gap:10px}
+        .vru-hdr-title h2{margin:0;font-size:18px;font-weight:600}
+        .vru-badge{font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px}
+        .vru-badge.running{color:#10b981}.vru-badge.down{color:#ef4444}.vru-badge.na{color:#9ca3af}
+        .vru-meta{font-size:10px;color:#9ca3af;margin-top:2px}
+        .vru-hkpis{display:flex;gap:0}
+        .vru-hkpi{padding:6px 18px;text-align:right;border-left:1px solid #eee}
+        .vru-hkpi .hv{font-size:15px;font-weight:700;color:#333}
+        .vru-hkpi .hv.red{color:#ef4444}
+        .vru-hkpi .hv small{font-size:10px;color:#9ca3af;font-weight:400}
+        .vru-hkpi .hl{font-size:9px;color:#9ca3af}
+        .vru-tabs2{display:flex;border-bottom:2px solid #eee;padding:0 24px}
+        .vru-t2{padding:10px 14px;font-size:13px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+        .vru-t2:hover{color:#333}
+        .vru-t2.active{color:#2196F3;border-bottom-color:#2196F3;font-weight:600}
+        .vru-tbody{padding:20px 24px;flex:1;overflow-y:auto}
+        .vru-ov{display:grid;grid-template-columns:360px 1fr;gap:20px}
+        .vru-sect{margin-bottom:20px}
+        .vru-sect h3{font-size:15px;font-weight:600;margin:0 0 10px}
+        .vru-nodata{color:#999;font-size:12px;padding:12px 0;display:flex;align-items:center;gap:8px}
+        .vru-nodata i{font-size:16px;color:#d1d5db}
+        .vru-dt{background:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;position:relative;min-height:340px;overflow:hidden}
+        .vru-dt-img{width:100%;min-height:340px;display:flex;align-items:center;justify-content:center;position:relative;padding:20px}
+        .vru-dt-comp{width:260px;height:180px;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);border-radius:12px;border:2px solid #94a3b8;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 8px rgba(0,0,0,.1)}
+        .vru-dt-comp::before{content:'';position:absolute;left:-28px;top:25px;width:28px;height:55px;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);border:2px solid #94a3b8;border-right:none;border-radius:8px 0 0 8px}
+        .vru-dt-comp::after{content:'';position:absolute;right:-35px;top:15px;width:35px;height:35px;border:2px solid #94a3b8;border-radius:50%;background:linear-gradient(135deg,#e2e8f0,#cbd5e1)}
+        .vru-dt-comp .inner{text-align:center;color:#64748b;font-size:10px}
+        .vru-dt-comp .inner i{font-size:28px;display:block;margin-bottom:4px;color:#94a3b8}
+        .vru-dtl{position:absolute;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:5px 9px;box-shadow:0 2px 6px rgba(0,0,0,.08);z-index:2;white-space:nowrap;line-height:1.3}
+        .vru-dtl .dv{font-size:14px;font-weight:700;color:#333}
+        .vru-dtl .du{font-size:9px;color:#94a3b8}
+        .vru-dtl .dn{font-size:8px;color:#999;display:block}
+        .vru-pid{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:16px;margin-top:20px}
+        .vru-pid h3{font-size:15px;font-weight:600;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
+        .vru-pid h3 .actions{display:flex;gap:6px}
+        .vru-pid h3 .actions i{cursor:pointer;color:#999;font-size:13px}
+        .vru-pid h3 .actions i:hover{color:#333}
+        .vru-pid-schematic{height:180px;background:#fafbfc;border:1px solid #eee;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px}
+        .vru-sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:12px}
+        .vru-sp{background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:8px 10px}
+        .vru-sp .sv{font-size:15px;font-weight:700;color:#333}
+        .vru-sp .sv.neg{color:#ef4444}
+        .vru-sp .su{font-size:9px;color:#94a3b8;margin-left:1px}
+        .vru-sp .sl{font-size:9px;color:#666;margin-top:2px}
+        .vru-tl{display:grid;grid-template-columns:240px 1fr;gap:16px}
+        .vru-tc{border:1px solid #dee2e6;border-radius:6px;overflow:hidden}
+        .vru-tc-hdr{padding:8px 10px;background:#f8f9fa;border-bottom:1px solid #eee}
+        .vru-tc-hdr select,.vru-tc-hdr input{font-size:11px;border:1px solid #dee2e6;border-radius:4px;padding:4px 6px;outline:none;width:100%;box-sizing:border-box}
+        .vru-tc-body{max-height:340px;overflow-y:auto;padding:4px 0}
+        .vru-tc-cat{padding:3px 10px;font-size:10px;font-weight:700;color:#888;margin-top:4px;text-transform:uppercase;letter-spacing:.3px}
+        .vru-tc-item{padding:2px 10px 2px 18px;font-size:11px;display:flex;align-items:center;gap:5px;cursor:pointer}
+        .vru-tc-item:hover{background:#f3f4f6}
+        .vru-tc-item input{width:13px;height:13px;accent-color:#2196F3}
+        .vru-tc-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+        .vru-tca{border:1px solid #dee2e6;border-radius:6px;padding:14px}
+        .vru-tca-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+        .vru-tca-hdr .ttl{font-weight:600;font-size:13px;color:#333}
+        .vru-tca-pills{display:flex;gap:3px}
+        .vru-tca-p{padding:3px 10px;font-size:10px;border:1px solid #dee2e6;border-radius:4px;cursor:pointer;background:#fff}
+        .vru-tca-p.active{background:#2196F3;color:#fff;border-color:#2196F3}
+        .vru-rt{margin-top:24px}
+        .vru-rt-h{font-size:13px;font-weight:600;color:#333;padding-bottom:6px;border-bottom:2px solid #eee;margin-bottom:8px}
+        .vru-rt-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:6px}
+        .vru-rc{background:#fff;border:1px solid #dee2e6;border-radius:5px;padding:7px 9px}
+        .vru-rc .rv{font-size:14px;font-weight:700;color:#333}
+        .vru-rc .rv.red{color:#ef4444}.vru-rc .rv.grn{color:#10b981}
+        .vru-rc .ru{font-size:9px;color:#94a3b8;margin-left:1px}
+        .vru-rc .rn{font-size:9px;color:#666;margin-top:1px;line-height:1.2}
+        .vru-rc .ra{font-size:8px;color:#ccc;margin-top:1px}
+        .vru-soon{text-align:center;padding:80px 20px;color:#999}
+        .vru-soon i{font-size:40px;display:block;margin-bottom:12px;color:#d1d5db}
     </style>
 </head>
 <body>
@@ -589,13 +687,13 @@
     <div class="sidebar-nav">
         <a class="sidebar-item active" title="Overview" onclick="showPage('overview')"><i class="fas fa-th-large"></i>Overview</a>
         <a class="sidebar-item" title="Custom Dashboard" onclick="showPage('customDashboard')"><i class="fas fa-chart-line"></i>Custo...</a>
-        <a class="sidebar-item" title="Customers" onclick="showPage('customers')"><i class="fas fa-building"></i>Custo...</a>
-        <a class="sidebar-item" title="VRU Compressors" onclick="showPage('vruCompressors')"><i class="fas fa-cogs"></i>VRU C...</a>
+        <a class="sidebar-item" title="Customers" onclick="showPage('customers')"><i class="fas fa-building-user"></i>Custo...</a>
+        <a class="sidebar-item" title="VRU Compressors" onclick="showPage('vruCompressors')"><i class="fas fa-microchip"></i>VRU C...</a>
         <a class="sidebar-item" title="VRUs" onclick="showPage('vrus')"><i class="fas fa-microchip"></i>VRUs</a>
         <a class="sidebar-item" title="Network" onclick="showPage('network')"><i class="fas fa-project-diagram"></i>Network</a>
-        <a class="sidebar-item" title="Alarms" onclick="showPage('alarms')"><i class="fas fa-exclamation-triangle"></i>Alarms<span class="sidebar-badge"></span></a>
+        <a class="sidebar-item" title="Alarms" onclick="showPage('alarms')"><i class="fas fa-exclamation-circle"></i>Alarms<span class="sidebar-badge"></span></a>
         <a class="sidebar-item sidebar-pulse" id="sidebarReports" title="Reports" onclick="showPage('reports')"><i class="fas fa-chart-bar"></i>Reports</a>
-        <a class="sidebar-item" title="More Apps" onclick="showPage('overview')"><i class="fas fa-th"></i>More A...</a>
+        <a class="sidebar-item" title="More Apps" onclick="showPage('overview')"><i class="fas fa-th"></i>More A...<span class="sidebar-badge"></span></a>
     </div>
 </nav>
 
@@ -842,18 +940,19 @@
         <div class="page-content"><div class="comp-table-wrap"><div class="scroll-y" style="max-height:700px" id="compTableBody"></div></div></div>
     </div>
 
-    <!-- ===== VRUS FLEET OVERVIEW PAGE ===== -->
+    <!-- ===== VRUS DETAIL PAGE ===== -->
     <div id="vrusPage" style="display:none">
-        <div class="page-header"><div><div class="page-title">VRUs</div><div class="page-subtitle">Fleet Overview — Real-time compressor monitoring</div></div></div>
-        <div class="page-content">
-            <div class="page-kpi-strip" id="vrusKpiStrip"></div>
-            <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-bottom:20px">
-                <div class="card"><div class="card-header"><h3><i class="fas fa-chart-bar" style="color:#ef4444;margin-right:6px"></i>Downtime Distribution</h3></div><div class="card-body" style="height:280px"><canvas id="vrusDowntimeChart"></canvas></div></div>
-                <div class="card"><div class="card-header"><h3><i class="fas fa-heartbeat" style="color:#2196F3;margin-right:6px"></i>Reliability Metrics</h3></div><div class="card-body" style="height:280px"><canvas id="vrusReliabilityChart"></canvas></div></div>
+        <div class="vru-layout">
+            <div class="vru-lp">
+                <div class="vru-lp-search"><i class="fas fa-search"></i><input type="text" placeholder="Search VRUs..." id="vruSearchIn" oninput="filterVruTree(this.value)"></div>
+                <div class="vru-pills" id="vruPills"></div>
+                <div class="vru-tree" id="vruTreeEl"></div>
             </div>
-            <div class="cv-section-title" style="padding:0 0 12px"><i class="fas fa-desktop"></i> Compressor Monitoring</div>
-            <div class="fleet-filter-pills" id="vrusFilterPills"></div>
-            <div id="vrusFleetCards"></div>
+            <div class="vru-mc">
+                <div class="vru-hdr" id="vruHdr"></div>
+                <div class="vru-tabs2" id="vruTabs"></div>
+                <div class="vru-tbody" id="vruTBody"></div>
+            </div>
         </div>
     </div>
 
@@ -1563,6 +1662,16 @@ CUSTOMERS.forEach(c=>{
     }
     units.sort((a,b)=>a.avail-b.avail);
     VRU_UNITS[c.name]=units;
+});
+
+// ===== VRU DISPLAY NAMES =====
+const VRU_FNAMES=['Bluebell','Maxus','Mesa','Mesa B','Rojo','Vaca','Vindicator','Scramble','Limelight','Rattlesnake','Cobra','Fang','Spraberry','Midkiff','Reagan','Mahan','Smith Jalonick','Robertson','Showboat','Carthage','Springer','Meramec','Pinedale','Jonah','Niobrara','Codell','Bakken','Indian Hills','Broomfield','Adams','Sanish','Pronghorn','Dunn','McKenzie','Wolfcamp','Delaware','Eagle Ford','Avalon','Brushy','Cedar Lake'];
+CUSTOMERS.forEach((c,ci)=>{
+    (VRU_UNITS[c.name]||[]).forEach((u,ui)=>{
+        const fi=(ci*7+ui)%VRU_FNAMES.length;
+        const nums=ui%3===0?`${ui+1}H & ${ui+2}H`:ui%3===1?`${ui*2+1}-${ui*2+4} CTB`:`${ui+1} ${ui+5} ${ui+9} ${ui+13}`;
+        u.displayName=`${VRU_FNAMES[fi]} ${nums} ${u.id}`;
+    });
 });
 
 // ===== VIEW SWITCHING =====
@@ -2852,62 +2961,178 @@ function expandAllComp(expand){
     document.querySelectorAll('[id^="icon_state_"],[id^="icon_cust_"]').forEach(el=>{el.className=expand?'fas fa-chevron-down':'fas fa-chevron-right'});
 }
 
-// ===== VRUS FLEET OVERVIEW PAGE =====
-let vrusCharts={};
+// ===== VRU DETAIL PAGE =====
+let vruActiveTab='overview',vruSelectedCust=null,vruSelectedIdx=0,vruFilter='all',vruTrendChart=null;
 function initVrusPage(){
-    const totalUnits=487,running=387,idle=24,warning=50,down=26;
-    document.getElementById('vrusKpiStrip').innerHTML=`
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-microchip"></i></div><div><div class="kpi-val">${totalUnits}</div><div class="kpi-label">Total VRUs</div></div></div>
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#ecfdf5;color:#10b981"><i class="fas fa-check-circle"></i></div><div><div class="kpi-val" style="color:#10b981">${running}</div><div class="kpi-label">Running</div></div></div>
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#eff6ff;color:#2196F3"><i class="fas fa-pause-circle"></i></div><div><div class="kpi-val" style="color:#2196F3">${idle}</div><div class="kpi-label">Idle</div></div></div>
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-exclamation-triangle"></i></div><div><div class="kpi-val" style="color:#f59e0b">${warning}</div><div class="kpi-label">Warning</div></div></div>
-        <div class="page-kpi"><div class="page-kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-times-circle"></i></div><div><div class="kpi-val" style="color:#ef4444">${down}</div><div class="kpi-label">Down</div></div></div>`;
-    renderVrusCharts();
-    renderVrusFilterPills('All');
-    renderVrusFleetCards('All');
+    buildVruPills();buildVruTree();
+    const fc=CUSTOMERS[0];const fu=VRU_UNITS[fc.name]||[];
+    const ri=fu.findIndex(u=>u.status==='Running');
+    selectVruUnit(fc.name,ri>=0?ri:0);
 }
-function renderVrusCharts(){
-    Object.values(vrusCharts).forEach(c=>c.destroy());vrusCharts={};
-    const causes=['Mechanical','Electrical','Sensor','Comm Loss','Overheating','Other'];
-    const causeData=[32,22,16,12,10,8];
-    const causeColors=['#ef4444','#f59e0b','#8b5cf6','#3b82f6','#ec4899','#6b7280'];
-    vrusCharts.downtime=new Chart(document.getElementById('vrusDowntimeChart').getContext('2d'),{type:'bar',data:{labels:causes,datasets:[{label:'Downtime %',data:causeData,backgroundColor:causeColors,borderRadius:4,barPercentage:.6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a2e',callbacks:{label:ctx=>ctx.parsed.x+'% of downtime'}},datalabels:{display:true,anchor:'end',align:'right',color:'#374151',font:{weight:'bold',size:11},formatter:v=>v+'%'}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:10},callback:v=>v+'%'},max:40},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'},color:'#374151'}}}}});
-    const reliabilityLabels=STATES_DATA.map(s=>s.name);
-    const mtbf=STATES_DATA.map(s=>Math.round(180+s.avail*1.5+(Math.random()*40)));
-    const mttr=STATES_DATA.map(s=>Math.round((10-s.avail/12+(Math.random()*2))*10)/10);
-    vrusCharts.reliability=new Chart(document.getElementById('vrusReliabilityChart').getContext('2d'),{type:'bar',data:{labels:reliabilityLabels,datasets:[{label:'MTBF (hours)',data:mtbf,backgroundColor:'#2196F3',borderRadius:3,barPercentage:.4,yAxisID:'y'},{label:'MTTR (hours)',data:mttr,backgroundColor:'#ef4444',borderRadius:3,barPercentage:.4,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1a1a2e'}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{position:'left',grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'},title:{display:true,text:'MTBF',font:{size:10}}},y1:{position:'right',grid:{display:false},ticks:{font:{size:9},callback:v=>v+'h'},title:{display:true,text:'MTTR',font:{size:10}}}}}});
+function buildVruPills(){
+    let all=0,run=0,dn=0,na=0;
+    CUSTOMERS.forEach(c=>{(VRU_UNITS[c.name]||[]).forEach(u=>{all++;if(u.status==='Running')run++;else if(u.status==='Down')dn++;else na++})});
+    const pills=[{k:'all',l:`All <b>${all}</b>`},{k:'Running',l:`<span class="dot green"></span>Running <b>${run}</b>`},{k:'Down',l:`<span class="dot red"></span>Down <b>${dn}</b>`},{k:'NA',l:`<span class="dot gray"></span>N/A <b>${na}</b>`}];
+    document.getElementById('vruPills').innerHTML=pills.map(p=>`<span class="vru-pill ${vruFilter===p.k?'active':''}" onclick="vruFilter='${p.k}';buildVruPills();buildVruTree()">${p.l}</span>`).join('');
 }
-function renderVrusFilterPills(active){
-    const allUnits=[],runUnits=[],downUnits=[],warnUnits=[];
-    CUSTOMERS.forEach(c=>{(VRU_UNITS[c.name]||[]).forEach(u=>{allUnits.push({...u,customer:c.name,state:c.state});if(u.status==='Running')runUnits.push(u);else if(u.status==='Down')downUnits.push(u);else warnUnits.push(u)})});
-    const pills=[{label:'All',count:allUnits.length,key:'All'},{label:'Running',count:runUnits.length,key:'Running'},{label:'Down',count:downUnits.length,key:'Down'},{label:'Warning',count:warnUnits.length,key:'Warning'}];
-    document.getElementById('vrusFilterPills').innerHTML=pills.map(p=>`<div class="fleet-pill ${active===p.key?'active':''}" onclick="renderVrusFilterPills('${p.key}');renderVrusFleetCards('${p.key}')"><span class="pill-count">${p.count}</span> ${p.label}</div>`).join('');
-}
-function renderVrusFleetCards(filter){
-    const cont=document.getElementById('vrusFleetCards');
+function buildVruTree(sq){
+    const q=(sq||document.getElementById('vruSearchIn').value||'').toLowerCase();
     const byState={};
     CUSTOMERS.forEach(c=>{
-        if(!byState[c.state])byState[c.state]=[];
-        (VRU_UNITS[c.name]||[]).slice(0,6).forEach(u=>{
-            if(filter==='All'||u.status===filter)byState[c.state].push({...u,customer:c.name,state:c.state});
+        if(!byState[c.state])byState[c.state]={custs:[],total:0};
+        const units=(VRU_UNITS[c.name]||[]).filter(u=>{
+            const mf=vruFilter==='all'||(vruFilter==='NA'?(u.status!=='Running'&&u.status!=='Down'):u.status===vruFilter);
+            const ms=!q||(u.displayName||u.id).toLowerCase().includes(q);
+            return mf&&ms;
         });
+        if(units.length){byState[c.state].custs.push({name:c.name,units});byState[c.state].total+=units.length}
     });
     let h='';
     Object.keys(byState).sort().forEach(state=>{
-        const units=byState[state];
-        if(!units.length)return;
-        h+=`<div class="fleet-state-group"><div class="fleet-state-label"><i class="fas fa-map-marker-alt" style="color:#2196F3"></i>${state} <span class="fsl-count">(${units.length} units)</span></div><div class="fleet-cards">`;
-        units.forEach(u=>{
-            const sc=u.status==='Running'?'#10b981':u.status==='Warning'?'#f59e0b':'#ef4444';
-            const ac=u.avail>=95?'#10b981':u.avail>=88?'#f59e0b':'#ef4444';
-            h+=`<div class="fleet-card"><div class="fc-status" style="background:${sc}"></div><div class="fc-id">${u.id}</div><div class="fc-customer">${u.customer}</div><div class="fc-state">${u.state}</div><div class="fc-avail" style="color:${ac}">${u.avail}%</div><div class="fc-bar"><div class="fc-bar-fill" style="width:${u.avail}%;background:${ac}"></div></div></div>`;
+        const s=byState[state];
+        h+=`<div class="vt-state" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'"><span>&#9662; ${state}</span><span class="ct">${s.total}</span></div><div>`;
+        s.custs.forEach(cust=>{
+            const cn=cust.name.length>18?cust.name.slice(0,18)+'…':cust.name;
+            h+=`<div class="vt-cust" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'"><span>&#9656; ${cn}</span><span class="ct">${cust.units.length}</span></div><div>`;
+            const allUnits=VRU_UNITS[cust.name]||[];
+            cust.units.forEach(u=>{
+                const realIdx=allUnits.indexOf(u);
+                const sel=(cust.name===vruSelectedCust&&realIdx===vruSelectedIdx)?'sel':'';
+                const stCls=u.status==='Running'?'running':u.status==='Down'?'down':'na';
+                const dn=(u.displayName||u.id);const sn=dn.length>24?dn.slice(0,24)+'…':dn;
+                h+=`<div class="vt-unit ${sel}" onclick="selectVruUnit('${cust.name.replace(/'/g,"\\\\'")}',${realIdx})"><i class="fas fa-microchip tu-ico"></i><span>${sn}</span><span class="tu-st ${stCls}">${u.status==='Warning'?'N/A':u.status}</span></div>`;
+            });
+            h+=`</div>`;
         });
-        h+=`</div></div>`;
+        h+=`</div>`;
     });
-    if(!h)h='<div style="padding:40px;text-align:center;color:#999"><i class="fas fa-search" style="font-size:24px;margin-bottom:8px;display:block;color:#d1d5db"></i>No units match this filter</div>';
-    cont.innerHTML=h;
+    document.getElementById('vruTreeEl').innerHTML=h||'<div style="padding:20px;text-align:center;color:#999">No units found</div>';
 }
-
+function filterVruTree(q){buildVruTree(q)}
+function selectVruUnit(cn,idx){
+    vruSelectedCust=cn;vruSelectedIdx=idx;
+    const unit=VRU_UNITS[cn][idx];
+    buildVruTree();
+    const stCls=unit.status==='Running'?'running':unit.status==='Down'?'down':'na';
+    const stLbl=unit.status==='Warning'?'N/A':unit.status;
+    const totalOp=unit.runH+unit.readyH+unit.faultH;
+    const runPct=totalOp>0?(unit.runH/totalOp*100).toFixed(0):0;
+    const faultPct=totalOp>0?(unit.faultH/totalOp*100).toFixed(1):0;
+    document.getElementById('vruHdr').innerHTML=`
+        <div><div class="vru-hdr-title"><h2>${unit.displayName||unit.id}</h2><span class="vru-badge ${stCls}">&bull; ${stLbl}</span></div>
+        <div class="vru-meta">Last Update: 07 May 26, 05:27 &nbsp;&bull; Auto Refreshes in 10:49</div></div>
+        <div class="vru-hkpis">
+            <div class="vru-hkpi"><div class="hv">${totalOp.toLocaleString()}h</div><div class="hl">Total operation hours</div></div>
+            <div class="vru-hkpi"><div class="hv">${runPct}% <small>(${unit.runH.toLocaleString()}h)</small></div><div class="hl">Run hours</div></div>
+            <div class="vru-hkpi"><div class="hv">${unit.readyH.toLocaleString()}h</div><div class="hl">Ready hours</div></div>
+            <div class="vru-hkpi"><div class="hv red">${faultPct}% <small>(${unit.faultH.toLocaleString()}h)</small></div><div class="hl">Fault hours</div></div>
+        </div>`;
+    const tabs=['overview','trends','analytics','optimization','events'];
+    const tl=['Overview','Trends','Analytics','Optimization','Events'];
+    document.getElementById('vruTabs').innerHTML=tabs.map((t,i)=>`<div class="vru-t2 ${t===vruActiveTab?'active':''}" onclick="vruActiveTab='${t}';switchVruTab()">${tl[i]}</div>`).join('');
+    switchVruTab();
+}
+function switchVruTab(){
+    const unit=VRU_UNITS[vruSelectedCust][vruSelectedIdx];
+    const body=document.getElementById('vruTBody');
+    document.querySelectorAll('.vru-t2').forEach(el=>{el.classList.toggle('active',el.textContent.toLowerCase()===vruActiveTab)});
+    if(vruActiveTab==='overview')renderVruOv(unit,body);
+    else if(vruActiveTab==='trends')renderVruTrends(unit,body);
+    else if(vruActiveTab==='analytics')body.innerHTML='<div class="vru-soon"><i class="far fa-file-alt"></i>Analytics &mdash; coming soon</div>';
+    else if(vruActiveTab==='optimization')body.innerHTML='<div class="vru-soon"><i class="far fa-file-alt"></i>Optimization &mdash; coming soon</div>';
+    else if(vruActiveTab==='events')renderVruEvents(unit,body);
+}
+function renderVruOv(unit,body){
+    const sp=(4.9+(Math.random()*2-1)).toFixed(1),rv=(12.6+(Math.random()*3-1.5)).toFixed(1),op=(77.3+(Math.random()*5-2.5)).toFixed(1),dt=Math.round(221+(Math.random()*10-5)),dp=(112.2+(Math.random()*8-4)).toFixed(1);
+    const setpoints=[['Compressor Start Setpoint','12','oz/sq in'],['Compressor Stop Setpoint','2','oz/sq in'],['Oil Cooler Start Setpoint','225','°F'],['Oil Cooler Stop Setpoint','215','°F'],['Oil Cooler Temperature SP','218','°F'],['Gas Cooler Start Setpoint','0','°F'],['Gas Cooler Stop Setpoint','0','°F'],['Gas Cooler Temperature','0','°F'],['Compressor PID Setpoint','7','oz/sq in'],['Recirc Valve Suction Pressure SP','5','oz/sq in'],['Recirc Valve Discharge Pressure SP','160','psi'],['Low Suction Pressure Alarm SP','-9999','psi'],['Low Oil Pressure Alarm SP','-9999','psi'],['Low Discharge Pressure Alarm SP','10','psi'],['Spare Analog Input 3 Low Alarm SP','-9999',''],['Low Discharge Temp Alarm SP','-9999','°F'],['Low Oil Inlet Temp Alarm SP','0','°F'],['Low Gas Inlet Temp Alarm SP','0','°F']];
+    body.innerHTML=`
+    <div class="vru-ov">
+        <div class="vru-ov-left">
+            <div class="vru-sect"><h3>Alarms</h3><div class="vru-nodata"><i class="far fa-bell"></i>No alarms for this compressor</div></div>
+            <div class="vru-sect"><h3>Service History</h3><div class="vru-nodata"><i class="far fa-clipboard"></i>No service history yet.</div></div>
+        </div>
+        <div class="vru-ov-right">
+            <div class="vru-sect"><h3>Digital Twin</h3>
+                <div class="vru-dt"><div class="vru-dt-img">
+                    <div class="vru-dtl" style="top:15px;left:15px"><span class="dv">${sp}</span> <span class="du">oz/sq in</span><span class="dn">Suction Pressure</span></div>
+                    <div class="vru-dtl" style="top:15px;right:15px"><span class="dv">&mdash;</span><span class="dn">Gas Filter Diff</span></div>
+                    <div class="vru-dtl" style="bottom:80px;left:15px"><span class="dv">0</span> <span class="du">psi</span><span class="dn">Spare Suction</span></div>
+                    <div class="vru-dt-comp"><div class="inner"><i class="fas fa-cogs"></i><span>VRU Compressor</span></div></div>
+                    <div class="vru-dtl" style="top:50%;left:50%;transform:translate(-50%,-50%);margin-top:70px"><span class="dv" style="color:#10b981">${rv}</span> <span class="du">%</span><span class="dn">RECIRC Valve %</span></div>
+                    <div class="vru-dtl" style="top:55px;right:15px"><span class="dv">${op}</span> <span class="du">psi</span><span class="dn">Oil Pressure</span></div>
+                    <div class="vru-dtl" style="bottom:40px;right:90px"><span class="dv" style="color:#10b981">${dt}</span> <span class="du">°F</span><span class="dn">Discharge Temp</span></div>
+                    <div class="vru-dtl" style="bottom:10px;right:15px"><span class="dv">${dp}</span> <span class="du">psi</span><span class="dn">Discharge Pressure</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+    <div class="vru-pid"><h3>P&amp;ID view <span class="actions"><i class="fas fa-expand-arrows-alt"></i><i class="fas fa-chevron-up"></i></span></h3>
+        <div class="vru-pid-schematic"><i class="fas fa-drafting-compass" style="margin-right:6px"></i>Piping &amp; Instrumentation Diagram</div>
+    </div>
+    <div class="vru-sect" style="margin-top:20px"><h3>Setpoints</h3>
+        <div class="vru-sp-grid">${setpoints.map(([l,v,u])=>'<div class="vru-sp"><div class="sv'+(parseFloat(v)<0?' neg':'')+'">'+v+' <span class="su">'+u+'</span></div><div class="sl">'+l+'</div></div>').join('')}</div>
+    </div>`;
+}
+function renderVruTrends(unit,body){
+    const tc=['#2196F3','#10b981','#ef4444','#f59e0b','#8b5cf6','#ec4899'];
+    const cats=[
+        {n:'Equipment Control',items:['Compressor Running Status','Recirc Valve','Compressor Pid Setpoint (Suction Pressure Default)','Compressor Speed Feedback','Gas Cooler Speed Feedback']},
+        {n:'System Status & Uptime',items:['Plc Battery Voltage','PLC Battery Low Voltage Warning','MAINTENANCE MODE ACTIVE','Force Output Active','Powered On Hours This Month','Run Hours This Month','Ready Hours This Month','Uptime % Previous Month']},
+        {n:'Maintenance Tracking',items:['Maintenance/Combustion Hours','Condensate Pump Run Minutes']},
+        {n:'Measurement & Process',items:['Suction Pressure','Discharge Pressure','Oil Pressure','Discharge Temperature','Oil Inlet Temperature','Gas Inlet Temperature']},
+        {n:'VFD Readings',items:['Compressor VFD Motor Frequency','Compressor VFD Motor Current','Compressor VFD Mains Voltage']},
+        {n:'SetPoints',items:['Compressor Start Setpoint','Compressor Stop Setpoint','Oil Cooler Start Setpoint','Oil Cooler Stop Setpoint']},
+        {n:'Boolean (0: False, 1: True)',items:['Compressor Hoa In Auto','Compressor Hoa In Hand','Cooler Hoa In Auto','Gas Cooler Hoa In Auto']}
+    ];
+    function rc(arr){return arr.map(([n,v,u])=>'<div class="vru-rc"><div class="rv'+(parseFloat(v)<0?' red':(v==='1'?' grn':''))+'">'+v+(u?' <span class="ru">'+u+'</span>':'')+'</div><div class="rn">'+n+'</div><div class="ra">'+(Math.random()*5).toFixed(1)+' average past 7 days</div></div>').join('')}
+    body.innerHTML=`
+    <div class="vru-tl">
+        <div class="vru-tc">
+            <div class="vru-tc-hdr"><input type="text" placeholder="Search Datapoint"></div>
+            <div class="vru-tc-hdr" style="border-bottom:1px solid #eee"><select><option>Select All</option><option>Deselect All</option></select></div>
+            <div class="vru-tc-body">${cats.map(cat=>'<div class="vru-tc-cat">'+cat.n+'</div>'+cat.items.map((item,ii)=>'<div class="vru-tc-item"><input type="checkbox" '+(ii<2?'checked':'')+`><span class="dot" style="background:${tc[ii%tc.length]}"></span><span>${item}</span></div>`).join('')).join('')}</div>
+        </div>
+        <div class="vru-tca">
+            <div class="vru-tca-hdr"><span class="ttl">Trends (Apr 30 - May 07, 2026)</span>
+                <div class="vru-tca-pills"><span class="vru-tca-p">7d</span><span class="vru-tca-p active">14d</span><span class="vru-tca-p">30d</span><span class="vru-tca-p">90d</span></div>
+            </div>
+            <div style="height:250px"><canvas id="vruTrendCanvas"></canvas></div>
+        </div>
+    </div>
+    <div class="vru-rt"><div class="vru-rt-h">Equipment Control</div><div class="vru-rt-g">${rc([['Compressor Running Status','1',''],['Recirc Valve','12.62','%'],['Compressor Pid Setpoint','7','oz/sq in'],['Compressor Speed Feedback','15.03','%'],['Gas Cooler Speed Feedback','0','°F']])}</div></div>
+    <div class="vru-rt"><div class="vru-rt-h">System Status &amp; Uptime</div><div class="vru-rt-g">${rc([['Plc Battery Voltage','3.05','v'],['PLC Battery Low Voltage Warning','0',''],['MAINTENANCE MODE ACTIVE','0',''],['Force Output Active','0',''],['Powered On Hours This Month','148','hrs'],['Run Hours This Month','80','hrs'],['Ready Hours This Month','3','hrs'],['Uptime % Previous Month','44.78','%'],['Powered On Hours Previous Month','719','hrs'],['Run Hours Previous Month','311','hrs'],['Ready Hours Previous Month','11','hrs'],['Uptime % Today','100','%'],['Uptime % Previous Day','100','%'],['Powered On','23699','hrs'],['Running','17531','hrs'],['Ready Hours, Not Faulted','4578','hrs'],['Faulted Hours This Month','1565','hrs']])}</div></div>
+    <div class="vru-rt"><div class="vru-rt-h">Maintenance Tracking</div><div class="vru-rt-g">${rc([['Maintenance/Combustion Hours','0','hrs'],['Condensate Pump Run Minutes','0','min']])}</div></div>
+    <div class="vru-rt"><div class="vru-rt-h">Measurement &amp; Process</div><div class="vru-rt-g">${rc([['Suction Pressure','4.86','oz/sq in'],['Discharge Pressure','112.2','psi'],['Oil Pressure','77.33','psi'],['Spare Analog Input 3','-41.98',''],['Discharge Temperature','221.01','°F'],['Oil Inlet Temperature','0','°F'],['Gas Inlet Temperature','0','°F'],['Final Gas Temperature','0','°F'],['Oil Differential Pressure','0',''],['Gas Differential Pressure','0',''],['Oil Cooler Vibration','0',''],['Gas Cooler Vibration','0','']])}</div></div>
+    <div class="vru-rt"><div class="vru-rt-h">VFD Readings</div><div class="vru-rt-g">${rc([['Compressor VFD Motor Frequency Reading','0','hz'],['Compressor VFD Motor Current Reading','0','A'],['Compressor VFD Motor Discharge Torque','0',''],['Compressor VFD Mains Voltage Reading','0','v'],['Compressor VFD Motor State Reading','0',''],['Compressor VFD Frequency Therm State','0',''],['Compressor VFD Motor Frequency Power','0','w']])}</div></div>
+    <div class="vru-rt"><div class="vru-rt-h">SetPoints</div><div class="vru-rt-g">${rc([['Compressor Start Setpoint','12','oz/sq in'],['Compressor Stop Setpoint','2','oz/sq in'],['Oil Cooler Start Setpoint','225','°F'],['Oil Cooler Stop Setpoint','215','°F'],['Oil Cooler Temperature SP','218','°F'],['Gas Cooler Start Setpoint','0','°F'],['Gas Cooler Stop Setpoint','0','°F'],['Gas Cooler Temperature','0','°F'],['Compressor PID Setpoint','7','oz/sq in'],['Recirc Valve Suction Pressure SP','5','oz/sq in'],['Recirc Valve Discharge Pressure SP','160','psi'],['Low Suction Pressure Alarm SP','-9999','psi'],['Low Oil Pressure Alarm SP','-9999','psi'],['Low Discharge Pressure Alarm SP','10','psi'],['Spare Analog Input 3 Low Alarm SP','-9999',''],['Low Discharge Temp Alarm SP','-9999','°F'],['Low Oil Inlet Temp Alarm SP','0','°F'],['Low Gas Inlet Temp Alarm SP','0','°F']])}</div></div>
+    <div class="vru-rt"><div class="vru-rt-h">Boolean (0: False, 1: True)</div><div class="vru-rt-g">${rc([['Oil Heater Oa In Auto','0',''],['Compressor Hoa In Hand','0',''],['Compressor Hoa In Auto','1',''],['Condensate Pump Hoa In Auto','0',''],['Condensate Pump Hoa In Hand','0',''],['Cooler Hoa In Auto','1',''],['Gas Cooler Hoa In Hand','0',''],['Gas Cooler Hoa In Auto','0',''],['Compressor Running Status','1',''],['Gas Cooler Running Status','0',''],['Compressor Fail','0',''],['Condensate Pump Running Status','0','']])}</div></div>`;
+    setTimeout(()=>{
+        const cv=document.getElementById('vruTrendCanvas');if(!cv)return;
+        if(vruTrendChart)vruTrendChart.destroy();
+        const days=[];for(let i=7;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}))}
+        vruTrendChart=new Chart(cv.getContext('2d'),{type:'line',data:{labels:days,datasets:[
+            {label:'Compressor Running Status',data:days.map(()=>Math.random()*2),borderColor:'#2196F3',backgroundColor:'rgba(33,150,243,.1)',fill:true,tension:.4,pointRadius:1,borderWidth:2},
+            {label:'Recirc Valve',data:days.map(()=>12+Math.random()*3-1.5),borderColor:'#10b981',backgroundColor:'transparent',tension:.4,pointRadius:1,borderWidth:2,yAxisID:'y1'}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true}},datalabels:{display:false}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:10}}},y:{position:'left',grid:{color:'#f3f4f6'},ticks:{font:{size:9}},title:{display:true,text:'Status',font:{size:9}}},y1:{position:'right',grid:{display:false},ticks:{font:{size:9}},title:{display:true,text:'Valve %',font:{size:9}}}},interaction:{mode:'index',intersect:false}}});
+    },100);
+}
+function renderVruEvents(unit,body){
+    const evts=[
+        {t:'May 07, 05:27',tp:'Info',m:'Auto refresh completed'},
+        {t:'May 06, 18:45',tp:'Warning',m:'Compressor speed fluctuation detected'},
+        {t:'May 06, 12:00',tp:'Info',m:'PM scheduled — next service in 14 days'},
+        {t:'May 05, 22:30',tp:'Info',m:'Compressor restarted after idle period'},
+        {t:'May 05, 08:15',tp:'Warning',m:'Low suction pressure threshold approached'},
+        {t:'May 04, 16:00',tp:'Info',m:'Setpoint adjustment: Compressor PID → 7 oz/sq in'},
+        {t:'May 03, 10:30',tp:'Info',m:'Recirc valve calibration completed'},
+        {t:'May 02, 14:20',tp:'Critical',m:'Discharge temperature exceeded 230°F — auto shutdown'},
+        {t:'May 02, 14:25',tp:'Info',m:'Compressor restarted after cooldown'},
+        {t:'May 01, 09:00',tp:'Info',m:'Monthly maintenance report generated'}
+    ];
+    body.innerHTML=`<div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:15px;font-weight:600">Recent Events</h3><span style="font-size:11px;color:#999">${evts.length} events</span></div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8f9fa;border-bottom:2px solid #eee"><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:160px">Timestamp</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Type</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666">Description</th></tr></thead>
+    <tbody>${evts.map(e=>{const c=e.tp==='Critical'?'#ef4444':e.tp==='Warning'?'#f59e0b':'#2196F3';return '<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:8px 12px;color:#666">'+e.t+'</td><td style="padding:8px 12px"><span style="color:'+c+';font-weight:600;font-size:11px">'+e.tp+'</span></td><td style="padding:8px 12px;color:#333">'+e.m+'</td></tr>'}).join('')}</tbody></table>`;
+}
 // ===== NETWORK PAGE =====
 const CUSTOMER_COORDS={
     'Diamondback Energy':{lat:31.99,lng:-102.08},'Callon Petroleum':{lat:31.75,lng:-102.52},'XTO Energy':{lat:32.75,lng:-97.33},
