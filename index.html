@@ -3239,9 +3239,233 @@ function switchVruTab(){
     document.querySelectorAll('.vru-t2').forEach(el=>{el.classList.toggle('active',el.textContent.toLowerCase()===vruActiveTab)});
     if(vruActiveTab==='overview')renderVruOv(unit,body);
     else if(vruActiveTab==='trends')renderVruTrends(unit,body);
-    else if(vruActiveTab==='analytics')body.innerHTML='<div class="vru-soon"><i class="far fa-file-alt"></i>Analytics &mdash; coming soon</div>';
+    else if(vruActiveTab==='analytics')renderVruAnalytics(unit,body);
     else if(vruActiveTab==='optimization')renderVruOptimization(unit,body);
     else if(vruActiveTab==='events')renderVruEvents(unit,body);
+}
+let anaCharts={};
+function renderVruAnalytics(unit,body){
+    Object.values(anaCharts).forEach(c=>c.destroy());anaCharts={};
+    const dn=unit.displayName||unit.id;
+    const isRunning=unit.status==='Running';
+    const totalOp=unit.runH+unit.readyH+unit.faultH;
+    const uptPct=totalOp>0?Math.round(unit.runH/totalOp*100):0;
+
+    // Unit operating parameters (simulated from unit data)
+    const flowActual=Math.round(800+Math.random()*400);
+    const flowExpected=Math.round(flowActual*1.08+Math.random()*60);
+    const headActual=Math.round(4500+Math.random()*1500);
+    const headExpected=Math.round(headActual*1.05+Math.random()*200);
+    const powerActual=Math.round(30+Math.random()*15);
+    const powerExpected=Math.round(powerActual*0.92+Math.random()*3);
+    const effActual=+(75+Math.random()*15).toFixed(1);
+    const effExpected=+(effActual*1.06).toFixed(1);
+    const npsh=+(20+Math.random()*10).toFixed(1);
+    const pressRatio=+(2.5+Math.random()*1.5).toFixed(2);
+    const specPower=+(powerActual/flowActual*1000).toFixed(2);
+    const rpm=Math.round(1500+Math.random()*600);
+    const recFlowrate=Math.round(flowActual*1.05);
+    const revGain=Math.round(300+Math.random()*800);
+
+    body.innerHTML=`
+    <!-- Gauge KPIs Row — inspired by reference screenshot -->
+    <div style="display:flex;gap:14px;margin-bottom:14px;align-items:stretch">
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 12px;text-align:center">
+            <div style="position:relative;width:100px;height:60px;margin:0 auto 6px">
+                <svg viewBox="0 0 100 55" width="100" height="55">
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#2196F3" stroke-width="8" stroke-linecap="round" stroke-dasharray="${Math.min(flowActual/1600*126,126)} 126"/>
+                    <text x="50" y="36" text-anchor="middle" style="font:bold 14px sans-serif;fill:#333">${flowActual}</text>
+                    <text x="50" y="48" text-anchor="middle" style="font:9px sans-serif;fill:#999">(gpm)</text>
+                </svg>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:#333">Flow Rate</div>
+            <div style="font-size:9px;color:#2196F3;margin-top:2px">${flowExpected} Recommended</div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 12px;text-align:center">
+            <div style="position:relative;width:100px;height:60px;margin:0 auto 6px">
+                <svg viewBox="0 0 100 55" width="100" height="55">
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#2196F3" stroke-width="8" stroke-linecap="round" stroke-dasharray="${Math.min(headActual/8000*126,126)} 126"/>
+                    <text x="50" y="36" text-anchor="middle" style="font:bold 14px sans-serif;fill:#333">${headActual}</text>
+                    <text x="50" y="48" text-anchor="middle" style="font:9px sans-serif;fill:#999">(ft)</text>
+                </svg>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:#333">Head</div>
+            <div style="font-size:9px;color:#2196F3;margin-top:2px">${headExpected} Expected</div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 12px;text-align:center">
+            <div style="position:relative;width:100px;height:60px;margin:0 auto 6px">
+                <svg viewBox="0 0 100 55" width="100" height="55">
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#2196F3" stroke-width="8" stroke-linecap="round" stroke-dasharray="${Math.min(powerActual/50*126,126)} 126"/>
+                    <text x="50" y="36" text-anchor="middle" style="font:bold 14px sans-serif;fill:#333">${powerActual}</text>
+                    <text x="50" y="48" text-anchor="middle" style="font:9px sans-serif;fill:#999">(hp)</text>
+                </svg>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:#333">Compressor Power</div>
+            <div style="font-size:9px;color:#2196F3;margin-top:2px">${powerExpected} Expected</div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 12px;text-align:center">
+            <div style="position:relative;width:100px;height:60px;margin:0 auto 6px">
+                <svg viewBox="0 0 100 55" width="100" height="55">
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#2196F3" stroke-width="8" stroke-linecap="round" stroke-dasharray="${Math.min(npsh/35*126,126)} 126"/>
+                    <text x="50" y="36" text-anchor="middle" style="font:bold 14px sans-serif;fill:#333">${npsh}</text>
+                    <text x="50" y="48" text-anchor="middle" style="font:9px sans-serif;fill:#999">(ft)</text>
+                </svg>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:#333">NPSH</div>
+            <div style="font-size:9px;color:#999;margin-top:2px">${(npsh*1.1).toFixed(1)} Expected</div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 12px;text-align:center">
+            <div style="position:relative;width:100px;height:60px;margin:0 auto 6px">
+                <svg viewBox="0 0 100 55" width="100" height="55">
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M10,50 A40,40 0 0,1 90,50" fill="none" stroke="${effActual>=85?'#10b981':'#f59e0b'}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${Math.min(effActual/100*126,126)} 126"/>
+                    <text x="50" y="36" text-anchor="middle" style="font:bold 14px sans-serif;fill:#333">${effActual}</text>
+                    <text x="50" y="48" text-anchor="middle" style="font:9px sans-serif;fill:#999">(%)</text>
+                </svg>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:#333">Efficiency</div>
+            <div style="font-size:9px;color:${effActual>=85?'#10b981':'#f59e0b'};margin-top:2px"><i class="fas fa-caret-${effActual>=85?'up':'down'}" style="margin-right:2px"></i>${effExpected} Expected</div>
+        </div>
+        <!-- Summary panel -->
+        <div style="flex:1.4;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:12px 14px">
+            <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px">Summary</div>
+            <ul style="margin:0;padding:0 0 0 14px;font-size:10px;color:#555;line-height:1.8">
+                <li>${effActual<85?'Operating behind the Best Efficiency Point':'Operating near Best Efficiency Point'}</li>
+                <li>System Curve does not intersect Max Power (~50 hp): Supports Recommended ${powerExpected} hp</li>
+                <li>${effActual<effExpected?'Lower':'Higher'} efficiency compared to Best Efficiency Point</li>
+                <li>Supports target with No cavitation risk</li>
+                <li>Pressure ratio ${pressRatio} within safe operating range</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Recommendation bar -->
+    <div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:6px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px">
+        <i class="fas fa-lightbulb" style="color:#10b981"></i>
+        <span style="font-size:12px;color:#065f46"><b>Recommendation:</b> Adjusting suction pressure setpoint to ${(7+Math.random()*2).toFixed(1)} oz/sq in can increase throughput and save an estimated <b>$${revGain}/day</b></span>
+    </div>
+
+    <!-- Charts Grid — 6 key charts, 2x3 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <!-- 1. Compressor Flow Map (Pump Curve equivalent) -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333">Compressor Flow Map</h4>
+                <span style="font-size:9px;color:#999">Head (ft) vs Flow (gpm)</span>
+            </div>
+            <div style="height:240px"><canvas id="anaFlowMap"></canvas></div>
+        </div>
+
+        <!-- 2. Compressor Power Map -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333">Compressor Power (BHP)</h4>
+                <span style="font-size:9px;color:#999">Power (hp) vs Flow (gpm)</span>
+            </div>
+            <div style="height:240px"><canvas id="anaPowerMap"></canvas></div>
+        </div>
+
+        <!-- 3. Expected vs Actual Flow -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333">Expected vs Actual Flow</h4>
+                <span style="font-size:9px;color:#999">30-day trend</span>
+            </div>
+            <div style="height:240px"><canvas id="anaExpFlow"></canvas></div>
+        </div>
+
+        <!-- 4. Expected vs Actual Power -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333">Expected vs Actual Power</h4>
+                <span style="font-size:9px;color:#999">30-day trend</span>
+            </div>
+            <div style="height:240px"><canvas id="anaExpPower"></canvas></div>
+        </div>
+
+        <!-- 5. Specific Power / Energy Efficiency -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333">Specific Power &amp; Efficiency</h4>
+                <span style="font-size:9px;color:#999">kW/100cfm &amp; Efficiency %</span>
+            </div>
+            <div style="height:240px"><canvas id="anaEfficiency"></canvas></div>
+        </div>
+
+        <!-- 6. Operating Envelope -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333">Operating Envelope</h4>
+                <span style="font-size:9px;color:#999">Suction vs Discharge Pressure</span>
+            </div>
+            <div style="height:240px"><canvas id="anaEnvelope"></canvas></div>
+        </div>
+    </div>`;
+
+    setTimeout(()=>{
+        const days=[];for(let i=30;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}))}
+        const annotOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true}},datalabels:{display:false}},interaction:{mode:'index',intersect:false}};
+
+        // 1. Compressor Flow Map — head vs flow curve with recommended flowrate annotation
+        const flowPts=[];for(let f=200;f<=1800;f+=50){flowPts.push({x:f,y:Math.round(7000-0.5*(f-200)-0.0008*Math.pow(f-200,2)+Math.random()*100)})}
+        const cv1=document.getElementById('anaFlowMap');
+        if(cv1)anaCharts.flow=new Chart(cv1.getContext('2d'),{type:'scatter',data:{datasets:[
+            {label:'Head Curve',data:flowPts,showLine:true,borderColor:'#2196F3',backgroundColor:'rgba(33,150,243,.08)',fill:true,tension:.4,pointRadius:0,borderWidth:2.5},
+            {label:'Operating Point',data:[{x:flowActual,y:headActual}],pointRadius:7,pointBackgroundColor:'#ef4444',pointBorderColor:'#fff',pointBorderWidth:2},
+            {label:'Recommended',data:[{x:recFlowrate,y:headActual+200}],pointRadius:7,pointStyle:'triangle',pointBackgroundColor:'#10b981',pointBorderColor:'#fff',pointBorderWidth:2}
+        ]},options:{...annotOpts,scales:{x:{title:{display:true,text:'Flow (gpm)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}},y:{title:{display:true,text:'Head (ft)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v>=1000?(v/1000)+'k':v}}}}});
+
+        // 2. Compressor Power Map — power vs flow
+        const pwrPts=[];for(let f=200;f<=1800;f+=50){pwrPts.push({x:f,y:+(15+0.01*f+0.000005*f*f+Math.random()*2).toFixed(1)})}
+        const cv2=document.getElementById('anaPowerMap');
+        if(cv2)anaCharts.pwr=new Chart(cv2.getContext('2d'),{type:'scatter',data:{datasets:[
+            {label:'Power Curve',data:pwrPts,showLine:true,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.08)',fill:true,tension:.4,pointRadius:0,borderWidth:2.5},
+            {label:'Operating Point',data:[{x:flowActual,y:powerActual}],pointRadius:7,pointBackgroundColor:'#ef4444',pointBorderColor:'#fff',pointBorderWidth:2},
+            {label:'Recommended',data:[{x:recFlowrate,y:powerExpected}],pointRadius:7,pointStyle:'triangle',pointBackgroundColor:'#10b981',pointBorderColor:'#fff',pointBorderWidth:2}
+        ]},options:{...annotOpts,scales:{x:{title:{display:true,text:'Flow (gpm)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}},y:{title:{display:true,text:'Power (hp)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
+
+        // 3. Expected vs Actual Flow — dual line
+        const actFlow=days.map(()=>Math.round(flowActual+Math.random()*120-60));
+        const expFlow=days.map(()=>Math.round(flowExpected+Math.random()*40-20));
+        const cv3=document.getElementById('anaExpFlow');
+        if(cv3)anaCharts.ef=new Chart(cv3.getContext('2d'),{type:'line',data:{labels:days,datasets:[
+            {label:'Actual Flow',data:actFlow,borderColor:'#2196F3',backgroundColor:'rgba(33,150,243,.1)',fill:true,tension:.4,pointRadius:1,borderWidth:2},
+            {label:'Expected Flow',data:expFlow,borderColor:'#10b981',borderDash:[6,3],backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:2}
+        ]},options:{...annotOpts,scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:8},maxTicksLimit:10}},y:{title:{display:true,text:'Flow (gpm)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
+
+        // 4. Expected vs Actual Power — dual line
+        const actPwr=days.map(()=>+(powerActual+Math.random()*6-3).toFixed(1));
+        const expPwr=days.map(()=>+(powerExpected+Math.random()*2-1).toFixed(1));
+        const cv4=document.getElementById('anaExpPower');
+        if(cv4)anaCharts.ep=new Chart(cv4.getContext('2d'),{type:'line',data:{labels:days,datasets:[
+            {label:'Actual Power',data:actPwr,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.1)',fill:true,tension:.4,pointRadius:1,borderWidth:2},
+            {label:'Expected Power',data:expPwr,borderColor:'#10b981',borderDash:[6,3],backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:2}
+        ]},options:{...annotOpts,scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:8},maxTicksLimit:10}},y:{title:{display:true,text:'Power (hp)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
+
+        // 5. Specific Power & Efficiency — dual axis
+        const spPwr=days.map(()=>+(specPower+Math.random()*4-2).toFixed(2));
+        const effLine=days.map(()=>+(effActual+Math.random()*6-3).toFixed(1));
+        const cv5=document.getElementById('anaEfficiency');
+        if(cv5)anaCharts.eff=new Chart(cv5.getContext('2d'),{type:'line',data:{labels:days,datasets:[
+            {label:'Specific Power (kW/100cfm)',data:spPwr,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',fill:true,tension:.4,pointRadius:1,borderWidth:2,yAxisID:'y'},
+            {label:'Efficiency (%)',data:effLine,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.4,pointRadius:1,borderWidth:2,yAxisID:'y1'}
+        ]},options:{...annotOpts,scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:8},maxTicksLimit:10}},y:{position:'left',title:{display:true,text:'Sp. Power',font:{size:9}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}},y1:{position:'right',title:{display:true,text:'Efficiency %',font:{size:9}},grid:{display:false},ticks:{font:{size:9}}}}}});
+
+        // 6. Operating Envelope — scatter with safe zone box
+        const envPts=[];for(let i=0;i<50;i++){envPts.push({x:+(3+Math.random()*8).toFixed(1),y:+(80+Math.random()*60).toFixed(1)})}
+        const safeZone=[{x:2,y:70},{x:12,y:70},{x:12,y:150},{x:2,y:150},{x:2,y:70}];
+        const opPt=[{x:+(4.9+Math.random()*2).toFixed(1),y:+(112+Math.random()*10).toFixed(1)}];
+        const cv6=document.getElementById('anaEnvelope');
+        if(cv6)anaCharts.env=new Chart(cv6.getContext('2d'),{type:'scatter',data:{datasets:[
+            {label:'Safe Envelope',data:safeZone,showLine:true,borderColor:'#10b981',borderDash:[4,4],backgroundColor:'rgba(16,185,129,.06)',fill:true,pointRadius:0,borderWidth:1.5},
+            {label:'Historical Ops',data:envPts,pointRadius:3,pointBackgroundColor:'rgba(33,150,243,.4)',pointBorderColor:'transparent'},
+            {label:'Current Operating Point',data:opPt,pointRadius:8,pointBackgroundColor:'#ef4444',pointBorderColor:'#fff',pointBorderWidth:2}
+        ]},options:{...annotOpts,scales:{x:{title:{display:true,text:'Suction Pressure (oz/sq in)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}},y:{title:{display:true,text:'Discharge Pressure (psi)',font:{size:10}},grid:{color:'#f3f4f6'},ticks:{font:{size:9}}}}}});
+    },100);
 }
 let optCharts={};
 function renderVruOptimization(unit,body){
