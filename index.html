@@ -4641,159 +4641,288 @@ function renderVruTrends(unit,body){
 let evtChart=null,evtFilter='all';
 function renderVruEvents(unit,body){
     if(evtChart){evtChart.destroy();evtChart=null}
+    const cust=CUSTOMERS.find(c=>c.name===vruSelectedCust);
+    const dn=unit.displayName||unit.id;
     const evts=[
-        {t:'May 06, 2026',ts:'May 06, 00:00',tp:'PM',title:'Preventive Maintenance',desc:'PM Performed on unit. Unit is BOL. Oil PG-180 replaced. All 11/11 checklist items passed.',wo:'PVC037996',tech:'Sanchez, Bryant',hasPdf:true,dtH:0},
-        {t:'May 02, 2026',ts:'May 02, 14:20',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 230°F — auto shutdown triggered. Auto resolved after cooldown.',wo:'',tech:'',hasPdf:false,dtH:4.2},
-        {t:'Apr 27, 2026',ts:'Apr 27, 01:45',tp:'Alarm',title:'Compressor Run Command',desc:'Compressor Run Command EQUAL TO 1. Warning level. Auto Resolved by API Client.',wo:'',tech:'',hasPdf:false,dtH:0},
-        {t:'Apr 23, 2026',ts:'Apr 23, 10:13',tp:'Alarm',title:'Compressor Hoa In Auto',desc:'Compressor Hoa In Auto EQUAL TO 1. Warning level. Active alarm.',wo:'',tech:'',hasPdf:false,dtH:0},
-        {t:'Apr 15, 2026',ts:'Apr 15, 08:00',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly inspection completed. Belt tension checked, oil condition inspected. All items passed.',wo:'PVC037812',tech:'Martinez, Carlos',hasPdf:true,dtH:2},
-        {t:'Apr 10, 2026',ts:'Apr 10, 16:30',tp:'Callout',title:'Field Service Callout',desc:'Unit not starting — investigated HOA switch. Found in HAND position. Switched to AUTO. Unit restarted.',wo:'PVC037790',tech:'Johnson, Mike',hasPdf:false,dtH:6.5},
-        {t:'Mar 28, 2026',ts:'Mar 28, 09:00',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. Oil filter replaced. Compressor lovejoy inspected. All items passed.',wo:'PVC037650',tech:'Sanchez, Bryant',hasPdf:true,dtH:1.5},
-        {t:'Mar 18, 2026',ts:'Mar 18, 22:10',tp:'Alarm',title:'Low Suction Pressure',desc:'Suction pressure dropped below 2 oz/sq in. Auto shutdown. Pressure restored after well opened.',wo:'',tech:'',hasPdf:false,dtH:8},
-        {t:'Mar 10, 2026',ts:'Mar 10, 11:00',tp:'Callout',title:'Belt Replacement',desc:'Drive belt found worn during inspection. Replaced with new belt. Unit restarted successfully.',wo:'PVC037401',tech:'Williams, Derek',hasPdf:false,dtH:3},
-        {t:'Feb 26, 2026',ts:'Feb 26, 08:00',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. All readings within spec. Oil condition good. No parts replaced.',wo:'PVC037205',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
-        {t:'Feb 14, 2026',ts:'Feb 14, 04:30',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 228°F. Auto shutdown. Oil cooler fan issue identified.',wo:'',tech:'',hasPdf:false,dtH:12},
-        {t:'Feb 02, 2026',ts:'Feb 02, 13:15',tp:'Callout',title:'Oil Leak Repair',desc:'Oil leak found at compressor front seal. Seal replaced, oil topped off. Unit restarted.',wo:'PVC037050',tech:'Martinez, Carlos',hasPdf:false,dtH:5},
+        {t:'May 06, 2026',ts:'6 May 2026, 00:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'PM Performed on unit. Unit is BOL. Oil PG-180 replaced. All 11/11 checklist items passed.',wo:'PVC037996',tech:'Sanchez, Bryant',hasPdf:true,dtH:0},
+        {t:'May 02, 2026',ts:'2 May 2026, 14:20 CST',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 230°F — auto shutdown triggered. Auto resolved after cooldown.',wo:'',tech:'',hasPdf:false,dtH:4.2},
+        {t:'Apr 27, 2026',ts:'27 Apr 2026, 01:45 CST',tp:'Alarm',title:'Compressor Run Command',desc:'Compressor Run Command EQUAL TO 1. Warning level. Auto Resolved by API Client.',wo:'',tech:'',hasPdf:false,dtH:0},
+        {t:'Apr 23, 2026',ts:'23 Apr 2026, 10:13 CST',tp:'Alarm',title:'Compressor Hoa In Auto',desc:'Compressor Hoa In Auto EQUAL TO 1. Warning level. Active alarm.',wo:'',tech:'',hasPdf:false,dtH:0},
+        {t:'Apr 15, 2026',ts:'15 Apr 2026, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly inspection completed. Belt tension checked, oil condition inspected. All items passed.',wo:'PVC037812',tech:'Martinez, Carlos',hasPdf:true,dtH:2},
+        {t:'Apr 10, 2026',ts:'10 Apr 2026, 16:30 CST',tp:'Callout',title:'Field Service Callout',desc:'Unit not starting — investigated HOA switch. Found in HAND position. Switched to AUTO. Unit restarted.',wo:'PVC037790',tech:'Johnson, Mike',hasPdf:false,dtH:6.5},
+        {t:'Mar 28, 2026',ts:'28 Mar 2026, 09:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. Oil filter replaced. Compressor lovejoy inspected. All items passed.',wo:'PVC037650',tech:'Sanchez, Bryant',hasPdf:true,dtH:1.5},
+        {t:'Mar 18, 2026',ts:'18 Mar 2026, 22:10 CST',tp:'Alarm',title:'Low Suction Pressure',desc:'Suction pressure dropped below 2 oz/sq in. Auto shutdown. Pressure restored after well opened.',wo:'',tech:'',hasPdf:false,dtH:8},
+        {t:'Mar 10, 2026',ts:'10 Mar 2026, 11:00 CST',tp:'Callout',title:'Belt Replacement',desc:'Drive belt found worn during inspection. Replaced with new belt. Unit restarted successfully.',wo:'PVC037401',tech:'Williams, Derek',hasPdf:false,dtH:3},
+        {t:'Feb 26, 2026',ts:'26 Feb 2026, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. All readings within spec. Oil condition good. No parts replaced.',wo:'PVC037205',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Feb 14, 2026',ts:'14 Feb 2026, 04:30 CST',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature exceeded 228°F. Auto shutdown. Oil cooler fan issue identified.',wo:'',tech:'',hasPdf:false,dtH:12},
+        {t:'Feb 06, 2026',ts:'6 Feb 2026, 18:34 CST',tp:'Callout',title:'Low Oil Pressure Callout',desc:'Oil pressure dropped below threshold. Technician dispatched. Oil pump replaced, unit restarted.',wo:'PVC037050',tech:'Martinez, Carlos',hasPdf:false,dtH:5},
+        {t:'Jan 20, 2026',ts:'20 Jan 2026, 09:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM completed. Belt tension adjusted. Oil condition satisfactory.',wo:'PVC036890',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Jan 08, 2026',ts:'8 Jan 2026, 15:45 CST',tp:'Alarm',title:'High Discharge Temperature',desc:'Discharge temperature spike. Auto shutdown triggered. Resolved after fan belt replaced.',wo:'',tech:'',hasPdf:false,dtH:6},
+        {t:'Dec 15, 2025',ts:'15 Dec 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly PM. All mechanical readings within spec. Lovejoy inspected.',wo:'PVC036701',tech:'Martinez, Carlos',hasPdf:true,dtH:1.5},
+        {t:'Dec 03, 2025',ts:'3 Dec 2025, 20:10 CST',tp:'Callout',title:'Unit Not Starting',desc:'Unit failed to start on command. Investigated wiring harness. Loose connection repaired.',wo:'PVC036650',tech:'Williams, Derek',hasPdf:false,dtH:4},
+        {t:'Nov 18, 2025',ts:'18 Nov 2025, 11:30 CST',tp:'Alarm',title:'Low Suction Pressure',desc:'Suction pressure below setpoint. Well temporarily shut in. Pressure restored.',wo:'',tech:'',hasPdf:false,dtH:3},
+        {t:'Nov 05, 2025',ts:'5 Nov 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. Oil filter replaced. All checklist items passed.',wo:'PVC036510',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Oct 22, 2025',ts:'22 Oct 2025, 14:00 CST',tp:'Callout',title:'Oil Leak Repair',desc:'Oil leak at front seal identified. Seal replaced and oil topped off.',wo:'PVC036380',tech:'Johnson, Mike',hasPdf:false,dtH:5},
+        {t:'Oct 10, 2025',ts:'10 Oct 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly PM. All readings normal. Belt tension checked.',wo:'PVC036290',tech:'Martinez, Carlos',hasPdf:true,dtH:1},
+        {t:'Sep 25, 2025',ts:'25 Sep 2025, 03:20 CST',tp:'Alarm',title:'Compressor Run Command',desc:'Compressor Run Command warning. Auto resolved.',wo:'',tech:'',hasPdf:false,dtH:0},
+        {t:'Sep 08, 2025',ts:'8 Sep 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. Oil condition good. No parts replaced.',wo:'PVC036100',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Aug 20, 2025',ts:'20 Aug 2025, 17:45 CST',tp:'Callout',title:'Belt Replacement',desc:'Drive belt snapped. Emergency callout. Belt replaced, unit back online.',wo:'PVC035950',tech:'Williams, Derek',hasPdf:false,dtH:7},
+        {t:'Aug 05, 2025',ts:'5 Aug 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. All items passed.',wo:'PVC035820',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Jul 15, 2025',ts:'15 Jul 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly PM. Mechanical readings within spec. Oil replaced.',wo:'PVC035680',tech:'Martinez, Carlos',hasPdf:true,dtH:1.5},
+        {t:'Jul 02, 2025',ts:'2 Jul 2025, 22:00 CST',tp:'Alarm',title:'High Discharge Temperature',desc:'High discharge temp alarm. Auto shutdown. Resolved after cooldown period.',wo:'',tech:'',hasPdf:false,dtH:3},
+        {t:'Jun 18, 2025',ts:'18 Jun 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. All checklist items passed. No issues found.',wo:'PVC035490',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'Jun 05, 2025',ts:'5 Jun 2025, 10:15 CST',tp:'Callout',title:'Field Service Callout',desc:'Unit tripped on high discharge. Technician found clogged cooler. Cleaned and restarted.',wo:'PVC035350',tech:'Johnson, Mike',hasPdf:false,dtH:4},
+        {t:'May 20, 2025',ts:'20 May 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM performed. Belt replaced as preventive measure.',wo:'PVC035200',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
+        {t:'May 08, 2025',ts:'8 May 2025, 06:30 CST',tp:'Alarm',title:'Low Suction Pressure',desc:'Low suction pressure alarm. Well production issue. Resolved after well work.',wo:'',tech:'',hasPdf:false,dtH:5},
+        {t:'Apr 15, 2025',ts:'15 Apr 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Quarterly PM. Full inspection completed. Oil and filter replaced.',wo:'PVC035050',tech:'Martinez, Carlos',hasPdf:true,dtH:2},
+        {t:'Mar 28, 2025',ts:'28 Mar 2025, 19:00 CST',tp:'Callout',title:'Unit Not Starting',desc:'Unit failed to start. Control board issue found. Board replaced.',wo:'PVC034900',tech:'Williams, Derek',hasPdf:false,dtH:8},
+        {t:'Mar 12, 2025',ts:'12 Mar 2025, 08:00 CST',tp:'PM',title:'Preventive Maintenance',desc:'Monthly PM. All readings normal. No parts replaced.',wo:'PVC034780',tech:'Sanchez, Bryant',hasPdf:true,dtH:1},
     ];
     const pmCt=evts.filter(e=>e.tp==='PM').length;
     const alarmCt=evts.filter(e=>e.tp==='Alarm').length;
     const calloutCt=evts.filter(e=>e.tp==='Callout').length;
     const totalDt=evts.reduce((s,e)=>s+e.dtH,0);
+    const faultPct=unit.faultH?Math.round(unit.faultH/(unit.runH+unit.readyH+unit.faultH)*100):1;
+    const faultHrs=unit.faultH||87;
+    const opHrs=unit.runH?unit.runH+unit.readyH+unit.faultH:8760;
     const filtered=evtFilter==='all'?evts:evts.filter(e=>e.tp===evtFilter);
-    const tc={'PM':'#2196F3','Alarm':'#f59e0b','Callout':'#8b5cf6'};
-    const tbg={'PM':'#eff6ff','Alarm':'#fffbeb','Callout':'#f5f3ff'};
+    const tc={'PM':'#2196F3','Alarm':'#10b981','Callout':'#10b981'};
+    const tbg={'PM':'#eff6ff','Alarm':'#ecfdf5','Callout':'#ecfdf5'};
 
-    // Calendar heatmap data — last 90 days
-    const calDays=[];const today=new Date(2026,4,7);
-    for(let i=89;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);calDays.push({d,ct:0,types:[]})}
-    evts.forEach(e=>{calDays.forEach(cd=>{const ds=cd.d.toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'});if(e.t===ds){cd.ct++;cd.types.push(e.tp)}})});
+    // Heatmap data — full year Mar 2025 to Feb 2026
+    const hmStart=new Date(2025,2,1); // Mar 1 2025
+    const hmEnd=new Date(2026,1,28);  // Feb 28 2026
+    const hmDays=[];
+    for(let d=new Date(hmStart);d<=hmEnd;d.setDate(d.getDate()+1)){
+        hmDays.push({d:new Date(d),types:[]});
+    }
+    // Map events onto heatmap days
+    evts.forEach(e=>{
+        const parts=e.t.replace(',','').split(' ');
+        const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(parts[0]);
+        const day=parseInt(parts[1]);const yr=parseInt(parts[2]);
+        if(mo>=0){
+            const ed=new Date(yr,mo,day);
+            hmDays.forEach(hd=>{
+                if(hd.d.getFullYear()===ed.getFullYear()&&hd.d.getMonth()===ed.getMonth()&&hd.d.getDate()===ed.getDate()){
+                    hd.types.push(e.tp);
+                }
+            });
+        }
+    });
+    // Add random sparse events to fill the heatmap
+    const rng=function(seed){let s=seed;return function(){s=(s*16807)%2147483647;return(s-1)/2147483646}};
+    const rand=rng(42);
+    hmDays.forEach(hd=>{
+        if(hd.types.length===0&&rand()<0.04){
+            const r=rand();
+            hd.types.push(r<0.4?'Alarm':r<0.7?'Callout':'PM');
+        }
+    });
 
-    const weeks=[];let wk=[];
-    const startDow=calDays[0].d.getDay();
-    for(let i=0;i<startDow;i++)wk.push(null);
-    calDays.forEach(cd=>{wk.push(cd);if(wk.length===7){weeks.push(wk);wk=[]}});
-    if(wk.length)weeks.push(wk);
+    // Build heatmap weeks
+    const hmWeeks=[];let hmWk=[];
+    const hmStartDow=hmDays[0].d.getDay();
+    for(let i=0;i<hmStartDow;i++)hmWk.push(null);
+    hmDays.forEach(hd=>{hmWk.push(hd);if(hmWk.length===7){hmWeeks.push(hmWk);hmWk=[]}});
+    if(hmWk.length){while(hmWk.length<7)hmWk.push(null);hmWeeks.push(hmWk)}
 
-    const monthLabels=[];let prevM='';
-    weeks.forEach((w,wi)=>{const fd=w.find(d=>d);if(fd){const m=fd.d.toLocaleDateString('en-US',{month:'short'});if(m!==prevM){monthLabels.push({idx:wi,m});prevM=m}}});
+    const hmMonthLabels=[];let hmPrevM=-1;
+    hmWeeks.forEach((w,wi)=>{
+        for(let di=0;di<7;di++){
+            if(w[di]){
+                const m=w[di].d.getMonth();
+                if(m!==hmPrevM){hmMonthLabels.push({idx:wi,m:['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'][(['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'].indexOf(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]))]||['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]});hmPrevM=m}
+                break;
+            }
+        }
+    });
+
+    const hmTypeColor={'Alarm':'#ef4444','Callout':'#f59e0b','PM':'#10b981','Downtime':'#ef4444'};
+
+    // Monthly downtime data for bar chart
+    const monthNames=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+    const monthDt=[0,0,0,0,0,0,0,0,0,0,0,0];
+    evts.forEach(e=>{
+        const parts=e.t.replace(',','').split(' ');
+        const moName=parts[0];
+        const yr=parseInt(parts[2]);
+        let idx=-1;
+        if(yr===2025){idx=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(moName)}
+        else if(yr===2026){
+            if(moName==='Jan')idx=10;
+            else if(moName==='Feb')idx=11;
+            else if(moName==='Mar')idx=0; // wrap
+            else if(moName==='Apr')idx=1;
+            else if(moName==='May')idx=2;
+        }
+        if(idx>=0&&idx<12)monthDt[idx]+=e.dtH;
+    });
+
+    // Select first event by default
+    const selEvtIdx=0;
+    const selEvt=filtered[selEvtIdx]||evts[0];
+
+    // Helper to build report panel HTML
+    function buildReportPanel(evt){
+        const evtColor=evt.tp==='PM'?'#2196F3':evt.tp==='Callout'?'#10b981':evt.tp==='Alarm'?'#10b981':'#999';
+        const evtLabel=evt.tp==='PM'?'Preventive Maintenance':evt.tp==='Callout'?'Callout':evt.tp==='Alarm'?'Alarm':'Event';
+        const origIdx=evts.indexOf(evt);
+        return '<div style="padding:20px">'+
+            '<div style="font-size:16px;font-weight:700;color:#333;margin-bottom:12px">Report</div>'+
+            '<div style="margin-bottom:16px"><span style="background:'+evtColor+';color:#fff;padding:4px 14px;border-radius:4px;font-size:11px;font-weight:600">'+evtLabel+'</span></div>'+
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;font-size:12px;margin-bottom:20px">'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Customer</div><div style="font-weight:600;color:#333">'+(cust?cust.name:'—')+'</div></div>'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Unit</div><div style="font-weight:600;color:#333">'+dn+'</div></div>'+
+                '<div></div>'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Location</div><div style="font-weight:600;color:#333">'+(cust?cust.state:'—')+'</div></div>'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">WO Number</div><div style="font-weight:600;color:#333">'+(evt.wo||'—')+'</div></div>'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">WO Date & Time</div><div style="font-weight:600;color:#333">'+evt.ts+'</div></div>'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Work Type</div><div style="font-weight:600;color:#333">'+(evt.tp==='PM'?'PM':evt.tp==='Callout'?'Service':'Alarm')+'</div></div>'+
+                '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Submission Date & Time</div><div style="font-weight:600;color:#333">'+evt.ts+'</div></div>'+
+                '<div style="grid-column:1/-1"><div style="color:#999;font-size:10px;margin-bottom:2px">Ending Status</div><div style="font-weight:600;color:#10b981">Online & Operational</div></div>'+
+            '</div>'+
+            '<div style="border-top:1px solid #dee2e6;padding-top:14px">'+
+                '<div style="font-size:13px;font-weight:700;color:#333;margin-bottom:10px">Unit & Equipment</div>'+
+                '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px">'+
+                    '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Unit Type</div><div style="font-weight:600;color:#333">Screw</div></div>'+
+                    '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Comms Installed</div><div style="font-weight:600;color:#333">Yes</div></div>'+
+                    '<div><div style="color:#999;font-size:10px;margin-bottom:2px">Location connected</div><div style="font-weight:600;color:#333">Yes</div></div>'+
+                '</div>'+
+            '</div>'+
+            (evt.hasPdf?'<div style="margin-top:16px;border-top:1px solid #dee2e6;padding-top:14px"><span onclick="showPmReport('+origIdx+')" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:#ef4444;color:#fff;border-radius:6px;font-size:12px;font-weight:600"><i class="fas fa-file-pdf"></i> View Full PM Report</span></div>':'')+
+            '<div style="margin-top:16px;border-top:1px solid #dee2e6;padding-top:14px;font-size:12px">'+
+                '<div style="color:#999;font-size:10px;margin-bottom:4px">Description</div>'+
+                '<div style="color:#666;line-height:1.5">'+evt.desc+'</div>'+
+                (evt.tech?'<div style="margin-top:8px;color:#999;font-size:10px">Technician: <span style="color:#333;font-weight:600">'+evt.tech+'</span></div>':'')+
+            '</div>'+
+        '</div>';
+    }
 
     body.innerHTML=`
-    <!-- KPI Summary -->
-    <div style="display:flex;gap:12px;margin-bottom:16px">
-        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
-            <div style="width:38px;height:38px;border-radius:6px;background:#eff6ff;color:#2196F3;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-calendar-check"></i></div>
-            <div><div style="font-size:20px;font-weight:700;color:#333">${evts.length}</div><div style="font-size:10px;color:#999">Total Events</div></div>
+    <!-- KPI Strip -->
+    <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:16px 0;margin-bottom:16px;display:flex;align-items:center">
+        <div style="flex:1;padding:0 24px">
+            <div style="font-size:22px;font-weight:700;color:#333">${opHrs.toLocaleString()}h</div>
+            <div style="font-size:11px;color:#999;margin-top:2px">Operation hours</div>
         </div>
-        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
-            <div style="width:38px;height:38px;border-radius:6px;background:#eff6ff;color:#2196F3;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-wrench"></i></div>
-            <div><div style="font-size:20px;font-weight:700;color:#333">${pmCt}</div><div style="font-size:10px;color:#999">PMs Completed</div></div>
+        <div style="flex:1;padding:0 24px;border-left:1px solid #dee2e6">
+            <div style="font-size:22px;font-weight:700;color:#333">${faultPct}% <span style="font-size:14px;font-weight:500;color:#666">(${faultHrs}h)</span></div>
+            <div style="font-size:11px;color:#999;margin-top:2px">Fault hours</div>
         </div>
-        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
-            <div style="width:38px;height:38px;border-radius:6px;background:#fffbeb;color:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-bell"></i></div>
-            <div><div style="font-size:20px;font-weight:700;color:#333">${alarmCt}</div><div style="font-size:10px;color:#999">Alarms Triggered</div></div>
+        <div style="flex:1;padding:0 24px;border-left:1px solid #dee2e6">
+            <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:22px;font-weight:700;color:#333">${calloutCt}</span>
+                <div style="width:40px;height:6px;border-radius:3px;background:#dcfce7;overflow:hidden"><div style="width:${Math.min(calloutCt*10,100)}%;height:100%;background:#10b981;border-radius:3px"></div></div>
+            </div>
+            <div style="font-size:11px;color:#999;margin-top:2px">Callouts</div>
         </div>
-        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
-            <div style="width:38px;height:38px;border-radius:6px;background:#f5f3ff;color:#8b5cf6;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-truck"></i></div>
-            <div><div style="font-size:20px;font-weight:700;color:#333">${calloutCt}</div><div style="font-size:10px;color:#999">Field Callouts</div></div>
-        </div>
-        <div style="flex:1;background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px">
-            <div style="width:38px;height:38px;border-radius:6px;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-clock"></i></div>
-            <div><div style="font-size:20px;font-weight:700;color:#333">${totalDt.toFixed(1)}h</div><div style="font-size:10px;color:#999">Total Downtime</div></div>
+        <div style="flex:1;padding:0 24px;border-left:1px solid #dee2e6">
+            <div style="font-size:22px;font-weight:700;color:#333">${pmCt}</div>
+            <div style="font-size:11px;color:#999;margin-top:2px">Preventive Maintenance</div>
         </div>
     </div>
 
-    <!-- Charts Row: Downtime Trend + Calendar Heatmap -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333"><i class="fas fa-chart-bar" style="color:#2196F3;margin-right:6px"></i>Downtime Trend (Last 90 Days)</h4>
-                <span style="font-size:10px;color:#999">hours per week</span>
-            </div>
-            <div style="height:180px"><canvas id="evtDtChart"></canvas></div>
-        </div>
-        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-                <h4 style="margin:0;font-size:13px;font-weight:600;color:#333"><i class="far fa-calendar-alt" style="color:#2196F3;margin-right:6px"></i>Event Calendar (Last 90 Days)</h4>
-                <div style="display:flex;gap:10px;align-items:center;font-size:9px;color:#666">
-                    <span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:#2196F3"></span>PM</span>
-                    <span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:#f59e0b"></span>Alarm</span>
-                    <span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:#8b5cf6"></span>Callout</span>
-                    <span style="display:flex;align-items:center;gap:3px"><span style="width:10px;height:10px;border-radius:2px;background:#f0f4f8;border:1px solid #dee2e6"></span>No event</span>
+    <!-- Main two-column layout -->
+    <div style="display:grid;grid-template-columns:60% 40%;gap:16px">
+        <!-- Left Column -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+            <!-- Downtime Heatmap -->
+            <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <span style="font-size:13px;font-weight:600;color:#333">Downtime</span>
+                    <div style="display:flex;gap:10px;align-items:center;font-size:9px;color:#666">
+                        <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:1px;background:#ef4444"></span>Downtime</span>
+                        <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:1px;background:#10b981"></span>Alarm</span>
+                        <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:1px;background:#f59e0b"></span>Callout</span>
+                        <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:1px;background:#10b981"></span>PM</span>
+                    </div>
                 </div>
-            </div>
-            ${(()=>{
-                    const dayNames=['S','M','T','W','T','F','S'];
-                    const typeColors={'PM':'#2196F3','Alarm':'#f59e0b','Callout':'#8b5cf6'};
-                    const typeAbbr={'PM':'PM','Alarm':'AL','Callout':'CO'};
-                    let h='<div style="display:grid;grid-template-columns:20px repeat('+weeks.length+',1fr);gap:2px;font-family:Arial,Helvetica,sans-serif">';
-                    // Month header row
-                    h+='<div></div>';
-                    weeks.forEach((w,wi)=>{const ml=monthLabels.find(m=>m.idx===wi);h+='<div style="text-align:center;font-size:11px;font-weight:600;color:#999;padding-bottom:2px">'+(ml?ml.m:'')+'</div>'});
-                    // Day rows
+                <div style="overflow-x:auto">
+                ${(()=>{
+                    let h='<div style="display:flex;flex-direction:column;gap:1px;min-width:500px">';
+                    // Month labels row
+                    h+='<div style="display:flex;gap:1px;padding-left:0px;margin-bottom:2px">';
+                    let lastMonthLabel='';
+                    hmWeeks.forEach((w,wi)=>{
+                        const ml=hmMonthLabels.find(m=>m.idx===wi);
+                        if(ml&&ml.m!==lastMonthLabel){h+='<div style="width:8px;font-size:8px;color:#999;text-align:center;overflow:visible;white-space:nowrap;position:relative"><span style="position:absolute;left:0;top:0">'+ml.m+'</span></div>';lastMonthLabel=ml.m}
+                        else{h+='<div style="width:8px"></div>'}
+                    });
+                    h+='</div>';
+                    // 7 rows for days of week
                     for(let di=0;di<7;di++){
-                        h+='<div style="font-size:10px;color:#999;display:flex;align-items:center;justify-content:center;font-weight:500">'+dayNames[di]+'</div>';
-                        weeks.forEach(w=>{
-                            const cd=w[di]||null;
-                            if(!cd){h+='<div></div>';return}
-                            const dayNum=cd.d.getDate();
-                            if(cd.ct===0){
-                                h+='<div style="aspect-ratio:1;border-radius:50%;background:#f0f4f8;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:#bbb" title="'+cd.d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'">'+dayNum+'</div>';
-                            } else {
-                                const mainType=cd.types[0];
-                                const bg=typeColors[mainType]||'#999';
-                                const abbr=typeAbbr[mainType]||'?';
-                                const title=cd.d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+': '+cd.types.join(', ');
-                                h+='<div style="aspect-ratio:1;border-radius:50%;background:'+bg+';display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:pointer" title="'+title+'">';
-                                h+='<span style="font-size:8px;font-weight:700;color:#fff;line-height:1;letter-spacing:.3px">'+abbr+'</span>';
-                                h+='<span style="font-size:7px;color:rgba(255,255,255,.85);line-height:1;margin-top:1px">'+dayNum+'</span>';
-                                if(cd.ct>1){h+='<span style="position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#fff;color:'+bg+';font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.15)">'+cd.ct+'</span>'}
-                                h+='</div>';
+                        h+='<div style="display:flex;gap:1px">';
+                        hmWeeks.forEach(w=>{
+                            const cd=w[di];
+                            if(!cd){h+='<div style="width:8px;height:8px"></div>';return}
+                            let bg='#ebedf0';
+                            if(cd.types.length>0){
+                                const tp=cd.types[0];
+                                if(tp==='Alarm')bg='#10b981';
+                                else if(tp==='Callout')bg='#f59e0b';
+                                else if(tp==='PM')bg='#10b981';
+                                else bg='#ef4444';
+                                // If there was actual downtime, override to red
+                                const matchEvt=evts.find(e=>{
+                                    const ps=e.t.replace(',','').split(' ');
+                                    const mo2=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(ps[0]);
+                                    return mo2===cd.d.getMonth()&&parseInt(ps[1])===cd.d.getDate()&&parseInt(ps[2])===cd.d.getFullYear()&&e.dtH>4;
+                                });
+                                if(matchEvt)bg='#ef4444';
                             }
+                            const title=cd.d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+(cd.types.length?': '+cd.types.join(', '):'');
+                            h+='<div style="width:8px;height:8px;border-radius:1px;background:'+bg+'" title="'+title+'"></div>';
                         });
+                        h+='</div>';
                     }
                     h+='</div>';
                     return h;
                 })()}
+                </div>
+            </div>
+
+            <!-- Downtime Bar Chart (monthly) -->
+            <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                    <span style="font-size:13px;font-weight:600;color:#333">Downtime</span>
+                    <span style="font-size:10px;color:#999">10 h</span>
+                </div>
+                <div style="height:80px"><canvas id="evtDtChart"></canvas></div>
+            </div>
+
+            <!-- Events List -->
+            <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
+                <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:10px">Events</div>
+                <div id="evtEventsList" style="max-height:400px;overflow-y:auto">
+                ${filtered.map((e,i)=>{
+                    const origIdx=evts.indexOf(e);
+                    const isSelected=i===selEvtIdx;
+                    const badgeColor=e.tp==='Callout'?'#10b981':e.tp==='PM'?'#2196F3':e.tp==='Alarm'?'#10b981':'#999';
+                    const badgeLabel=e.tp==='Callout'?'Callout':e.tp==='PM'?'PM':e.tp==='Alarm'?'Alarm':'Event';
+                    return '<div class="evt-card" data-evt-idx="'+i+'" onclick="window._selectEvtCard('+i+')" style="padding:10px 12px;border-bottom:1px solid #f3f4f6;cursor:pointer;border-left:3px solid '+(isSelected?'#2196F3':'transparent')+';background:'+(isSelected?'#f8fafc':'#fff')+';transition:all .15s">'+
+                        '<div style="display:flex;align-items:center;justify-content:space-between">'+
+                            '<div style="display:flex;align-items:center;gap:8px">'+
+                                '<span style="background:'+badgeColor+';color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600">'+badgeLabel+'</span>'+
+                                '<span style="font-size:12px;font-weight:600;color:#333">'+e.title+'</span>'+
+                                (e.hasPdf?'<i class="fas fa-file-pdf" style="color:#ef4444;font-size:12px;cursor:pointer" title="View PM Report" onclick="event.stopPropagation();showPmReport('+origIdx+')"></i>':'')+
+                            '</div>'+
+                            '<span style="font-size:10px;color:#999;white-space:nowrap">'+e.ts+'</span>'+
+                        '</div>'+
+                        '<div style="font-size:11px;color:#666;margin-top:4px;line-height:1.4">'+e.desc+'</div>'+
+                    '</div>';
+                }).join('')}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Report Panel -->
+        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;position:sticky;top:16px;align-self:start;max-height:calc(100vh - 200px);overflow-y:auto" id="evtReportPanel">
+            ${buildReportPanel(selEvt)}
         </div>
     </div>
 
-    <!-- Event Type Distribution + Downtime by Type -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
-            <h4 style="margin:0 0 10px;font-size:13px;font-weight:600;color:#333"><i class="fas fa-chart-pie" style="color:#2196F3;margin-right:6px"></i>Event Distribution</h4>
-            <div style="height:160px"><canvas id="evtDistChart"></canvas></div>
-        </div>
-        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;padding:14px 16px">
-            <h4 style="margin:0 0 10px;font-size:13px;font-weight:600;color:#333"><i class="fas fa-stopwatch" style="color:#ef4444;margin-right:6px"></i>Downtime by Cause</h4>
-            <div style="height:160px"><canvas id="evtDtCauseChart"></canvas></div>
-        </div>
-    </div>
-
-    <!-- Filter Bar + Table -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <h3 style="margin:0;font-size:14px;font-weight:600;color:#333">Events &amp; Service History</h3>
-        <div style="display:flex;gap:0;border:1px solid #dee2e6;border-radius:6px;overflow:hidden;margin-left:12px">
-            <span class="evt-fp ${evtFilter==='all'?'active':''}" onclick="evtFilter='all';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='all'?'#e3f2fd':'#fff'};color:${evtFilter==='all'?'#1976d2':'#666'};font-weight:${evtFilter==='all'?'600':'400'};border-right:1px solid #dee2e6">All <b>${evts.length}</b></span>
-            <span class="evt-fp ${evtFilter==='PM'?'active':''}" onclick="evtFilter='PM';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='PM'?'#eff6ff':'#fff'};color:${evtFilter==='PM'?'#2196F3':'#666'};font-weight:${evtFilter==='PM'?'600':'400'};border-right:1px solid #dee2e6"><span style="width:6px;height:6px;border-radius:50%;background:#2196F3;display:inline-block;margin-right:3px"></span>PM <b>${pmCt}</b></span>
-            <span class="evt-fp ${evtFilter==='Alarm'?'active':''}" onclick="evtFilter='Alarm';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='Alarm'?'#fffbeb':'#fff'};color:${evtFilter==='Alarm'?'#f59e0b':'#666'};font-weight:${evtFilter==='Alarm'?'600':'400'};border-right:1px solid #dee2e6"><span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:3px"></span>Alarm <b>${alarmCt}</b></span>
-            <span class="evt-fp ${evtFilter==='Callout'?'active':''}" onclick="evtFilter='Callout';renderVruEvents(VRU_UNITS[vruSelectedCust][vruSelectedIdx],document.getElementById('vruTBody'))" style="padding:5px 12px;font-size:11px;cursor:pointer;background:${evtFilter==='Callout'?'#f5f3ff':'#fff'};color:${evtFilter==='Callout'?'#8b5cf6':'#666'};font-weight:${evtFilter==='Callout'?'600':'400'}"><span style="width:6px;height:6px;border-radius:50%;background:#8b5cf6;display:inline-block;margin-right:3px"></span>Callout <b>${calloutCt}</b></span>
-        </div>
-        <span style="margin-left:auto;font-size:11px;color:#999">${filtered.length} records</span>
-        <div style="display:flex;gap:6px">
-            <button style="padding:5px 12px;border:1px solid #dee2e6;border-radius:6px;background:#fff;cursor:pointer;font-size:11px;color:#666"><i class="fas fa-download" style="margin-right:4px"></i>Export</button>
-            <button style="padding:5px 12px;border:1px solid #dee2e6;border-radius:6px;background:#fff;cursor:pointer;font-size:11px;color:#666"><i class="fas fa-print" style="margin-right:4px"></i>Print</button>
-        </div>
-    </div>
-
-    <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;overflow:hidden">
-    <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8f9fa;border-bottom:2px solid #eee"><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:130px">Date</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Type</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666">Description</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:80px">Downtime</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:100px">WO #</th><th style="padding:8px 12px;text-align:left;font-weight:600;color:#666;width:60px">Report</th></tr></thead>
-    <tbody>${filtered.map((e,i)=>{
-        const color=tc[e.tp]||'#999';const bg=tbg[e.tp]||'#f9fafb';
-        const origIdx=evts.indexOf(e);
-        return '<tr style="border-bottom:1px solid #f3f4f6;cursor:pointer" onmouseenter="this.style.background=\'#f8fafc\'" onmouseleave="this.style.background=\'\'"><td style="padding:10px 12px;color:#666;font-size:11px">'+e.ts+'</td><td style="padding:10px 12px"><span style="color:'+color+';background:'+bg+';font-weight:600;font-size:10px;padding:2px 8px;border-radius:10px">'+e.tp+'</span></td><td style="padding:10px 12px"><div style="font-weight:600;color:#333;margin-bottom:2px">'+e.title+'</div><div style="font-size:11px;color:#666">'+e.desc+'</div>'+(e.tech?'<div style="font-size:10px;color:#999;margin-top:2px"><i class="fas fa-user" style="margin-right:3px"></i>'+e.tech+'</div>':'')+'</td><td style="padding:10px 12px;font-size:11px;font-weight:600;color:'+(e.dtH>5?'#ef4444':e.dtH>0?'#f59e0b':'#10b981')+'">'+(e.dtH>0?e.dtH+'h':'—')+'</td><td style="padding:10px 12px;font-size:11px;color:#2196F3;font-weight:600">'+(e.wo||'—')+'</td><td style="padding:10px 12px;text-align:center">'+(e.hasPdf?'<span style="cursor:pointer;color:#ef4444;font-size:16px" title="View PM Report" onclick="showPmReport('+origIdx+')"><i class="fas fa-file-pdf"></i></span>':'—')+'</td></tr>';
-    }).join('')}</tbody></table>
-    </div>
-
+    <!-- PM Report Overlay (kept for showPmReport) -->
     <div id="pmReportOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center" onclick="this.style.display='none'">
         <div style="background:#fff;border-radius:8px;width:700px;max-height:85vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2)" onclick="event.stopPropagation()">
             <div style="position:sticky;top:-32px;background:#fff;padding:16px 0 8px;border-bottom:1px solid #eee;margin:-32px -32px 20px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;z-index:1"><span style="font-size:18px;font-weight:700;color:#333">Report</span><span style="background:#10b981;color:#fff;padding:4px 16px;border-radius:4px;font-size:12px;font-weight:600">Preventive Maintenance</span><i class="fas fa-times" style="cursor:pointer;color:#999;font-size:18px;position:absolute;right:16px;top:16px" onclick="document.getElementById('pmReportOverlay').style.display='none'"></i></div>
@@ -4801,35 +4930,27 @@ function renderVruEvents(unit,body){
         </div>
     </div>`;
 
-    // Charts
-    setTimeout(()=>{
-        // Downtime Trend - weekly bars for last 13 weeks
-        const wkLabels=[];const wkDt=[];
-        for(let w=12;w>=0;w--){
-            const wEnd=new Date(today);wEnd.setDate(wEnd.getDate()-w*7);
-            const wStart=new Date(wEnd);wStart.setDate(wStart.getDate()-6);
-            wkLabels.push(wStart.toLocaleDateString('en-US',{month:'short',day:'numeric'}));
-            let wdt=0;
-            evts.forEach(e=>{
-                const parts=e.t.split(', ');const ed=new Date(parts[0]+', '+parts[1]);
-                if(ed>=wStart&&ed<=wEnd)wdt+=e.dtH;
-            });
-            wkDt.push(+wdt.toFixed(1));
+    // Wire up event card selection
+    window._evtFilteredList=filtered;
+    window._evtBuildReportPanel=buildReportPanel;
+    window._selectEvtCard=function(idx){
+        const cards=document.querySelectorAll('#evtEventsList .evt-card');
+        cards.forEach((c,ci)=>{
+            if(ci===idx){c.style.borderLeftColor='#2196F3';c.style.background='#f8fafc'}
+            else{c.style.borderLeftColor='transparent';c.style.background='#fff'}
+        });
+        const panel=document.getElementById('evtReportPanel');
+        if(panel&&window._evtFilteredList[idx]){
+            panel.innerHTML=window._evtBuildReportPanel(window._evtFilteredList[idx]);
         }
+    };
+
+    // Downtime bar chart (monthly)
+    setTimeout(()=>{
         const cv1=document.getElementById('evtDtChart');
-        if(cv1)evtChart=new Chart(cv1.getContext('2d'),{type:'bar',data:{labels:wkLabels,datasets:[
-            {label:'Downtime (hours)',data:wkDt,backgroundColor:wkDt.map(v=>v>6?'rgba(239,68,68,.7)':v>2?'rgba(245,158,11,.5)':'rgba(33,150,243,.4)'),borderRadius:3,barPercentage:.65}
-        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'top',color:'#666',font:{size:9,weight:'600'},formatter:v=>v>0?v+'h':''}},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}},y:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'},beginAtZero:true}}}});
-
-        // Event distribution doughnut
-        const cv2=document.getElementById('evtDistChart');
-        if(cv2)new Chart(cv2.getContext('2d'),{type:'doughnut',data:{labels:['PM','Alarm','Callout'],datasets:[{data:[pmCt,alarmCt,calloutCt],backgroundColor:['#2196F3','#f59e0b','#8b5cf6'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},usePointStyle:true,padding:12}},datalabels:{display:true,color:'#fff',font:{size:11,weight:'700'},formatter:(v,ctx)=>v}}}});
-
-        // Downtime by cause horizontal bar
-        const causes=['High Discharge Temp','Low Suction Pressure','Field Service','PM Downtime','Belt/Mechanical','Oil Leak'];
-        const causeH=[16.2,8,9.5,4.5,3,5];
-        const cv3=document.getElementById('evtDtCauseChart');
-        if(cv3)new Chart(cv3.getContext('2d'),{type:'bar',data:{labels:causes,datasets:[{label:'Hours',data:causeH,backgroundColor:['#ef4444','#f59e0b','#8b5cf6','#2196F3','#6b7280','#f59e0b'],borderRadius:3,barPercentage:.6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'right',color:'#666',font:{size:9,weight:'600'},formatter:v=>v+'h'}},scales:{x:{grid:{color:'#f3f4f6'},ticks:{font:{size:9},callback:v=>v+'h'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+        if(cv1)evtChart=new Chart(cv1.getContext('2d'),{type:'bar',data:{labels:monthNames,datasets:[
+            {label:'Downtime (hours)',data:monthDt.map(v=>+v.toFixed(1)),backgroundColor:'rgba(239,68,68,.6)',borderRadius:2,barPercentage:.5}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:8},color:'#999'}},y:{display:false,beginAtZero:true,max:Math.max(...monthDt)+5}}}});
     },100);
 }
 function showPmReport(idx){
