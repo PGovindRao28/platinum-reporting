@@ -4820,24 +4820,23 @@ function renderVruEvents(unit,body){
                         <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:1px;background:#10b981"></span>PM</span>
                     </div>
                 </div>
-                <div style="overflow-x:auto">
                 ${(()=>{
-                    let h='<div style="display:flex;flex-direction:column;gap:1px;min-width:500px">';
-                    // Month labels row
-                    h+='<div style="display:flex;gap:1px;padding-left:0px;margin-bottom:2px">';
-                    let lastMonthLabel='';
-                    hmWeeks.forEach((w,wi)=>{
-                        const ml=hmMonthLabels.find(m=>m.idx===wi);
-                        if(ml&&ml.m!==lastMonthLabel){h+='<div style="width:8px;font-size:8px;color:#999;text-align:center;overflow:visible;white-space:nowrap;position:relative"><span style="position:absolute;left:0;top:0">'+ml.m+'</span></div>';lastMonthLabel=ml.m}
-                        else{h+='<div style="width:8px"></div>'}
-                    });
-                    h+='</div>';
+                    const cols=hmWeeks.length;
+                    let h='<div style="display:grid;grid-template-columns:repeat('+cols+',1fr);gap:1px">';
+                    // Month labels row — span across weeks belonging to each month
+                    let mi=0;
+                    while(mi<hmMonthLabels.length){
+                        const cur=hmMonthLabels[mi];
+                        const next=hmMonthLabels[mi+1];
+                        const span=next?next.idx-cur.idx:cols-cur.idx;
+                        h+='<div style="grid-column:span '+span+';font-size:9px;font-weight:500;color:#999;padding-bottom:3px">'+cur.m+'</div>';
+                        mi++;
+                    }
                     // 7 rows for days of week
                     for(let di=0;di<7;di++){
-                        h+='<div style="display:flex;gap:1px">';
                         hmWeeks.forEach(w=>{
                             const cd=w[di];
-                            if(!cd){h+='<div style="width:8px;height:8px"></div>';return}
+                            if(!cd){h+='<div style="aspect-ratio:1;min-height:8px"></div>';return}
                             let bg='#ebedf0';
                             if(cd.types.length>0){
                                 const tp=cd.types[0];
@@ -4845,7 +4844,6 @@ function renderVruEvents(unit,body){
                                 else if(tp==='Callout')bg='#f59e0b';
                                 else if(tp==='PM')bg='#10b981';
                                 else bg='#ef4444';
-                                // If there was actual downtime, override to red
                                 const matchEvt=evts.find(e=>{
                                     const ps=e.t.replace(',','').split(' ');
                                     const mo2=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(ps[0]);
@@ -4854,9 +4852,8 @@ function renderVruEvents(unit,body){
                                 if(matchEvt)bg='#ef4444';
                             }
                             const title=cd.d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+(cd.types.length?': '+cd.types.join(', '):'');
-                            h+='<div style="width:8px;height:8px;border-radius:1px;background:'+bg+'" title="'+title+'"></div>';
+                            h+='<div style="aspect-ratio:1;min-height:8px;border-radius:1px;background:'+bg+'" title="'+title+'"></div>';
                         });
-                        h+='</div>';
                     }
                     h+='</div>';
                     return h;
